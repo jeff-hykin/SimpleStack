@@ -1,0 +1,18 @@
+
+add "use strict"
+
+figure out how style sheets are going to work
+
+
+add these
+    check for a homepage
+    extract the header + body of the base.html
+
+add Python functions as javascript functions on compile time 
+
+
+create an outline and test out GlobalEvents & listeners
+    on 
+in boilerplate
+    figure out how to have SimpleStackTools.js included instead of having to manually include it in the SimpleStackBase.html
+        add relative paths to loadPage() and add(component to)

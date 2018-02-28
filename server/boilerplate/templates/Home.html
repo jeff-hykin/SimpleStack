@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Home page</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!--Import styles.css-->
+    <link type="text/css" rel="stylesheet" href="{{ url_for('static',filename='GlobalStyles.css') }}"/>
+    
+
+    <!-- You don't need to set a title or meta charset or anything -->
+    <!-- Just use this space to include scripts/css or  -->
+    <!-- anything else that you want to show up on every page -->
+
+    <!--Import styles.css-->
+    <!-- <link type="text/css" rel="stylesheet" href="{{ url_for('static',filename='GlobalStyles.css') }}"/> -->
+
+    <!--Import Google Icon Font-->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <!--Import materialize.css-->
+    <link type="text/css" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.min.css"  media="screen,projection"/>
+    <!--Let browser know website is optimized for mobile-->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+
+</head>
+<body>
+    
+
+        <script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/js/materialize.js"></script>
+
+
+    <container>
+    </container>
+    <script>
+// "use strict"
+        var global = {}
+        var head = document.head
+        var body = document.body
+        Function.prototype.clone = function() {
+            var that = this;
+            var temp = function temporary() { return that.apply(this, arguments); };
+            for(var key in this) {
+                if (this.hasOwnProperty(key)) {
+                    temp[key] = this[key];
+                }
+            }
+            return temp;
+        };
+
+        function timer_for(time_amount)
+            {
+                return new Promise(resolve => 
+                    {
+                        setTimeout(()=>{ resolve(null) }, time_amount)
+                    })
+            }
+        function getElementByXpath(path) 
+            {
+                return document.evaluate(path, document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue;
+            }
+        var request_proto = async function({username=null, password=null, url, path, data=null, type="GET",timeout=10}) 
+            {
+                console.log("starting request for ",[username,password,url,path,data,type,timeout])
+                // check if global is undefined 
+                try { global } catch (ReferenceError) { global = {} }
+                // reset the output
+                this.output = null
+                // create a new request
+                var xhttp = new XMLHttpRequest() 
+                // set the callback
+                xhttp.onreadystatechange =()=>
+                    {
+                        if (xhttp.readyState == 4 && xhttp.status == 200) 
+                            {
+                                // FIXME add a log here 
+                                try           { this.output = JSON.parse(xhttp.responseText) }
+                                catch(error)  { this.output = xhttp.responseText }
+                            }
+                        else if (xhttp.readyState == 4 && xhttp.status == 403) 
+                            {
+                                // FIXME add a log here 
+                                try           { this.output = JSON.parse(xhttp.responseText) }
+                                catch(error)  { this.output = xhttp.responseText }
+                            }
+                        // else 
+                        //     {
+                        //         // FIXME add a log here 
+                        //         try           { this.output = xhttp.responseText }
+                        //         catch(error)  { this.output = xhttp }
+                        //     }
+                    }
+                // send auth data 
+                if (username!=null)
+                    {
+                        // if there's a url the follow the url
+                        // if there is a path then try to follow the path
+                        // if there isnt a path then try to go to /login
+                             if (url != null)                            { xhttp.open(type, url, true) }
+                        else if (path != null && global.website != null) { xhttp.open(type, global.website+path, true)  }
+                        else if (global.website != null)                 { xhttp.open(type, global.website+"/login", true) }
+                        else                                             { console.log("You gave request() a username and password, but you didn't give a url/path/global.website to login to"); return }
+                        // set the header and send it
+                        xhttp.setRequestHeader('Content-Type', 'application/json; charset=UTF-8')
+                        xhttp.send(JSON.stringify({ username: username, password: password }))
+                    }
+                else
+                    {
+                        // if there is data, then change the type from GET to POST
+                        if (data != null)
+                            {
+                                if (type=="GET")
+                                    {
+                                        type = "POST"
+                                    }
+                            }
+                        if (url  != null)                           { xhttp.open(type, url, true) }
+                        else if (path != null && global.website != null) { xhttp.open(type, global.website+path, true)  }
+                        else                                             { console.log("You used request(), but you didn't give a url/path/global.website to access"); return }
+                        // if there is data, then include it
+                        if (data != null)
+                            {
+                                xhttp.setRequestHeader('Content-Type', 'application/json; charset=UTF-8')
+                                xhttp.send(JSON.stringify(data))
+                            }
+                        else 
+                            {
+                                xhttp.send()
+                            }
+                    }
+                var loop_num = 0
+                while (this.output == null) 
+                    {
+                        // wait 100ms
+                        await new Promise(resolve=>{setTimeout(()=>{resolve(null)},100)})
+                        // FIXME, make this a better timeout 
+                        if (loop_num > timeout*10) { return "timed out" }
+                        loop_num++
+                    }
+                console.log("finished request for ",[username,password,url,path,data,type,timeout])
+                // if a jwt_token is returned, then set the global token 
+                if (this.output.jwt_token != null) { global.jwt_token = this.output.jwt_token }
+                return this.output
+            }
+        async function request({username=null, password=null, url, path, data=null, type="GET",timeout=10})
+            {
+                return await request_proto.call(request_proto.clone(),{username, password, url, path, data, type, timeout})
+            }
+        var run = async function(function_name,array_of_arguments=[])
+            {
+                console.log("starting run",function_name)
+                return await request({path:"func/"+function_name, data:{arguments:array_of_arguments}})
+            }
+        var add = async function({chunk,to})
+            {
+                console.log("starting add for ",chunk)
+                let js_code = await request({path:"chunk/"+chunk})
+                // FIXME, check for errors here 
+                return await eval(js_code)(to)
+            }
+        var loadPage = async function (page_name)
+            {
+                let js_code = await request({path:"page/"+page_name})
+                // FIXME, check for errors here (encase page doesn't exist)
+                // TODO, utilize state for something useful
+                history.pushState({}, page_name, page_name);
+                
+                // delete the existing main_container
+                // FIXME, add a check to see if the main_container exists
+                main_container = getElementByXpath("//html[1]/body[1]/container[1]")
+                document.body.removeChild(main_container)
+                // create a new main_container 
+                new_main_container = document.createElement("container")
+                document.body.appendChild(new_main_container)
+                // run the page with the new main_container 
+                return await eval(js_code)(new_main_container)
+            }
+
+
+global.website = "http://localhost:5000/"
+
+function New(element_name) 
+    {
+        if (element_name=="Btn")
+            {
+                output_ = document.createElement(element_name)
+                output_.className = "waves-effect waves-light btn"
+                return output_
+            }
+        return document.createElement(element_name)
+    }
+function Center(element)
+    {
+        element.classList.add('center-align')
+    }
+
+
+        async function Main() 
+            {
+                loadPage("Home")
+            }
+        Main()
+    </script>
+</body>
+</html>
