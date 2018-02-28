@@ -1,7 +1,6 @@
 LoadChunk = async function(container) {
 // Create the title
-hello_element = New("p")
-hello_element.style = "width:100%;font-size:30pt;"
+hello_element = New("h1")
 hello_element.innerHTML = "Hello World!"
 Center(hello_element)
 container.appendChild(hello_element)
