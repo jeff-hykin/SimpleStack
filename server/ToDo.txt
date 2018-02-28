@@ -1,3 +1,4 @@
+add favicon.ico
 GlobalEvent management
     talking 
     listening
