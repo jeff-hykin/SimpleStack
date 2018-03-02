@@ -13,5 +13,5 @@ error checking
 add Python functions as javascript functions on compile time 
 add npm package support
     add local npm package support
-
+add more advanced login and user management
 
