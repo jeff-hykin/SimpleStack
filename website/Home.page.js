@@ -8,3 +8,6 @@ container.appendChild(hello_element)
 other_area = New("div")
 container.appendChild(other_area)
 add({chunk:"hello", to:other_area})
+
+console.log("about2")
+await whenGlobalSays("I just rendered something from the server",{do:()=>{ console.log("so I head someone rendered something from the server") }})

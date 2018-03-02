@@ -1,4 +1,4 @@
-global.website = "http://localhost:5000/"
+Global.website = "http://localhost:5000/"
 
 function New(element_name) 
     {

@@ -6,7 +6,8 @@ a_button.innerHTML = "immaButton"
 a_button.onclick = async function()
     { 
         console.log("The button was pressed")
-        a_button.innerHTML = await run("HelloWorld()") 
+        a_button.innerHTML = await run("HelloWorld()")
+        Global.say("I just rendered something from the server")
     }
 
 // add the button to the page 

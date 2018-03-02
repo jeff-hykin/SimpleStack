@@ -15,19 +15,57 @@
     </container>
     <script>
 // "use strict"
-        var global = {}
+        var Global = {listenersFor:{}}
+        Global.say = async function(saying_)
+            {
+                console.log(`starting Global.say for "${saying_}"`)
+                var listeners = Global.listenersFor[saying_]
+                console.log(`listeners are "${listeners}"`)
+                if (listeners == null) 
+                    {
+                        Global.listenersFor[saying_] = new Set([])
+                    }
+                else
+                    {
+                        console.log(`there are ${Global.listenersFor[saying_].size} listeners for "${saying_}"`)
+                        for (var each of Global.listenersFor[saying_])
+                            {
+                                each()
+                            }
+                    }
+                console.log(`ended Global.say for "${saying_}"`)
+            }
+        async function whenGlobalSays(saying_,action_obj)
+            {
+                console.log("started whenGlobalSays")
+                var listeners = Global.listenersFor[saying_]
+                console.log(`listeners are "${listeners}"`)
+                if (listeners == null) 
+                    {
+                        Global.listenersFor[saying_] = new Set([])
+                    }
+                Global.listenersFor[saying_].add(action_obj.do)
+                console.log(`there are ${Global.listenersFor[saying_].size} listeners for "${saying_}"`)
+                console.log("ended whenGlobalSays")
+            }
         var head = document.head
         var body = document.body
-        Function.prototype.clone = function() {
-            var that = this;
-            var temp = function temporary() { return that.apply(this, arguments); };
-            for(var key in this) {
-                if (this.hasOwnProperty(key)) {
-                    temp[key] = this[key];
-                }
-            }
-            return temp;
-        };
+        Function.prototype.clone = function() 
+            {
+                var that = this;
+                var temp = function temporary() 
+                    { 
+                        return that.apply(this, arguments)
+                    }
+                for(var key in this) 
+                    {
+                        if (this.hasOwnProperty(key)) 
+                            {
+                                temp[key] = this[key]
+                            }
+                    }
+                return temp
+            };
 
         function timer_for(time_amount)
             {
@@ -43,8 +81,8 @@
         var request_proto = async function({username=null, password=null, url, path, data=null, type="GET",timeout=10}) 
             {
                 console.log("starting request for ",[username,password,url,path,data,type,timeout])
-                // check if global is undefined 
-                try { global } catch (ReferenceError) { global = {} }
+                // check if Global is undefined 
+                try { Global } catch (ReferenceError) { Global = {} }
                 // reset the output
                 this.output = null
                 // create a new request
@@ -78,9 +116,9 @@
                         // if there is a path then try to follow the path
                         // if there isnt a path then try to go to /login
                              if (url != null)                            { xhttp.open(type, url, true) }
-                        else if (path != null && global.website != null) { xhttp.open(type, global.website+path, true)  }
-                        else if (global.website != null)                 { xhttp.open(type, global.website+"/login", true) }
-                        else                                             { console.log("You gave request() a username and password, but you didn't give a url/path/global.website to login to"); return }
+                        else if (path != null && Global.website != null) { xhttp.open(type, Global.website+path, true)  }
+                        else if (Global.website != null)                 { xhttp.open(type, Global.website+"/login", true) }
+                        else                                             { console.log("You gave request() a username and password, but you didn't give a url/path/Global.website to login to"); return }
                         // set the header and send it
                         xhttp.setRequestHeader('Content-Type', 'application/json; charset=UTF-8')
                         xhttp.send(JSON.stringify({ username: username, password: password }))
@@ -96,8 +134,8 @@
                                     }
                             }
                         if (url  != null)                           { xhttp.open(type, url, true) }
-                        else if (path != null && global.website != null) { xhttp.open(type, global.website+path, true)  }
-                        else                                             { console.log("You used request(), but you didn't give a url/path/global.website to access"); return }
+                        else if (path != null && Global.website != null) { xhttp.open(type, Global.website+path, true)  }
+                        else                                             { console.log("You used request(), but you didn't give a url/path/Global.website to access"); return }
                         // if there is data, then include it
                         if (data != null)
                             {
@@ -119,8 +157,8 @@
                         loop_num++
                     }
                 console.log("finished request for ",[username,password,url,path,data,type,timeout])
-                // if a jwt_token is returned, then set the global token 
-                if (this.output.jwt_token != null) { global.jwt_token = this.output.jwt_token }
+                // if a jwt_token is returned, then set the Global token 
+                if (this.output.jwt_token != null) { Global.jwt_token = this.output.jwt_token }
                 return this.output
             }
         async function request({username=null, password=null, url, path, data=null, type="GET",timeout=10})
