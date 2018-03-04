@@ -91,7 +91,7 @@ def SystemRoutes(): #this is name-specific
                     
 
                     
-                    return "Hello from python!"
+                    return "\nHello from python!"
 
                 @RequireLoginForThis
                 @Route('/func/users/UserBalance', methods=['POST'])

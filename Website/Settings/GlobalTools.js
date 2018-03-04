@@ -25,3 +25,7 @@ function TimerFor(time_amount)
                 setTimeout(()=>{ resolve(null) }, time_amount)
             })
     }
+function CenterVertically(element)
+    {
+        element.parentNode.classList.add('valign-wrapper')
+    }

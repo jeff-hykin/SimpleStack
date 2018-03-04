@@ -54,7 +54,7 @@
                                                 }
                                         })
                     }
-            Request          = async function({username=null, password=null, url, path, data=null, method="GET",timeout=10}) 
+            Request  = async function({username=null, password=null, url, path, data=null, method="GET",timeout=10}) 
                 {
                     console.log("starting Request for ",[url,path,method])
                     let request_result = await new Promise
@@ -141,19 +141,19 @@
                     return request_result
                 }
 
-            Run              = async function(function_name,array_of_arguments=[])
+            Run      = async function(function_name,array_of_arguments=[])
                 {
                     console.log("starting Run",function_name)
                     return await Request({path:"func/"+function_name, data:{arguments:array_of_arguments}})
                 }
-            Add              = async function({chunk,to})
+            Add      = async function({chunk,to})
                 {
                     console.log("starting add for the",chunk," chunk")
                     let js_code = await Request({path:"chunk/"+chunk})
                     // FIXME, check for errors here 
                     return await eval(js_code)(to)
                 }
-            LoadPage         = async function(page_name)
+            LoadPage = async function(page_name)
                 {
                     let js_code = await Request({path:"page/"+page_name})
                     // FIXME, check for errors here (encase page doesn't exist)
@@ -173,8 +173,7 @@
                     return await eval(js_code)(Global.Container)
                 }
 
-    ###THIS IS WHERE YOU WANT TO REPLACE THE GENERAL TOOLS###
-
+            ###THIS IS WHERE YOU WANT TO REPLACE THE GENERAL TOOLS###
             Main = async function () 
                 {
                     LoadPage("###THIS IS WHERE YOU WANT TO REPLACE THE PAGE NAME###")

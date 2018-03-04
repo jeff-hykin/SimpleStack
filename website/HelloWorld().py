@@ -1,1 +1,1 @@
-return "Hello from python!"
+return "\nHello from python!"
