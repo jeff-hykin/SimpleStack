@@ -1,12 +1,16 @@
-add favicon.ico
-GlobalEvent management
-    talking 
-    listening
+figure out more security tools 
+    (Auth instead of jwt tokens )
+
+
+make boilerplate hidden 
+
 import management
     local style sheets
     add relative paths to loadPage() and add(component: to:)
+
 in boilerplate
     get SimpleStackTools.js included instead of having to manually including it in the SimpleStackBase.html
+
 error checking 
     check for a homepage
     extract the header + body in a better way
@@ -14,3 +18,4 @@ add Python functions as javascript functions on compile time
 add npm package support
     add local npm package support
 
+add favicon.ico
