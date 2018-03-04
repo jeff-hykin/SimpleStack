@@ -50,6 +50,9 @@ def Routes(): #this is name-specific
     @Route('/',methods=['POST'])
     def create_store():
         data_from_client = ReceiveJsonData()
+        print("data_from_client")
+        print(request)
+        print(data_from_client)
         return { "msg" : "I got your data" }
 
     # get a name /<string:name>

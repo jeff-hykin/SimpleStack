@@ -1,21 +1,18 @@
 <!DOCTYPE html>
 <html>
-<head>
-    <meta charset="utf-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>Home page</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <!--Import styles.css-->
-    <link type="text/css" rel="stylesheet" href="{{ url_for('static',filename='GlobalStyles.css') }}"/>
-    
+    <head>
+        <meta charset="utf-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title>Home page</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <!--Import styles-->
+        <link type="text/css" rel="stylesheet" href="{{ url_for('static',filename='Settings→GlobalStyles.css') }}"/>
+        <!-- import other things -->
+        
 
         <!-- You don't need to set a title or meta charset or anything -->
         <!-- Just use this space to include scripts/css or  -->
         <!-- anything else that you want to show up on every page -->
-
-        <!--Import styles.css-->
-        <!-- <link type="text/css" rel="stylesheet" href="{{ url_for('static',filename='GlobalStyles.css') }}"/> -->
-
         <!--Import Google Icon Font-->
         <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
         <!--Import materialize.css-->
@@ -24,202 +21,182 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     
 
-</head>
-<body>
-    
+    </head>
+    <body>
+        
 
         <script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
         <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/js/materialize.js"></script>
     
 
-    <container>
-    </container>
-    <script>
-// "use strict"
-        var Global = {listenersFor:{}}
-        Global.say = async function(saying_)
-            {
-                console.log(`starting Global.say for "${saying_}"`)
-                var listeners = Global.listenersFor[saying_]
-                console.log(`listeners are "${listeners}"`)
-                if (listeners == null) 
+        <container id="PageContainer">
+        </container>
+        <script>
+            Global = 
+                {
+                    Eval: function (input_){eval(input_)},
+                    Container: document.getElementById("PageContainer"),
+                    __NumberOfContainersCreated: 0,
+                    __IdsToCheck: new Set([]),
+                    WhenAnythingSays : async function(element_id, saying_, action_obj)
+                        {
+                            console.log(`starting WhenAnythingSays for element with id ${element_id} for the saying "${saying_}"`)
+                            Global.__IdsToCheck.add(element_id)
+                            var element_attributes = document.getElementById(element_id).attributes
+                            // if the element doesn't have a listeners object then add listeners 
+                            if (element_attributes.Listeners == null) { element_attributes.Listeners = {} }
+                            element_attributes.Listeners[saying_] = action_obj.do
+                        },
+                }
+            TellPage = async function(saying_,data_=null)
                     {
-                        Global.listenersFor[saying_] = new Set([])
+                        console.log(`starting TellPage for ${saying_}`)
+                        Global.__IdsToCheck.forEach
+                            ((element_id)=>{
+                                            // try to run the listener
+                                            try 
+                                                {
+                                                    document.getElementById(element_id).attributes.Listeners[saying_](data_)
+                                                    console.log(`the element with id: ${element_id} had a listener`)
+                                                }
+                                            catch(error)
+                                                { 
+                                                    // if the element doesn't exist then remove its id from the list 
+                                                    // if the element doesn't have any listeners, then remove its id from the list 
+                                                    if (!!`${error}`.match(/^TypeError: Cannot read property '(attibutes|Listeners)/g))
+                                                        {
+                                                            Global.__IdsToCheck.delete(element_id)
+                                                        }
+                                                // else do nothing
+                                                }
+                                        })
                     }
-                else
-                    {
-                        console.log(`there are ${Global.listenersFor[saying_].size} listeners for "${saying_}"`)
-                        for (var each of Global.listenersFor[saying_])
-                            {
-                                each()
-                            }
-                    }
-                console.log(`ended Global.say for "${saying_}"`)
-            }
+            Request          = async function({username=null, password=null, url, path, data=null, method="GET",timeout=10}) 
+                {
+                    console.log("starting Request for ",[url,path,method])
+                    let request_result = await new Promise
+                        (
+                            function (resolve, reject) 
+                                {
+                                    try { Global } catch (ReferenceError) { Global = {} } // SimpleStack specific
+                                    let the_request = new XMLHttpRequest()
+                                    the_request.onload = function () 
+                                        {                       
+                                            if (this.status >= 200 && this.status < 300) 
+                                                {
+                                                    try           { var output_ = JSON.parse(the_request.responseText) }
+                                                    catch(error)  { var output_ = the_request.responseText }
+                                                    resolve(output_)
+                                                } 
+                                            else 
+                                                {
+                                                    reject
+                                                        (
+                                                            {
+                                                                status: this.status,
+                                                                statusText: the_request.statusText
+                                                            }
+                                                        )
+                                                }
+                                        }
+                                    the_request.onerror = function () 
+                                        {
+                                            reject
+                                                (
+                                                    {
+                                                        status: this.status,
+                                                        statusText: the_request.statusText
+                                                    }
+                                                )
+                                        }
 
-        async function whenGlobalSays(saying_,action_obj)
-            {
-                console.log("started whenGlobalSays")
-                var listeners = Global.listenersFor[saying_]
-                console.log(`listeners are "${listeners}"`)
-                if (listeners == null) 
-                    {
-                        Global.listenersFor[saying_] = new Set([])
-                    }
-                Global.listenersFor[saying_].add(action_obj.do)
-                console.log(`there are ${Global.listenersFor[saying_].size} listeners for "${saying_}"`)
-                console.log("ended whenGlobalSays")
-            }
-        var head = document.head
-        var body = document.body
-        Function.prototype.clone = function() 
-            {
-                var that = this;
-                var temp = function temporary() 
-                    { 
-                        return that.apply(this, arguments)
-                    }
-                for(var key in this) 
-                    {
-                        if (this.hasOwnProperty(key)) 
-                            {
-                                temp[key] = this[key]
-                            }
-                    }
-                return temp
-            };
+                                    if (username!=null)
+                                        {
+                                            // if there's a url the follow the url
+                                            // if there is a path then try to follow the path
+                                            // if there isnt a path then try to go to /login
+                                                if (url != null)                            { the_request.open(method, url, true) }
+                                            else if (path != null && Global.Website != null) { the_request.open(method, Global.Website+path, true)  }
+                                            else if (Global.Website != null)                 { the_request.open(method, Global.Website+"/login", true) }
+                                            else                                             { console.log("You gave Request() a username and password, but you didn't give a url or path or Global.Website to login to"); return }
+                                            // set the header and send it
+                                            the_request.setRequestHeader('Content-Type', 'application/json; charset=UTF-8')
+                                            the_request.send(JSON.stringify({ username: username, password: password }))
+                                        }
+                                    else
+                                        {
+                                            // if there is data, then change the method from GET to POST
+                                            if (data != null)
+                                                {
+                                                    if (method=="GET")
+                                                        {
+                                                            method = "POST"
+                                                        }
+                                                }
+                                                if (url  != null)                           { the_request.open(method, url, true) }
+                                            else if (path != null && Global.Website != null) { the_request.open(method, Global.Website+path, true)  }
+                                            else                                             { console.log("You used Request(), but you didn't give a url/path/Global.Website to access"); return }
+                                            // if there is data, then include it
+                                            if (data != null)
+                                                {
+                                                    the_request.setRequestHeader('Content-Type', 'application/json; charset=UTF-8')
+                                                    the_request.send(JSON.stringify(data))
+                                                }
+                                            else 
+                                                {
+                                                    the_request.send()
+                                                }
+                                        }
+                                }
+                        )
+                    // if it was a login Request, then store the AuthToken in Global for future calls
+                    if (request_result.jwt_token != null && username != null && password != null) 
+                        { 
+                            Global.AuthToken = request_result.jwt_token 
+                        }
+                    console.log(`finished Request for`,[url,path,method])
+                    return request_result
+                }
 
-        function timer_for(time_amount)
-            {
-                return new Promise(resolve => 
-                    {
-                        setTimeout(()=>{ resolve(null) }, time_amount)
-                    })
-            }
-        function getElementByXpath(path) 
-            {
-                return document.evaluate(path, document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue;
-            }
-        var request_proto = async function({username=null, password=null, url, path, data=null, type="GET",timeout=10}) 
-            {
-                console.log("starting request for ",[username,password,url,path,data,type,timeout])
-                // check if Global is undefined 
-                try { Global } catch (ReferenceError) { Global = {} }
-                // reset the output
-                this.output = null
-                // create a new request
-                var xhttp = new XMLHttpRequest() 
-                // set the callback
-                xhttp.onreadystatechange =()=>
-                    {
-                        if (xhttp.readyState == 4 && xhttp.status == 200) 
-                            {
-                                // FIXME add a log here 
-                                try           { this.output = JSON.parse(xhttp.responseText) }
-                                catch(error)  { this.output = xhttp.responseText }
-                            }
-                        else if (xhttp.readyState == 4 && xhttp.status == 403) 
-                            {
-                                // FIXME add a log here 
-                                try           { this.output = JSON.parse(xhttp.responseText) }
-                                catch(error)  { this.output = xhttp.responseText }
-                            }
-                        // else 
-                        //     {
-                        //         // FIXME add a log here 
-                        //         try           { this.output = xhttp.responseText }
-                        //         catch(error)  { this.output = xhttp }
-                        //     }
-                    }
-                // send auth data 
-                if (username!=null)
-                    {
-                        // if there's a url the follow the url
-                        // if there is a path then try to follow the path
-                        // if there isnt a path then try to go to /login
-                             if (url != null)                            { xhttp.open(type, url, true) }
-                        else if (path != null && Global.website != null) { xhttp.open(type, Global.website+path, true)  }
-                        else if (Global.website != null)                 { xhttp.open(type, Global.website+"/login", true) }
-                        else                                             { console.log("You gave request() a username and password, but you didn't give a url/path/Global.website to login to"); return }
-                        // set the header and send it
-                        xhttp.setRequestHeader('Content-Type', 'application/json; charset=UTF-8')
-                        xhttp.send(JSON.stringify({ username: username, password: password }))
-                    }
-                else
-                    {
-                        // if there is data, then change the type from GET to POST
-                        if (data != null)
-                            {
-                                if (type=="GET")
-                                    {
-                                        type = "POST"
-                                    }
-                            }
-                        if (url  != null)                           { xhttp.open(type, url, true) }
-                        else if (path != null && Global.website != null) { xhttp.open(type, Global.website+path, true)  }
-                        else                                             { console.log("You used request(), but you didn't give a url/path/Global.website to access"); return }
-                        // if there is data, then include it
-                        if (data != null)
-                            {
-                                xhttp.setRequestHeader('Content-Type', 'application/json; charset=UTF-8')
-                                xhttp.send(JSON.stringify(data))
-                            }
-                        else 
-                            {
-                                xhttp.send()
-                            }
-                    }
-                var loop_num = 0
-                while (this.output == null) 
-                    {
-                        // wait 100ms
-                        await new Promise(resolve=>{setTimeout(()=>{resolve(null)},100)})
-                        // FIXME, make this a better timeout 
-                        if (loop_num > timeout*10) { return "timed out" }
-                        loop_num++
-                    }
-                console.log("finished request for ",[username,password,url,path,data,type,timeout])
-                // if a jwt_token is returned, then set the Global token 
-                if (this.output.jwt_token != null) { Global.jwt_token = this.output.jwt_token }
-                return this.output
-            }
-        async function request({username=null, password=null, url, path, data=null, type="GET",timeout=10})
-            {
-                return await request_proto.call(request_proto.clone(),{username, password, url, path, data, type, timeout})
-            }
-        var run = async function(function_name,array_of_arguments=[])
-            {
-                console.log("starting run",function_name)
-                return await request({path:"func/"+function_name, data:{arguments:array_of_arguments}})
-            }
-        var add = async function({chunk,to})
-            {
-                console.log("starting add for ",chunk)
-                let js_code = await request({path:"chunk/"+chunk})
-                // FIXME, check for errors here 
-                return await eval(js_code)(to)
-            }
-        var loadPage = async function (page_name)
-            {
-                let js_code = await request({path:"page/"+page_name})
-                // FIXME, check for errors here (encase page doesn't exist)
-                // TODO, utilize state for something useful
-                history.pushState({}, page_name, page_name);
-                
-                // delete the existing main_container
-                // FIXME, add a check to see if the main_container exists
-                main_container = getElementByXpath("//html[1]/body[1]/container[1]")
-                document.body.removeChild(main_container)
-                // create a new main_container 
-                new_main_container = document.createElement("container")
-                document.body.appendChild(new_main_container)
-                // run the page with the new main_container 
-                return await eval(js_code)(new_main_container)
-            }
+            Run              = async function(function_name,array_of_arguments=[])
+                {
+                    console.log("starting Run",function_name)
+                    return await Request({path:"func/"+function_name, data:{arguments:array_of_arguments}})
+                }
+            Add              = async function({chunk,to})
+                {
+                    console.log("starting add for the",chunk," chunk")
+                    let js_code = await Request({path:"chunk/"+chunk})
+                    // FIXME, check for errors here 
+                    return await eval(js_code)(to)
+                }
+            LoadPage         = async function(page_name)
+                {
+                    let js_code = await Request({path:"page/"+page_name})
+                    // FIXME, check for errors here (encase page doesn't exist)
+                    // TODO, utilize state for something useful
+                    history.pushState({}, page_name, page_name)
+                    // delete the existing main_container
+                    // FIXME, add a check to see if the main_container exists
+                    let main_container = document.getElementById("PageContainer")
+                    document.body.removeChild(main_container)
+                    // create a new main_container 
+                    console.log(`about to set Global.Container`)
+                    Global.Container = document.createElement("container")
+                    Global.Container.id = "PageContainer"
+                    document.body.appendChild(Global.Container)
+                    console.log(`Finished making global container`)
+                    // run the page with the new main_container 
+                    return await eval(js_code)(Global.Container)
+                }
 
-
-Global.website = "http://localhost:5000/"
-
+    
+Global.Website = "http://localhost:5000/"
+let log = console.log
+function GetByXpath(path) 
+    {
+        return document.evaluate(path, document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue;
+    }
 function New(element_name) 
     {
         if (element_name=="Btn")
@@ -234,13 +211,20 @@ function Center(element)
     {
         element.classList.add('center-align')
     }
-
-
-        async function Main() 
+function TimerFor(time_amount)
+    {
+        return new Promise(resolve => 
             {
-                loadPage("Home")
-            }
-        Main()
-    </script>
-</body>
+                setTimeout(()=>{ resolve(null) }, time_amount)
+            })
+    }
+
+
+            Main = async function () 
+                {
+                    LoadPage("Home")
+                }
+            Main()
+        </script>
+    </body>
 </html>

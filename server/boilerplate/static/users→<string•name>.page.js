@@ -1,4 +1,13 @@
-LoadChunk = async function(container) {
+            LoadChunk = async function(Container) 
+                {
+                    Container.id = `<string:name>${Global.__NumberOfContainersCreated++}`
+                    const WhenAnythingSays = (saying_,data_)=>(Global.WhenAnythingSays(Container.id, saying_, data_))
+                    <string:name> = 
+                        {
+                            Load: async function()
+                                {
+                                    "use strict"
+                                    
 
 
 thisChunk.name
@@ -14,4 +23,8 @@ else
     }
 
 
-}
+                                }
+                        }
+                    const DangerousEval = Global.Eval.bind(<string:name>)
+                    await <string:name>.Load()
+                }

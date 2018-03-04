@@ -65,7 +65,7 @@ REAL_DECORATOR = a_real_decorator
         return request.get_json()
 
     PORT_NUM = 5000
-    RUN_ON_LAST_LINE.append("if DEBUGGING:\n    print('\\n\\ngo to http://localhost:'+str(PORT_NUM)+' to see the server\\n\\n')\nTHE_APP.run(port=PORT_NUM,debug=DEBUGGING);\n")
+    RUN_ON_LAST_LINE.append("if DEBUGGING:\n    print('\\n\\ngo to http://localhost:'+str(PORT_NUM)+' to see the Server\\n\\n')\nTHE_APP.run(port=PORT_NUM,debug=DEBUGGING);\n")
 
 #
 #   Database Setup: SqlAlchemy Boilerplate
@@ -87,7 +87,7 @@ if True:
 
 
     # get the database models 
-    file = open(pwd+"/server/database.py", "r"); exec(file.read()); file.close()
+    file = open(pwd+"/Server/database.py", "r"); exec(file.read()); file.close()
 
 #
 # Setup Security: JWT (boilerplate stuff)  see: http://flask-jwt-extended.readthedocs.io/en/latest/basic_usage.html
@@ -146,16 +146,18 @@ if True:
 if __name__ == "__main__":
 
     # System routes
-    file = open(pwd+"/server/boilerplate/routes.py", "r"); exec(file.read()); file.close()
+    file = open(pwd+"/Server/boilerplate/routes.py", "r"); exec(file.read()); file.close()
     SystemRoutes()
     # get the routes 
-    file = open(pwd+"/server/setup.py", "r"); exec(file.read()); file.close()
+    file = open(pwd+"/Server/setup.py", "r"); exec(file.read()); file.close()
     Routes()
 
 #
 # Clean up 
 #
 if __name__ == "__main__":
-    for each in RUN_ON_LAST_LINE:
-        exec(each)
-
+    with THE_APP.app_context() : THE_DATABASE.init_app(THE_APP)
+    print('about to init the database')
+    if DEBUGGING:
+        print('\n\ngo to http://localhost:'+str(PORT_NUM)+' to see the Server\n\n')
+        THE_APP.run(port=PORT_NUM,debug=DEBUGGING)

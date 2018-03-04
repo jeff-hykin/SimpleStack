@@ -12,11 +12,10 @@ def SystemRoutes(): #this is name-specific
 
                 @Route('/page/Home')
                 def page_route1():
-                    file = open('/Users/tavlat/Documents/Programming/_Projects/SimpleStack/server/boilerplate/static/Home.page.js', "r")
+                    file = open('/Users/tavlat/Documents/_Programming/SimpleStack/Server/boilerplate/static/Home.page.js', "r")
                     output = file.read()
                     file.close()
                     return output
-
 
                 @Route('/users/<string:name>')
                 def route2():
@@ -24,43 +23,52 @@ def SystemRoutes(): #this is name-specific
 
                 @Route('/page/users/<string:name>')
                 def page_route2():
-                    file = open('/Users/tavlat/Documents/Programming/_Projects/SimpleStack/server/boilerplate/static/users→<string•name>.page.js', "r")
+                    file = open('/Users/tavlat/Documents/_Programming/SimpleStack/Server/boilerplate/static/users→<string•name>.page.js', "r")
                     output = file.read()
                     file.close()
                     return output
 
-
                 @Route('/chunk/hello')
                 def chunk_route3():
-                    file = open('/Users/tavlat/Documents/Programming/_Projects/SimpleStack/server/boilerplate/static/hello.chunk.js', "r")
+                    file = open('/Users/tavlat/Documents/_Programming/SimpleStack/Server/boilerplate/static/hello.chunk.js', "r")
                     output = file.read()
                     file.close()
                     return output
 
                 @Route('/chunk/users/balance')
                 def chunk_route4():
-                    file = open('/Users/tavlat/Documents/Programming/_Projects/SimpleStack/server/boilerplate/static/users→balance.chunk.js', "r")
+                    file = open('/Users/tavlat/Documents/_Programming/SimpleStack/Server/boilerplate/static/users→balance.chunk.js', "r")
                     output = file.read()
                     file.close()
                     return output
 
                 @Route('/chunk/users/dashboard')
                 def chunk_route5():
-                    file = open('/Users/tavlat/Documents/Programming/_Projects/SimpleStack/server/boilerplate/static/users→dashboard.chunk.js', "r")
+                    file = open('/Users/tavlat/Documents/_Programming/SimpleStack/Server/boilerplate/static/users→dashboard.chunk.js', "r")
                     output = file.read()
                     file.close()
                     return output
 
                 @Route('/chunk/users/settings')
                 def chunk_route6():
-                    file = open('/Users/tavlat/Documents/Programming/_Projects/SimpleStack/server/boilerplate/static/users→settings.chunk.js', "r")
+                    file = open('/Users/tavlat/Documents/_Programming/SimpleStack/Server/boilerplate/static/users→settings.chunk.js', "r")
                     output = file.read()
                     file.close()
                     return output
 
                 
-                @Route('/func/HelloWorld()', methods=['POST'])
+                @Route('/func/Hello', methods=['POST'])
                 def func_route7():
+                    DATA_FROM_CLIENT = ReceiveJsonData()
+                    
+                    name_ = DATA_FROM_CLIENT['arguments'][0]
+
+                    
+                    return "Hello "+name_+"!"
+
+                
+                @Route('/func/HelloWorld', methods=['POST'])
+                def func_route8():
                     DATA_FROM_CLIENT = ReceiveJsonData()
                     
 
@@ -68,8 +76,8 @@ def SystemRoutes(): #this is name-specific
                     return "Hello from python!"
 
                 @RequireLoginForThis
-                @Route('/func/users/UserBalance(username).protected', methods=['POST'])
-                def func_route8():
+                @Route('/func/users/UserBalance', methods=['POST'])
+                def func_route9():
                     DATA_FROM_CLIENT = ReceiveJsonData()
                     
                     username = DATA_FROM_CLIENT['arguments'][0]
@@ -81,8 +89,8 @@ def SystemRoutes(): #this is name-specific
                         return None
 
                 @RequireLoginForThis
-                @Route('/func/users/UserNameChange(new_username).protected', methods=['POST'])
-                def func_route9():
+                @Route('/func/users/UserNameChange', methods=['POST'])
+                def func_route10():
                     DATA_FROM_CLIENT = ReceiveJsonData()
                     
                     new_username = DATA_FROM_CLIENT['arguments'][0]

@@ -1,4 +1,13 @@
-LoadChunk = async function(container) {
+            LoadChunk = async function(Container) 
+                {
+                    Container.id = `settings${Global.__NumberOfContainersCreated++}`
+                    const WhenAnythingSays = (saying_,data_)=>(Global.WhenAnythingSays(Container.id, saying_, data_))
+                    settings = 
+                        {
+                            Load: async function()
+                                {
+                                    "use strict"
+                                    
 if (Global.user_is_logged_in)
     {
         thisChunk.listen("changes made to user settings")
@@ -53,4 +62,8 @@ if (Global.user_is_logged_in)
             
         
     }
-}
+                                }
+                        }
+                    const DangerousEval = Global.Eval.bind(settings)
+                    await settings.Load()
+                }

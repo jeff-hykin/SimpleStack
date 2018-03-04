@@ -1,4 +1,13 @@
-LoadChunk = async function(container) {
+            LoadChunk = async function(Container) 
+                {
+                    Container.id = `balance${Global.__NumberOfContainersCreated++}`
+                    const WhenAnythingSays = (saying_,data_)=>(Global.WhenAnythingSays(Container.id, saying_, data_))
+                    balance = 
+                        {
+                            Load: async function()
+                                {
+                                    "use strict"
+                                    
 
 
 if (Global.user_is_logged_in)
@@ -15,4 +24,8 @@ else
         container.appendChild(balance_div)
     }
 
-}
+                                }
+                        }
+                    const DangerousEval = Global.Eval.bind(balance)
+                    await balance.Load()
+                }
