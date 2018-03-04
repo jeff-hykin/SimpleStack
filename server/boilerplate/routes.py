@@ -28,29 +28,47 @@ def SystemRoutes(): #this is name-specific
                     file.close()
                     return output
 
+                @Route('/users/users')
+                def route3():
+                    return  render_template('users→users.html')
+
+                @Route('/page/users/users')
+                def page_route3():
+                    file = open('/Users/tavlat/Documents/_Programming/SimpleStack/Server/boilerplate/static/users→users.page.js', "r")
+                    output = file.read()
+                    file.close()
+                    return output
+
+                @Route('/chunk/go_to_users')
+                def chunk_route4():
+                    file = open('/Users/tavlat/Documents/_Programming/SimpleStack/Server/boilerplate/static/go_to_users.chunk.js', "r")
+                    output = file.read()
+                    file.close()
+                    return output
+
                 @Route('/chunk/hello')
-                def chunk_route3():
+                def chunk_route5():
                     file = open('/Users/tavlat/Documents/_Programming/SimpleStack/Server/boilerplate/static/hello.chunk.js', "r")
                     output = file.read()
                     file.close()
                     return output
 
                 @Route('/chunk/users/balance')
-                def chunk_route4():
+                def chunk_route6():
                     file = open('/Users/tavlat/Documents/_Programming/SimpleStack/Server/boilerplate/static/users→balance.chunk.js', "r")
                     output = file.read()
                     file.close()
                     return output
 
                 @Route('/chunk/users/dashboard')
-                def chunk_route5():
+                def chunk_route7():
                     file = open('/Users/tavlat/Documents/_Programming/SimpleStack/Server/boilerplate/static/users→dashboard.chunk.js', "r")
                     output = file.read()
                     file.close()
                     return output
 
                 @Route('/chunk/users/settings')
-                def chunk_route6():
+                def chunk_route8():
                     file = open('/Users/tavlat/Documents/_Programming/SimpleStack/Server/boilerplate/static/users→settings.chunk.js', "r")
                     output = file.read()
                     file.close()
@@ -58,7 +76,7 @@ def SystemRoutes(): #this is name-specific
 
                 
                 @Route('/func/Hello', methods=['POST'])
-                def func_route7():
+                def func_route9():
                     DATA_FROM_CLIENT = ReceiveJsonData()
                     
                     name_ = DATA_FROM_CLIENT['arguments'][0]
@@ -68,7 +86,7 @@ def SystemRoutes(): #this is name-specific
 
                 
                 @Route('/func/HelloWorld', methods=['POST'])
-                def func_route8():
+                def func_route10():
                     DATA_FROM_CLIENT = ReceiveJsonData()
                     
 
@@ -77,7 +95,7 @@ def SystemRoutes(): #this is name-specific
 
                 @RequireLoginForThis
                 @Route('/func/users/UserBalance', methods=['POST'])
-                def func_route9():
+                def func_route11():
                     DATA_FROM_CLIENT = ReceiveJsonData()
                     
                     username = DATA_FROM_CLIENT['arguments'][0]
@@ -90,7 +108,7 @@ def SystemRoutes(): #this is name-specific
 
                 @RequireLoginForThis
                 @Route('/func/users/UserNameChange', methods=['POST'])
-                def func_route10():
+                def func_route12():
                     DATA_FROM_CLIENT = ReceiveJsonData()
                     
                     new_username = DATA_FROM_CLIENT['arguments'][0]

@@ -1,8 +1,8 @@
             LoadChunk = async function(Container) 
                 {
-                    if (Container.id != "PageContainer")  { Container.id = `hello${Global.__NumberOfContainersCreated++}` }
+                    if (Container.id != "PageContainer")  { Container.id = `go_to_users${Global.__NumberOfContainersCreated++}` }
                     const WhenAnythingSays = (saying_,data_)=>(Global.WhenAnythingSays(Container.id, saying_, data_))
-                    hello = 
+                    go_to_users = 
                         {
                             Load: async function()
                                 {
@@ -12,16 +12,11 @@
 
 // create a button
 var a_button = New("Btn")
-a_button.innerHTML = "immaButton"
+a_button.innerHTML = "Go to users"
 a_button.onclick = async function()
     { 
-        log("The button was pressed")
-        TellPage("Python sent:",await Run("Hello",["Everyone"]))
+        LoadPage("users/users")
     }
-
-
-
-
 
 
 
@@ -30,6 +25,6 @@ Container.appendChild(a_button)
 Center(Container)
                                 }
                         }
-                    const DangerousEval = Global.Eval.bind(hello)
-                    await hello.Load()
+                    const DangerousEval = Global.Eval.bind(go_to_users)
+                    await go_to_users.Load()
                 }

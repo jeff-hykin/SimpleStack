@@ -1,6 +1,6 @@
             LoadChunk = async function(Container) 
                 {
-                    Container.id = `Home${Global.__NumberOfContainersCreated++}`
+                    if (Container.id != "PageContainer")  { Container.id = `Home${Global.__NumberOfContainersCreated++}` }
                     const WhenAnythingSays = (saying_,data_)=>(Global.WhenAnythingSays(Container.id, saying_, data_))
                     Home = 
                         {
@@ -19,6 +19,10 @@ var other_area = New("div")
 Container.appendChild(other_area)
 Add({chunk:"hello", to:other_area})
 
+// Add the go_to_users.chunk 
+var second_area = New("div")
+Container.appendChild(second_area)
+Add({chunk:"go_to_users", to:second_area})
 
 
 WhenAnythingSays("Python sent:",{do: async function (data) {

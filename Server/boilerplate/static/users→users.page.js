@@ -1,8 +1,8 @@
             LoadChunk = async function(Container) 
                 {
-                    if (Container.id != "PageContainer")  { Container.id = `dashboard${Global.__NumberOfContainersCreated++}` }
+                    if (Container.id != "PageContainer")  { Container.id = `users${Global.__NumberOfContainersCreated++}` }
                     const WhenAnythingSays = (saying_,data_)=>(Global.WhenAnythingSays(Container.id, saying_, data_))
-                    dashboard = 
+                    users = 
                         {
                             Load: async function()
                                 {
@@ -11,11 +11,13 @@
 
 
 
+var title_ = New("h2")
+title_.innerHTML = "Welcome to the user page"
+Container.appendChild(title_)
 
-add({chunk:"balance", to:container})
-add({chunk:"settings", to:container})
+
                                 }
                         }
-                    const DangerousEval = Global.Eval.bind(dashboard)
-                    await dashboard.Load()
+                    const DangerousEval = Global.Eval.bind(users)
+                    await users.Load()
                 }

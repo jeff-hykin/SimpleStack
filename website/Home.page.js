@@ -9,6 +9,10 @@ var other_area = New("div")
 Container.appendChild(other_area)
 Add({chunk:"hello", to:other_area})
 
+// Add the go_to_users.chunk 
+var second_area = New("div")
+Container.appendChild(second_area)
+Add({chunk:"go_to_users", to:second_area})
 
 
 WhenAnythingSays("Python sent:",{do: async function (data) {

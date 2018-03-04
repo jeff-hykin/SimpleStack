@@ -11,6 +11,12 @@ Dir.chdir "../.."
 #
 #   helper tools 
 #
+    def unindent (string_ , indentation_="    ")
+        if indentation_.is_a? Numeric
+            indentation_ = ' '*indentation_
+        end#if
+        string_.gsub( /^#{indentation_}/, '')
+    end#indent 
     class String
         def mgsub(key_value_pairs=[].freeze)
             # got this from https://www.safaribooksonline.com/library/view/ruby-cookbook/0596523696/ch01s18.html
@@ -50,7 +56,7 @@ Dir.chdir "../.."
         return <<-HEREDOC
             LoadChunk = async function(Container) 
                 {
-                    Container.id = `#{name_}${Global.__NumberOfContainersCreated++}`
+                    if (Container.id != "PageContainer")  { Container.id = `#{name_}${Global.__NumberOfContainersCreated++}` }
                     const WhenAnythingSays = (saying_,data_)=>(Global.WhenAnythingSays(Container.id, saying_, data_))
                     #{name_} = 
                         {
@@ -66,13 +72,30 @@ Dir.chdir "../.."
             HEREDOC
     end 
 
+    def routes_as_string(routes_hash)
+        routes_begining  = <<-HEREDOC
+        def SystemRoutes(): #this is name-specific
+                        print("setting system routes")
+        
+                        # root directory
+                        @Route('/')
+                        def root():
+                            return  render_template("Home.html")
+        HEREDOC
+        routes_begining = unindent(routes_begining,'        ')
+        for each_key in routes_hash
+            routes_begining += each_key[1]
+        end
+        return routes_begining
+    end 
     def save(string,to:nil)
         new_file = File.open(to, "w")
         new_file.write(string)
         new_file.close
     end
 
-    def file_name_escape(name_)
+    def file_name_escape(input_)
+        name_ = "#{input_}"
         # :'s are not allowed in file names, they're replaced with →
         name_.sub!(":","•")  
         # /'s are not allowed in file names, they're replaced with →
@@ -89,7 +112,7 @@ Dir.chdir "../.."
         name_.sub!("'","\\'")
 
         # FIXME, check for <name>'s in the name so they can be added as input vars
-        route_template = <<-HEREDOC
+        return ["/#{name_}", <<-HEREDOC
                 @Route('/#{name_}')
                 def route#{$routeNumber}():
                     return  render_template('#{file_name_escape("#{name_}")}.html')
@@ -101,6 +124,7 @@ Dir.chdir "../.."
                     file.close()
                     return output
                 HEREDOC
+                ]
     end
 
     def route_for_chunk(name_)
@@ -112,7 +136,7 @@ Dir.chdir "../.."
         name_.sub!("'","\\'")
 
         # FIXME, check for <name>'s in the name so they can be added as input vars
-        route_template = <<-HEREDOC
+        return [ "/chunk/#{name_}",  <<-HEREDOC
                 @Route('/chunk/#{name_}')
                 def chunk_route#{$routeNumber}():
                     file = open('#{Dir.pwd}/Server/boilerplate/static/#{file_name_escape("#{name_}")}.chunk.js', "r")
@@ -120,6 +144,7 @@ Dir.chdir "../.."
                     file.close()
                     return output
                 HEREDOC
+                ]
     end
 
 
@@ -151,7 +176,7 @@ Dir.chdir "../.."
         
         name_ = file_path.sub(/(.+)\(.+/,"\\1")
 
-        return route_template = <<-HEREDOC
+        return [ "/func/#{name_}", route_template = <<-HEREDOC
                 #{requires_login}
                 @Route('/func/#{name_}', methods=['POST'])
                 def func_route#{$routeNumber}():
@@ -159,6 +184,7 @@ Dir.chdir "../.."
                     #{argument_assignment_string}
                     \n#{indent(readFile(Dir.pwd+"/Website/"+file_path+".py"),"                    ")}
                 HEREDOC
+                ]
     end
 #
 #   End 
@@ -238,17 +264,9 @@ else
 end
 
 
-# routes_  = readFile(routes_file_location)
-routes_  = <<-HEREDOC
-def SystemRoutes(): #this is name-specific
-                print("setting system routes")
 
-                # root directory
-                @Route('/')
-                def root():
-                    return  render_template("Home.html")
-HEREDOC
 
+routes_ = {}
 #
 # add all of the css 
 #
@@ -276,13 +294,18 @@ for each in dirs_of_pages
     file_path = each.sub(/^Website\//,"")
     file_path.sub!(".page.js","")
 
+
+
     name_ = basename(file_path)
     # create a route for the page (actually 2 routes per page, one for html one for js)
-    routes_ += "\n"+route_for_page(file_path)
+    the_route_pair = route_for_page(file_path)
+
+    routes_[the_route_pair[0]] = "\n"+the_route_pair[1]
 
     # escape the name to be an acceptable file name 
-    new_file_name = file_name_escape(file_path)+".page.js"
-    everything_that_should_be_in_static << static_dir+new_file_name
+    new_file_name = file_name_escape(file_path)
+    everything_that_should_be_in_static << static_dir+new_file_name+".page.js"
+
 
     # save output
     # FIXME, have a minify function 
@@ -290,12 +313,13 @@ for each in dirs_of_pages
     code_ = code_generate(name_,each)
 
 
-    save code_,   to:(static_dir+new_file_name) 
+
+    save code_,   to:(static_dir+new_file_name+".page.js") 
     # create html for the page
     # FIXME, use a base.html to allow things to be injected into the head and body
     # FIXME, have a minify function 
     # FIXME, have a better way of doing replacements than a giant unlikely string
-    save base_html.gsub( /###THIS IS WHERE YOU WANT TO REPLACE THE PAGE NAME###/, file_path ),  to:(template_dir+file_path+".html")
+    save base_html.gsub( /###THIS IS WHERE YOU WANT TO REPLACE THE PAGE NAME###/, file_path ),  to:(template_dir+new_file_name+".html")
 end 
 
 #
@@ -307,7 +331,8 @@ for each in dirs_of_chunks
     file_path.sub!(".chunk.js","")
 
     # create a route for the chunk
-    routes_ += "\n"+route_for_chunk(file_path)
+    the_route_pair = route_for_chunk(file_path)
+    routes_[the_route_pair[0]] = "\n"+the_route_pair[1]
 
     # get the name of the chunk 
     name_ = basename(file_path)
@@ -333,10 +358,13 @@ for each in dirs_of_python_files
     file_path.sub!(".py","")
 
     # create a route for the func
-    routes_ += "\n"+route_for_func(file_path)
+    the_route_pair = route_for_func(file_path)
+    routes_[the_route_pair[0]] = "\n"+the_route_pair[1]
 end 
 
-save(routes_, to:routes_file_location)
+
+
+save(routes_as_string(routes_), to:routes_file_location)
 
 
 #FIXME, compile the python after to make it more efficient 
@@ -371,46 +399,43 @@ Filewatcher.new(['**/*.*']).watch do |filename, event|
         
         # If a python file is updated
         if extension == ".py"
-            # FIXME, cannot currently update just one python file, have to redo all the python files ATM
-            dirs_of_python_files       = Dir.glob("Website/**/*.py")
-            for each in dirs_of_python_files
-                # get rid of the "Website/" part and the ".py" part 
-                file_path = each.sub(/^Website\//,"")
-                # FIXME, check if protected or not
-                file_path.sub!(".py","")
-                # create a route for the func
-                routes_ += "\n"+route_for_func(file_path)
-            end 
-            save(routes_, to:routes_file_location)
+            # get rid of the "Website/" part and the ".py" part 
+            file_path = relative_path.sub(/^Website\//,"")
+            # FIXME, check if protected or not
+            file_path.sub!(".py","")
+            # create a route for the chunk
+            the_route_pair = route_for_func(file_path)
+            routes_[the_route_pair[0]] = "\n"+the_route_pair[1]
         
         # If a javascript file is updated
         elsif extension == ".js"
             if basename_[-8..-1] == ".page.js"
-                puts "updating page"
                 # get rid of the "Website/" part and the ".page.js" part 
-                file_path = relative_path.sub(/^Website\//,"")
+                file_path = each.sub(/^Website\//,"")
                 file_path.sub!(".page.js","")
 
                 name_ = basename(file_path)
                 # create a route for the page (actually 2 routes per page, one for html one for js)
-                routes_ += "\n"+route_for_page(file_path)
+                the_route_pair = route_for_page(file_path)
+
+                routes_[the_route_pair[0]] = "\n"+the_route_pair[1]
 
                 # escape the name to be an acceptable file name 
-                new_file_name = file_name_escape(file_path)+".page.js"
-                everything_that_should_be_in_static << static_dir+new_file_name
+                new_file_name = file_name_escape(file_path)
+                everything_that_should_be_in_static << static_dir+new_file_name+".page.js"
+
 
                 # save output
                 # FIXME, have a minify function 
                 # code_ = <<-HEREDOC
-                code_ = code_generate(name_,relative_path)
+                code_ = code_generate(name_,each)
 
-
-                save code_,   to:(static_dir+new_file_name) 
+                save code_,   to:(static_dir+new_file_name+".page.js") 
                 # create html for the page
                 # FIXME, use a base.html to allow things to be injected into the head and body
                 # FIXME, have a minify function 
                 # FIXME, have a better way of doing replacements than a giant unlikely string
-                save base_html.gsub( /###THIS IS WHERE YOU WANT TO REPLACE THE PAGE NAME###/, file_path ),  to:(template_dir+file_path+".html")
+                save base_html.gsub( /###THIS IS WHERE YOU WANT TO REPLACE THE PAGE NAME###/, file_path ),  to:(template_dir+new_file_name+".html")
             elsif basename_[-9..-1] == ".chunk.js"
                 puts "updating chunk"
                 # get rid of the "Website/" part and the ".chunk.js" part 
@@ -418,7 +443,8 @@ Filewatcher.new(['**/*.*']).watch do |filename, event|
                 file_path.sub!(".chunk.js","")
 
                 # create a route for the chunk
-                routes_ += "\n"+route_for_chunk(file_path)
+                the_route_pair = route_for_chunk(file_path)
+                routes_[the_route_pair[0]] = "\n"+the_route_pair[1]
 
                 # get the name of the chunk 
                 name_ = basename(file_path)
@@ -448,5 +474,7 @@ Filewatcher.new(['**/*.*']).watch do |filename, event|
             # FIXME, have a minify function
             save (readFile(relative_path)),   to:(static_dir+new_file_name) 
         end 
+        # update the routes no matter which file updated
+        save(routes_as_string(routes_), to:routes_file_location)
     end 
 end

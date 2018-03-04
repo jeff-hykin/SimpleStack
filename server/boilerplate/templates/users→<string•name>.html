@@ -3,7 +3,7 @@
     <head>
         <meta charset="utf-8" />
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <title>users→<string•name> page</title>
+        <title>users/<string:name> page</title>
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <!--Import styles-->
         <link type="text/css" rel="stylesheet" href="{{ url_for('static',filename='Settings→GlobalStyles.css') }}"/>
@@ -178,8 +178,8 @@
                     history.pushState({}, page_name, page_name)
                     // delete the existing main_container
                     // FIXME, add a check to see if the main_container exists
-                    let main_container = document.getElementById("PageContainer")
-                    document.body.removeChild(main_container)
+                    var main_container = document.getElementById("PageContainer")
+                    main_container.parentNode.removeChild(main_container)
                     // create a new main_container 
                     console.log(`about to set Global.Container`)
                     Global.Container = document.createElement("container")
@@ -222,7 +222,7 @@ function TimerFor(time_amount)
 
             Main = async function () 
                 {
-                    LoadPage("users→<string•name>")
+                    LoadPage("users/<string:name>")
                 }
             Main()
         </script>

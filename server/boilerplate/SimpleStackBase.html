@@ -161,8 +161,8 @@
                     history.pushState({}, page_name, page_name)
                     // delete the existing main_container
                     // FIXME, add a check to see if the main_container exists
-                    let main_container = document.getElementById("PageContainer")
-                    document.body.removeChild(main_container)
+                    var main_container = document.getElementById("PageContainer")
+                    main_container.parentNode.removeChild(main_container)
                     // create a new main_container 
                     console.log(`about to set Global.Container`)
                     Global.Container = document.createElement("container")

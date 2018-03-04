@@ -1,6 +1,6 @@
             LoadChunk = async function(Container) 
                 {
-                    Container.id = `balance${Global.__NumberOfContainersCreated++}`
+                    if (Container.id != "PageContainer")  { Container.id = `balance${Global.__NumberOfContainersCreated++}` }
                     const WhenAnythingSays = (saying_,data_)=>(Global.WhenAnythingSays(Container.id, saying_, data_))
                     balance = 
                         {

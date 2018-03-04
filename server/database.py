@@ -30,7 +30,7 @@ class Users(THE_DATABASE.Model):
     
     def asJson(self):
         return  {
-                    "username"      : self.username, 
+                    "username" : self.username, 
                     "password" : self.password,
                 }
 
