@@ -1,6 +1,6 @@
 require 'pathname'
 require 'FileUtils'
-require '/usr/bin/rebex.rb'
+# require '/usr/bin/rebex.rb'
 require 'filewatcher'
 
 
