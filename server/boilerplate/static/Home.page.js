@@ -1,70 +1,26 @@
-            LoadChunk = async function(Container) 
+            LoadChunk = async function(container) 
                 {
-                    Container.add = Container.appendChild
-                    if (Container.id != "PageContainer")  { Container.id = `Home${Global.__NumberOfContainersCreated++}` }
-                    const WhenAnythingSays = (saying_,data_)=>(Global.WhenAnythingSays(Container.id, saying_, data_))
+                    if (container.id != "Pagecontainer")  { container.id = `Home${Global.__NumberOfcontainersCreated++}` }
+                    const WhenAnythingSays = (saying_,data_)=>(Global.WhenAnythingSays(container.id, saying_, data_))
                     Home = 
                         {
                             Load: async function()
                                 {
                                     "use strict"
                                     
-class container
-    {
-        constructor()
-            {
-                this.underyling_main_div   = New("div")
-                this.underyling_parent_div = New("div", { position:"relative" })
-                
-                this.underyling_main_div.add(this.underyling_parent_div)
-            }
 
-
-        add(...elements) 
-            {
-                log(this.underyling_parent_div)
-                log(this.underyling_main_div instanceof Node)
-                log("Keys: WUTS UP DAWG2")
-                // for (var each in Object.keys( this.underyling_main_div ))
-                //     {
-                //         log("    ",each)
-                //     }
-                this.underyling_parent_div.add(elements)
-                log("after appendChild")
-            }
-        get width() 
-            {
-                return this.underyling_main_div.style.width
-            }
-        set width(amount) 
-            {
-                this.underyling_main_div.style.width = amount 
-            }
-        get height() 
-            {
-                return this.underyling_main_div.style.height
-            }
-        set height(amount) 
-            {
-                this.underyling_main_div.style.height = amount 
-
-            }
-    }
-
-var a_container = new container()
-a_container.add(New("div", {innerHTML:"BLAH"}))
-// var a_div          = New("div", {style:{width:"100px",height:"100px",position:"relative"}})
-// var a_relative_div = New("div", {innerHTML:"BLAH", style:{position:"absolute",bottom:0,left:0} })
-// a_div.add(a_relative_div)
-Container.add(a_div)
+// var a_container = new Container()
+// a_container.add(New("div", {innerHTML:"BLAH"}))
+// // var a_div          = New("div", {style:{width:"100px",height:"100px",position:"relative"}})
+// // var a_relative_div = New("div", {innerHTML:"BLAH", style:{position:"absolute",bottom:0,left:0} })
+// // a_div.add(a_relative_div)
+// container.add(a_container)
 
 
 
-// // Create the title
-// var hello_element = New("h1")
-// hello_element.innerHTML = "Hello World!"
-// Container.appendChild(hello_element)
-// Center(hello_element)
+// Create the title
+var hello_element = New("h1",{innerHTML:"Hello World!"})
+container.center(hello_element)
 
 
 // // Add the hello.chunk 

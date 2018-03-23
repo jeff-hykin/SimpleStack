@@ -1,8 +1,7 @@
-            LoadChunk = async function(Container) 
+            LoadChunk = async function(container) 
                 {
-                    Container.add = Container.appendChild
-                    if (Container.id != "PageContainer")  { Container.id = `settings${Global.__NumberOfContainersCreated++}` }
-                    const WhenAnythingSays = (saying_,data_)=>(Global.WhenAnythingSays(Container.id, saying_, data_))
+                    if (container.id != "Pagecontainer")  { container.id = `settings${Global.__NumberOfcontainersCreated++}` }
+                    const WhenAnythingSays = (saying_,data_)=>(Global.WhenAnythingSays(container.id, saying_, data_))
                     settings = 
                         {
                             Load: async function()

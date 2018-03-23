@@ -32,6 +32,95 @@
         <container id="PageContainer">
         </container>
         <script>
+            function New(element_name,attributes={}) 
+                {
+                    var output_ = document.createElement(element_name)
+                    if (element_name=="Btn")
+                        {
+                            output_.className = "waves-effect waves-light btn"
+                        }
+                    // before returning, set the add function, and the attributes
+                    output_.add = function (...element) 
+                        {
+                            output_.appendChild(...element)
+                        }
+                    for (var each_key of Object.keys(attributes))
+                        {
+                            if (typeof attributes[each_key] == "object" && attributes[each_key] != null )
+                                {
+                                    output_[each_key] = {}
+                                    for (var each_sub_key of Object.keys(attributes[each_key]))
+                                        {
+                                            output_[each_key][each_sub_key] = attributes[each_key][each_sub_key]
+                                        }
+                                }
+                            else
+                                {
+                                    output_[each_key] = attributes[each_key]
+                                }
+                        }
+                    
+                    return output_
+                }
+            class Container
+                {
+                    constructor()
+                        {
+                            this.underyling_main_div = New("div")
+                            this.underyling_sub_div = New("div", { position:"relative" })
+                            this.underyling_main_div.add(this.underyling_sub_div)
+                        }
+                    center(element)
+                        {
+                            // delete the sub div, and add a new one to be centered 
+                            this.underyling_sub_div.parentNode.removeChild(this.underyling_sub_div)
+                            this.underyling_sub_div = New("div", { position:"relative", style:{textAlign: "center"} })
+                            this.underyling_main_div.add(this.underyling_sub_div)
+                            element.style.position = "absolute"
+                            element.style.top = "50%"
+                            element.style.left = "50%"
+                            element.style.transform = "translate(-50%, -50%)"
+                            this.underyling_sub_div.add(element)
+                        }
+                    add(...elements) 
+                        {
+                            for (var each in elements)
+                                {
+                                    if (elements[each] instanceof Container) 
+                                        {
+                                            this.underyling_sub_div.appendChild(elements[each].underyling_main_div)
+                                        }
+                                    else 
+                                        {
+                                            this.underyling_sub_div.appendChild(elements[each])
+                                        }
+                                }
+                        }
+                    get width() 
+                        {
+                            return this.underyling_main_div.style.width
+                        }
+                    set width(amount) 
+                        {
+                            this.underyling_main_div.style.width = amount 
+                        }
+                    get height() 
+                        {
+                            return this.underyling_main_div.style.height
+                        }
+                    set height(amount) 
+                        {
+                            this.underyling_main_div.style.height = amount 
+                        }
+                    get id()
+                        {
+                            return this.underyling_main_div.id
+                        }
+                    set id(value)
+                        {
+                            this.underyling_main_div.id = value
+                        }
+                }
             Global = 
                 {
                     Eval: function (input_){eval(input_)},
@@ -182,9 +271,9 @@
                     main_container.parentNode.removeChild(main_container)
                     // create a new main_container 
                     console.log(`about to set Global.Container`)
-                    Global.Container = document.createElement("container")
+                    Global.Container = new Container()
                     Global.Container.id = "PageContainer"
-                    document.body.appendChild(Global.Container)
+                    document.body.appendChild(Global.Container.underyling_main_div)
                     console.log(`Finished making global container`)
                     // run the page with the new main_container 
                     return await eval(js_code)(Global.Container)
@@ -241,6 +330,53 @@ function TimerFor(time_amount)
 function CenterVertically(element)
     {
         element.parentNode.classList.add('valign-wrapper')
+    }
+class Container2
+    {
+        constructor()
+            {
+                // this.underyling_main_div   = New("div")
+                // this.underyling_sub_div = New("div", { position:"relative" })
+                // this.underyling_main_div.add(this.underyling_sub_div)
+            }
+
+
+        add(...elements) 
+            {
+                log("im adding someetihgn")
+                // log(this.underyling_main_div instanceof Node)
+                // for (var each in elements)
+                //     {
+                //         // if its a container
+                //         log("class is:",getClassOf(elements[each]))
+                        
+                //         if (elements[each] instanceof Container) 
+                //             {
+                //                 log("got here")
+                //                 // this.underyling_sub_div.appendChild(elements[each].underyling_main_div)
+                //             }
+                //         else 
+                //             {
+                //                 // this.underyling_sub_div.appendChild(elements[each])
+                //             }
+                //     }
+            }
+        get width() 
+            {
+                return this.underyling_main_div.style.width
+            }
+        set width(amount) 
+            {
+                this.underyling_main_div.style.width = amount 
+            }
+        get height() 
+            {
+                return this.underyling_main_div.style.height
+            }
+        set height(amount) 
+            {
+                this.underyling_main_div.style.height = amount 
+            }
     }
 
             Main = async function () 

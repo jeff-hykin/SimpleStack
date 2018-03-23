@@ -49,3 +49,50 @@ function CenterVertically(element)
     {
         element.parentNode.classList.add('valign-wrapper')
     }
+class Container2
+    {
+        constructor()
+            {
+                // this.underyling_main_div   = New("div")
+                // this.underyling_sub_div = New("div", { position:"relative" })
+                // this.underyling_main_div.add(this.underyling_sub_div)
+            }
+
+
+        add(...elements) 
+            {
+                log("im adding someetihgn")
+                // log(this.underyling_main_div instanceof Node)
+                // for (var each in elements)
+                //     {
+                //         // if its a container
+                //         log("class is:",getClassOf(elements[each]))
+                        
+                //         if (elements[each] instanceof Container) 
+                //             {
+                //                 log("got here")
+                //                 // this.underyling_sub_div.appendChild(elements[each].underyling_main_div)
+                //             }
+                //         else 
+                //             {
+                //                 // this.underyling_sub_div.appendChild(elements[each])
+                //             }
+                //     }
+            }
+        get width() 
+            {
+                return this.underyling_main_div.style.width
+            }
+        set width(amount) 
+            {
+                this.underyling_main_div.style.width = amount 
+            }
+        get height() 
+            {
+                return this.underyling_main_div.style.height
+            }
+        set height(amount) 
+            {
+                this.underyling_main_div.style.height = amount 
+            }
+    }

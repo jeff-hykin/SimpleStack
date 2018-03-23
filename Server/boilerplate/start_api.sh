@@ -1,1 +1,0 @@
-source "Server/boilerplate/PythonVirtualEnv/bin/activate" && python3 "Server/boilerplate/flask_template.py"

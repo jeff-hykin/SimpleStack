@@ -71,11 +71,10 @@
 
     def code_generate(name_,each)
         return <<-HEREDOC
-            LoadChunk = async function(Container) 
+            LoadChunk = async function(container) 
                 {
-                    Container.add = Container.appendChild
-                    if (Container.id != "PageContainer")  { Container.id = `#{name_}${Global.__NumberOfContainersCreated++}` }
-                    const WhenAnythingSays = (saying_,data_)=>(Global.WhenAnythingSays(Container.id, saying_, data_))
+                    if (container.id != "Pagecontainer")  { container.id = `#{name_}${Global.__NumberOfcontainersCreated++}` }
+                    const WhenAnythingSays = (saying_,data_)=>(Global.WhenAnythingSays(container.id, saying_, data_))
                     #{name_} = 
                         {
                             Load: async function()

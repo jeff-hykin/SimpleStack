@@ -103,11 +103,11 @@
 
     def code_generate(name_,each)
         return <<-HEREDOC
-            LoadChunk = async function(Container) 
+            LoadChunk = async function(container) 
                 {
-                    Container.add = Container.appendChild
-                    if (Container.id != "PageContainer")  { Container.id = `#{name_}${Global.__NumberOfContainersCreated++}` }
-                    const WhenAnythingSays = (saying_,data_)=>(Global.WhenAnythingSays(Container.id, saying_, data_))
+                    container.add = container.appendChild
+                    if (container.id != "Pagecontainer")  { container.id = `#{name_}${Global.__NumberOfcontainersCreated++}` }
+                    const WhenAnythingSays = (saying_,data_)=>(Global.WhenAnythingSays(container.id, saying_, data_))
                     #{name_} = 
                         {
                             Load: async function()
@@ -265,12 +265,12 @@ Filewatcher.new(['**/*.*']).watch do |filename, event|
         if first_folder != "Server"
             process = `ps | grep '#{$command_}'`
             pid = process.match /\d\d\d\d\d/
-            puts "processes is: #{process}"
-            puts "match is:#{pid[0]}"
-            puts `kill #{pid}`
+            # puts "processes is: #{process}"
+            # puts "match is:#{pid[0]}"
+            `kill #{pid}`
             # just re-compile everything
             puts "FILEWATCHER: About to recompile everything"
-            puts `ruby Server/boilerplate/compile_files.rb`
+            `ruby Server/boilerplate/compile_files.rb`
             # restart the server
             $my_pid = rand(999999)
             $command_ = "source \"Server/boilerplate/PythonVirtualEnv/bin/activate\" && python3 \"Server/boilerplate/flask_template.py\" && echo #{$my_pid}"
