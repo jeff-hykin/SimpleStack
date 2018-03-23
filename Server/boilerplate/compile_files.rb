@@ -71,10 +71,10 @@
 
     def code_generate(name_,each)
         return <<-HEREDOC
-            LoadChunk = async function(container) 
+            LoadChunk = async function(Box) 
                 {
-                    if (container.id != "Pagecontainer")  { container.id = `#{name_}${Global.__NumberOfcontainersCreated++}` }
-                    const WhenAnythingSays = (saying_,data_)=>(Global.WhenAnythingSays(container.id, saying_, data_))
+                    if (Box.id != "PageBox")  { Box.id = `#{name_}${Global.__NumberOfBoxesCreated++}` }
+                    const WhenAnythingSays = (saying_,data_)=>(Global.WhenAnythingSays(Box.id, saying_, data_))
                     #{name_} = 
                         {
                             Load: async function()
@@ -337,7 +337,7 @@ for each in dirs_of_pages
     code_ = code_generate(name_,each)
 
 
-
+    puts "Saving to #{static_dir+new_file_name+".page.js"}"
     save code_,   to:(static_dir+new_file_name+".page.js") 
     # create html for the page
     # FIXME, use a base.html to allow things to be injected into the head and body

@@ -1,7 +1,7 @@
-            LoadChunk = async function(container) 
+            LoadChunk = async function(Box) 
                 {
-                    if (container.id != "Pagecontainer")  { container.id = `Home${Global.__NumberOfcontainersCreated++}` }
-                    const WhenAnythingSays = (saying_,data_)=>(Global.WhenAnythingSays(container.id, saying_, data_))
+                    if (Box.id != "PageBox")  { Box.id = `Home${Global.__NumberOfBoxesCreated++}` }
+                    const WhenAnythingSays = (saying_,data_)=>(Global.WhenAnythingSays(Box.id, saying_, data_))
                     Home = 
                         {
                             Load: async function()
@@ -20,7 +20,10 @@
 
 // Create the title
 var hello_element = New("h1",{innerHTML:"Hello World!"})
-container.center(hello_element)
+Box.appendChild(hello_element)
+
+log("blah")
+
 
 
 // // Add the hello.chunk 

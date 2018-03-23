@@ -1,7 +1,7 @@
-            LoadChunk = async function(container) 
+            LoadChunk = async function(Box) 
                 {
-                    if (container.id != "Pagecontainer")  { container.id = `users${Global.__NumberOfcontainersCreated++}` }
-                    const WhenAnythingSays = (saying_,data_)=>(Global.WhenAnythingSays(container.id, saying_, data_))
+                    if (Box.id != "PageBox")  { Box.id = `users${Global.__NumberOfBoxesCreated++}` }
+                    const WhenAnythingSays = (saying_,data_)=>(Global.WhenAnythingSays(Box.id, saying_, data_))
                     users = 
                         {
                             Load: async function()

@@ -10,7 +10,10 @@
 
 // Create the title
 var hello_element = New("h1",{innerHTML:"Hello World!"})
-container.center(hello_element)
+Box.appendChild(hello_element)
+
+log("blah")
+
 
 
 // // Add the hello.chunk 

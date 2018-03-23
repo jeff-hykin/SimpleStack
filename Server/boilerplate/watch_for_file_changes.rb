@@ -103,11 +103,11 @@
 
     def code_generate(name_,each)
         return <<-HEREDOC
-            LoadChunk = async function(container) 
+            LoadChunk = async function(Box) 
                 {
-                    container.add = container.appendChild
-                    if (container.id != "Pagecontainer")  { container.id = `#{name_}${Global.__NumberOfcontainersCreated++}` }
-                    const WhenAnythingSays = (saying_,data_)=>(Global.WhenAnythingSays(container.id, saying_, data_))
+                    Box.add = Box.appendChild
+                    if (Box.id != "PageBox")  { Box.id = `#{name_}${Global.__NumberOfBoxesCreated++}` }
+                    const WhenAnythingSays = (saying_,data_)=>(Global.WhenAnythingSays(Box.id, saying_, data_))
                     #{name_} = 
                         {
                             Load: async function()
@@ -261,17 +261,19 @@ Filewatcher.new(['**/*.*']).watch do |filename, event|
         relative_path = "#{path.realpath}".sub( /^#{Regexp.escape(Dir.pwd+"/")}/,"" )
         first_folder = relative_path[/\w+/]
         # if the file isnt in the Server, then recompile everything
+        puts "#{relative_path} was changed"
         if first_folder != "Server"
-            puts "#{relative_path} was changed"
-            puts indent(`ps`)
             process = `ps | grep '#{$command_}'`
-            pid = process.match /\d\d\d\d\d/
+            pid = process.match /\A\d\d\d\d\d/
             # puts "processes is: #{process}"
             # puts "match is:#{pid[0]}"
-            `kill #{pid}`
+            # if there is a match then kill it
+            if not pid.nil?
+                `kill #{pid}`
+            end
             # just re-compile everything
             puts "...recompiling"
-            `ruby Server/boilerplate/compile_files.rb`
+            puts indent(`ruby Server/boilerplate/compile_files.rb`)
             # restart the server
             $my_pid = rand(999999)
             $command_ = "source \"Server/boilerplate/PythonVirtualEnv/bin/activate\" && python3 \"Server/boilerplate/flask_template.py\" && echo #{$my_pid}"
