@@ -263,19 +263,20 @@ Filewatcher.new(['**/*.*']).watch do |filename, event|
         # if the file isnt in the Server, then recompile everything
         if first_folder != "Server"
             puts "#{relative_path} was changed"
+            puts indent(`ps`)
             process = `ps | grep '#{$command_}'`
             pid = process.match /\d\d\d\d\d/
             # puts "processes is: #{process}"
             # puts "match is:#{pid[0]}"
             `kill #{pid}`
             # just re-compile everything
-            puts "FILEWATCHER: About to recompile everything"
+            puts "...recompiling"
             `ruby Server/boilerplate/compile_files.rb`
             # restart the server
             $my_pid = rand(999999)
             $command_ = "source \"Server/boilerplate/PythonVirtualEnv/bin/activate\" && python3 \"Server/boilerplate/flask_template.py\" && echo #{$my_pid}"
             $server_std_in, $server_std_out_and_error, $server_thread = Open3.popen2e($command_)
-            puts "restarted server"
+            puts "...restarted server"
         end
     
     
