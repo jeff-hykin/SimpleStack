@@ -282,11 +282,11 @@
             
 Global.Website = "http://localhost:5000/"
 let log = console.log
+var classof = Function.prototype.call.bind(Object.prototype.toString)
 function GetByXpath(path) 
     {
         return document.evaluate(path, document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue;
     }
-var classof = Function.prototype.call.bind(Object.prototype.toString)
 function Center(element)
     {
         element.classList.add('center-align')
