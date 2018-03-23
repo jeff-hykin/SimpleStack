@@ -246,7 +246,7 @@ Dir.chdir __dir__
 Dir.chdir "../.."
 
 
-puts "starting PythonVirtualEnv in WATCHER"
+puts "starting server\n\n"
 $my_pid = rand(999999)
 $command_ = "source \"Server/boilerplate/PythonVirtualEnv/bin/activate\" && python3 \"Server/boilerplate/flask_template.py\" && echo #{$my_pid}"
 $server_std_in, $server_std_out_and_error, $server_thread = Open3.popen2e($command_)
@@ -260,9 +260,9 @@ Filewatcher.new(['**/*.*']).watch do |filename, event|
         path = Pathname.new(filename)
         relative_path = "#{path.realpath}".sub( /^#{Regexp.escape(Dir.pwd+"/")}/,"" )
         first_folder = relative_path[/\w+/]
-        puts "first folder is #{first_folder}"
         # if the file isnt in the Server, then recompile everything
         if first_folder != "Server"
+            puts "#{relative_path} was changed"
             process = `ps | grep '#{$command_}'`
             pid = process.match /\d\d\d\d\d/
             # puts "processes is: #{process}"

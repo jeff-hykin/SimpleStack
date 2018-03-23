@@ -23,6 +23,8 @@ var hello_element = New("h1",{innerHTML:"Hello World!"})
 container.center(hello_element)
 
 
+
+
 // // Add the hello.chunk 
 // var other_area = New("div")
 // Container.appendChild(other_area)
