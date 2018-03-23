@@ -3,7 +3,7 @@
     <head>
         <meta charset="utf-8" />
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <title>users/users page</title>
+        <title>users/UserBalance(username).protected.py page</title>
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <!--Import styles-->
         <link type="text/css" rel="stylesheet" href="{{ url_for('static',filename='Settings→GlobalStyles.css') }}"/>
@@ -209,6 +209,7 @@ function New(element_name,attributes={})
             {
                 output_.appendChild(...element)
             }
+
         for (var each_key of Object.keys(attributes))
             {
                 if (typeof attributes[each_key] == "object" && attributes[each_key] != null )
@@ -245,7 +246,7 @@ function CenterVertically(element)
 
             Main = async function () 
                 {
-                    LoadPage("users/users")
+                    LoadPage("users/UserBalance(username).protected.py")
                 }
             Main()
         </script>

@@ -1,2 +1,5 @@
 #!/bin/sh
-ruby Server/boilerplate/file_mover.rb
+# first compile the files
+ruby Server/boilerplate/compile_files.rb
+# then run the file watcher (which will start the server and watch for changes)
+ruby Server/boilerplate/watch_for_file_changes.rb

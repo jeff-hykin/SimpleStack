@@ -210,13 +210,10 @@
 
 
 
-begin # this is for catching the ctrl+c 
-
 # go to the top dir 
+puts "Compiling files starting from: #{__dir__}"
 Dir.chdir __dir__
 Dir.chdir "../.."
-
-
 
 # FIXME, remove files from static or templates that no longer exist in Website/
 
@@ -403,29 +400,4 @@ all_paths_in_static = Dir.glob(static_dir+"*")
 list_of_files_to_delete = all_paths_in_static - everything_that_should_be_in_static
 for each in list_of_files_to_delete
     File.delete each
-end
-
-
-
-
-
-
-
-# run start_api asyncly 
-pid = spawn("./Server/boilerplate/start_api.sh")
-Process.detach(pid)
-
-
-
-
-
-# when the user presses ctrl+c 
-rescue SystemExit, Interrupt # catch ctrl+c
-    # make sure to kill the process before exiting
-    puts "this pid is:#{pid}"
-    puts `ps`
-    `kill #{pid}`
-    puts "after killing"
-    puts `ps`
-    exit
 end
