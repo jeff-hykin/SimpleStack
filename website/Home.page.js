@@ -35,6 +35,10 @@ class List
             }
     }
 
+
+var stuff = new List()
+
+
 // Add the hello module
 Parent.add("hello")
 

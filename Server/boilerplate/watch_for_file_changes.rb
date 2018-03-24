@@ -294,7 +294,7 @@ begin # for catching ctrl+c
 
 
                 # re-compile everything
-                puts "#{relative_path} was changed"
+                puts "\n\n#{relative_path} was changed"
                 puts "...recompiling"
                 compilation_output = indent(`ruby Server/boilerplate/compile_files.rb`)
                 if compilation_output.strip.length > 0
