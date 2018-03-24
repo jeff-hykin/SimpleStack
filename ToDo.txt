@@ -1,33 +1,43 @@
 next things: 
-    add backend functions as methods on a global object 'Server' 
-    add module functions as methods on a global object 'Modules' 
+    - add a 'Server()' function for running python 
+    - add a 'Module()' function for .add()-ing modules
+    - on LoadPage keep track of the path in Global.Path
+    - add relative pathing to Server() and Module() and LoadPage()
+    - add Tell( module_ , message_ ) and WhenSomeoneSays( message_ , data_ )
+      - if telling a specific module something, and they dont have a listener for that something, then give a debugging message about it
+      - make sure that the WhenSomeoneSays() functions are removed when the child is removed
 
 next-next things:
-    make sure the back button/ history works properly 
-    create a login page
-    get Request to authorize 1 user 
-    save auth login to cookies/cache
+    - make sure the back button/ history works properly 
+    - create a login page
+    - make a GET Request to authorize 1 user 
+    - save auth login to cookies/cache
 
 soon-ish things:
-    get heroku working 
-    get mongoDB working and save some data to it
-    convert newlines to break statements and other things
-    import management
-        local style sheets
-        add relative paths to loadPage() and add(component: to:)
-    make boilerplate a hidden folder
-    in boilerplateget SimpleStackTools.js included instead of having to manually including it in the SimpleStackBase.html
-    add modules to html page documents, or find another way to load them in
+    - get heroku working 
+    - get mongoDB working and save some data to it
+    - convert newlines to break statements and other things
+    - import management
+        - local style sheets?
+    - make boilerplate a hidden folder
+    - in boilerplate get SimpleStackTools.js included instead of having to manually including it in the SimpleStackBase.html
+    - add modules to html page documents, or find another way to load them in
 
-long term
-    add favicon.ico
-    error checking 
-        check for a homepage
-        extract the header + body in a better way
+refinement 
+    - add favicon.ico
+    - error checking 
+        - check for a homepage
+        - extract the header + body in a better way
 
 version 2.0 things:
-    add npm package support
-        add local npm package support
+    - add npm package support
+        - add local npm package support
+    - try to somehow generate a list of "this module listens to:" and "this module talks to:"
+    - 2 factor authentication 
+    - preprocessor
+    - code optimizer that figures out which functions are used/included
+
+    
 
 
 DONE:

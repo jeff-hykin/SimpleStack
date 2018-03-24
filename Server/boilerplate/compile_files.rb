@@ -210,7 +210,6 @@
 
 
 # go to the top dir 
-puts "Compiling files starting from: #{__dir__}"
 Dir.chdir __dir__
 Dir.chdir "../.."
 
@@ -337,8 +336,6 @@ for each in dirs_of_pages
     code_ = code_generate(name_,each)
 
 
-
-    puts "Saving to #{new_file_name+".page.js"}"
     save code_,   to:(static_dir+new_file_name+".page.js") 
     # create html for the page
     # FIXME, use a base.html to allow things to be injected into the head and body

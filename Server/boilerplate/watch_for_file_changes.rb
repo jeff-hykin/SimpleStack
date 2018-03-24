@@ -5,43 +5,20 @@
     require 'FileUtils'
     require 'filewatcher'
 
-
-    def run_with_timeout(command, timeout, tick)
-    output = ''
-    begin
-        # Start task in another thread, which spawns a process
-        stdin, stderrout, thread = Open3.popen2e(command)
-        # Get the pid of the spawned process
-        pid = thread[:pid]
-        start = Time.now
-
-        while (Time.now - start) < timeout and thread.alive?
-        # Wait up to `tick` seconds for output/error data
-        Kernel.select([stderrout], nil, nil, tick)
-        # Try to read the data
-        begin
-            output << stderrout.read_nonblock(BUFFER_SIZE)
-        rescue IO::WaitReadable
-            # A read would block, so loop around for another select
-        rescue EOFError
-            # Command has completed, not really an error...
-            break
-        end
-        end
-        # Give Ruby time to clean up the other thread
-        sleep 1
-
-        if thread.alive?
-        # We need to kill the process, because killing the thread leaves
-        # the process alive but detached, annoyingly enough.
-        Process.kill("TERM", pid)
-        end
-    ensure
-        stdin.close if stdin
-        stderrout.close if stderrout
-    end
-    return output
-    end
+    # create file
+        def createFile(name:nil,path:"",code:nil)
+            # error checking 
+                if name == nil
+                    puts "When you're using createFile, You need a name"
+                end
+            # actual code
+            the_file = File.new(path+name,"w+")
+            if code != nil 
+                the_file.write(code)
+            end 
+            the_file.close
+        end#create file
+        
     # create a bash process that receives std input from doing -"echo hello"
     require 'open3'
     $std_in, $std_out_and_error, $thread_ = Open3.popen2e('bash;')
@@ -243,7 +220,8 @@
 begin # for catching ctrl+c
     
 
-    puts "Watching files starting from: #{__dir__}"
+    puts "Starting SimpleStack"
+
     # change to the top directory
     Dir.chdir __dir__
     Dir.chdir "../.."
@@ -254,6 +232,7 @@ begin # for catching ctrl+c
     $template_dir               = $hidden_backend_dir+"templates/"
     $routes_file_location       = $hidden_backend_dir+"routes.py"
     $server_output_name         = "Server/server_output.txt"
+    $full_path_to_server_ouput  = Dir.pwd+"/"+$server_output_name
     $server_pid_file_locaion    = "Server/.server_pid.txt"
 
     def startServer()
@@ -271,7 +250,6 @@ begin # for catching ctrl+c
         $server_std_in.puts("source \"#{$hidden_backend_dir}PythonVirtualEnv/bin/activate\"")
         $server_std_in.puts("python3 \"#{$hidden_backend_dir}flask_template.py\" &>'#{$server_output_name}' &")
         $server_std_in.puts("echo $! &>#{$server_pid_file_locaion}")
-
     end
     startServer()
 
@@ -287,20 +265,26 @@ begin # for catching ctrl+c
                 path = Pathname.new(filename)
                 relative_path = "#{path.realpath}".sub( /^#{Regexp.escape(Dir.pwd+"/")}/,"" )
                 first_folder = relative_path[/\w+/]
-                puts "#{relative_path} was changed"
-            else
-                puts "#{filename} was deleted"
+                
             end
 
             # if the logging file is deleted dont do anything 
-            if filename == Dir.pwd+"/"+$server_output_name
+            if filename == $full_path_to_server_ouput
                 if not (event == "deleted")
-                    puts readFile($server_output_name)
+                    server_output = readFile($server_output_name)
+                    if server_output.strip.length > 0
+                        puts "Server says:"
+                        puts indent(server_output)
+                        createFile(name:$server_output_name, code:"")
+                    end
+                    
+
+
                     # erase the existing file
-                    -"rm #{$server_output_name}"
+                    
                 end
 
-            # if its any of the auto generated stuff then ignore it
+            # if its any of the always-auto-generated stuff then ignore it
             elsif not "#{path}".match(/\A(#{Regexp.quote($static_dir)}|#{Regexp.quote($template_dir)}|#{Regexp.quote($routes_file_location)}).+/)
                 # # kill the existing server process 
                 # if (-"kill #{$server_pid}").match(/No such process/)
@@ -310,8 +294,13 @@ begin # for catching ctrl+c
 
 
                 # re-compile everything
+                puts "#{relative_path} was changed"
                 puts "...recompiling"
-                puts indent(`ruby Server/boilerplate/compile_files.rb`)
+                compilation_output = indent(`ruby Server/boilerplate/compile_files.rb`)
+                if compilation_output.strip.length > 0
+                    puts compilation_output
+                end 
+
                 # restart the server
                 startServer
                 puts "...restarted server"

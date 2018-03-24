@@ -14,16 +14,43 @@
                                     var hello_element = New("h1",{innerHTML:"Hello World!"})
                                     Parent.add(hello_element)
                                     
+                                    
+                                    // add a button for going to the login page
+                                    var whenButtonIsClicked = async function()
+                                        { 
+                                            LoadPage("Login/Login")
+                                        }
+                                    var a_button = New("Button", {innerHTML:"imma button", onclick: whenButtonIsClicked})
+                                    Parent.add(a_button)
+                                    
+                                    class List
+                                        {
+                                            constructor()
+                                                {
+                                                    this.__main_div = New("div",{style:{class:"List"}})
+                                                    this.__wrapped_list = []
+                                                }
+                                            add(element)
+                                                {
+                                                    // check input
+                                                    if (!(element instanceof Node))
+                                                        {
+                                                            console.error("Somewhere you're trying to add this:",element," to a List, but that <- thing isnt a Node")
+                                                        }
+                                                    // add a wrapper then add to list and __main_div 
+                                                    var wrapper = New("div",{style:{class:"ListItemWrapper"}})
+                                                    wrapper.add(element)
+                                                    this.__wrapped_list.push(wrapper)
+                                                    this.__main_div.add(wrapper)
+                                                }
+                                        }
+                                    
                                     // Add the hello module
                                     Parent.add("hello")
                                     
                                     
-                                    // // Add the go_to_users.module 
-                                    // var second_area = New("div")
-                                    // second_area.style.height = "500px"
-                                    // Container.appendChild(second_area)
-                                    // Add({module:"go_to_users", to:second_area})
                                     
+                                    // Tell(Module("hello"),"Run that python again")
                                     
                                     
                                     // WhenAnythingSays("Python sent:",{do: async function (data) {

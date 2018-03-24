@@ -149,9 +149,10 @@
             var a = document.createElement('a')
             a.__proto__.__proto__.__proto__.add = function (...inputs_)
                 {
+                    // if input is a string
                     if (typeof inputs_[0] == "string")
                         {
-                            // load input as a module
+                            // if inputload input as a module
                             var parent_elem = this
                             var loadModule = async function ()
                                 {

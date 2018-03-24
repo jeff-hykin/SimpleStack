@@ -39,9 +39,13 @@ def SystemRoutes(): #this is name-specific
                     file.close()
                     return output
 
-                @Route('/module/go_to_users')
-                def module_route4():
-                    file = open('/Users/jeffhykin/Documents/_Programming/SimpleStack/Server/boilerplate/static/go_to_users.module.js', "r")
+                @Route('/Login/Login')
+                def route4():
+                    return  render_template('Login→Login.html')
+
+                @Route('/page/Login/Login')
+                def page_route4():
+                    file = open('/Users/jeffhykin/Documents/_Programming/SimpleStack/Server/boilerplate/static/Login→Login.page.js', "r")
                     output = file.read()
                     file.close()
                     return output
