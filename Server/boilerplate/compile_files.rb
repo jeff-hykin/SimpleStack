@@ -71,7 +71,7 @@
 
     def code_generate(name_,each)
         return <<-HEREDOC
-            LoadChunk = async function(Parent) 
+            LoadModule = async function(Parent) 
                 {
                     if (Parent.id != "PageParent")  { Parent.id = `#{name_}${Global.__NumberOfParentsCreated++}` }
                     const WhenAnythingSays = (saying_,data_)=>(Global.WhenAnythingSays(Parent.id, saying_, data_))
@@ -144,7 +144,7 @@
                 ]
     end
 
-    def route_for_chunk(name_)
+    def route_for_module(name_)
         # increment the route number 
         $routeNumber = $routeNumber + 1
 
@@ -153,10 +153,10 @@
         name_.sub!("'","\\'")
 
         # FIXME, check for <name>'s in the name so they can be added as input vars
-        return [ "/chunk/#{name_}",  <<-HEREDOC
-                @Route('/chunk/#{name_}')
-                def chunk_route#{$routeNumber}():
-                    file = open('#{Dir.pwd}/Server/boilerplate/static/#{file_name_escape("#{name_}")}.chunk.js', "r")
+        return [ "/module/#{name_}",  <<-HEREDOC
+                @Route('/module/#{name_}')
+                def module_route#{$routeNumber}():
+                    file = open('#{Dir.pwd}/Server/boilerplate/static/#{file_name_escape("#{name_}")}.module.js', "r")
                     output = file.read()
                     file.close()
                     return output
@@ -226,7 +226,7 @@ static_dir                 = Dir.pwd+"/Server/boilerplate/static/"
 template_dir               = Dir.pwd+"/Server/boilerplate/templates/"
 routes_file_location       = Dir.pwd+"/Server/boilerplate/routes.py"
 dirs_of_pages              = Dir.glob("Website/**/*.page.js")
-dirs_of_chunks             = Dir.glob("Website/**/*.chunk.js")
+dirs_of_modules             = Dir.glob("Website/**/*.module.js")
 dirs_of_python_files       = Dir.glob("Website/**/*.py")
 dirs_of_css_files          = Dir.glob("Website/**/*.css")
 favicon                    = Dir.glob("Website/**/favicon.ico")
@@ -295,7 +295,7 @@ routes_ = {}
 # add all of the css 
 #
 for each in dirs_of_css_files
-    # get rid of the "Website/" part and the ".chunk.js" part
+    # get rid of the "Website/" part and the ".module.js" part
     file_path = each.sub(/^Website\//,"")
 
     # escape the name to be an acceptable file name 
@@ -348,22 +348,22 @@ for each in dirs_of_pages
 end 
 
 #
-# add all of the chunks
+# add all of the modules
 #
-for each in dirs_of_chunks
-    # get rid of the "Website/" part and the ".chunk.js" part 
+for each in dirs_of_modules
+    # get rid of the "Website/" part and the ".module.js" part 
     file_path = each.sub(/^Website\//,"")
-    file_path.sub!(".chunk.js","")
+    file_path.sub!(".module.js","")
 
-    # create a route for the chunk
-    the_route_pair = route_for_chunk(file_path)
+    # create a route for the module
+    the_route_pair = route_for_module(file_path)
     routes_[the_route_pair[0]] = "\n"+the_route_pair[1]
 
-    # get the name of the chunk 
+    # get the name of the module 
     name_ = basename(file_path)
 
     # escape the name to be an acceptable file name 
-    new_file_name = file_name_escape(file_path)+".chunk.js"
+    new_file_name = file_name_escape(file_path)+".module.js"
     everything_that_should_be_in_static << static_dir+new_file_name
     
     # save output

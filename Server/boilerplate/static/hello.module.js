@@ -1,4 +1,4 @@
-            LoadChunk = async function(Parent) 
+            LoadModule = async function(Parent) 
                 {
                     if (Parent.id != "PageParent")  { Parent.id = `hello${Global.__NumberOfParentsCreated++}` }
                     const WhenAnythingSays = (saying_,data_)=>(Global.WhenAnythingSays(Parent.id, saying_, data_))
@@ -18,12 +18,6 @@
                                             log("The button was pressed")
                                             TellPage("Python sent:",await Run("Hello",["Everyone"]))
                                         }
-                                    
-                                    
-                                    
-                                    
-                                    
-                                    
                                     
                                     // add the button to the page 
                                     Container.appendChild(a_button)

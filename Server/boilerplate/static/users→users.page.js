@@ -1,4 +1,4 @@
-            LoadChunk = async function(Parent) 
+            LoadModule = async function(Parent) 
                 {
                     if (Parent.id != "PageParent")  { Parent.id = `users${Global.__NumberOfParentsCreated++}` }
                     const WhenAnythingSays = (saying_,data_)=>(Global.WhenAnythingSays(Parent.id, saying_, data_))

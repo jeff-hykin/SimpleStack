@@ -9,12 +9,6 @@ a_button.onclick = async function()
         TellPage("Python sent:",await Run("Hello",["Everyone"]))
     }
 
-
-
-
-
-
-
 // add the button to the page 
 Container.appendChild(a_button)
 Center(Container)

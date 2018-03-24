@@ -103,7 +103,7 @@
 
     def code_generate(name_,each)
         return <<-HEREDOC
-            LoadChunk = async function(Parent) 
+            LoadModule = async function(Parent) 
                 {
                     Parent.add = Parent.appendChild
                     if (Parent.id != "PageParent")  { Parent.id = `#{name_}${Global.__NumberOfParentsCreated++}` }
@@ -177,7 +177,7 @@
                 ]
     end
 
-    def route_for_chunk(name_)
+    def route_for_module(name_)
         # increment the route number 
         $routeNumber = $routeNumber + 1
 
@@ -186,10 +186,10 @@
         name_.sub!("'","\\'")
 
         # FIXME, check for <name>'s in the name so they can be added as input vars
-        return [ "/chunk/#{name_}",  <<-HEREDOC
-                @Route('/chunk/#{name_}')
-                def chunk_route#{$routeNumber}():
-                    file = open('#{Dir.pwd}/Server/boilerplate/static/#{file_name_escape("#{name_}")}.chunk.js', "r")
+        return [ "/module/#{name_}",  <<-HEREDOC
+                @Route('/module/#{name_}')
+                def module_route#{$routeNumber}():
+                    file = open('#{Dir.pwd}/Server/boilerplate/static/#{file_name_escape("#{name_}")}.module.js', "r")
                     output = file.read()
                     file.close()
                     return output
@@ -339,7 +339,7 @@ begin # for catching ctrl+c
         #         file_path = relative_path.sub(/^Website\//,"")
         #         # FIXME, check if protected or not
         #         file_path.sub!(".py","")
-        #         # create a route for the chunk
+        #         # create a route for the module
         #         the_route_pair = route_for_func(file_path)
         #         routes_[the_route_pair[0]] = "\n"+the_route_pair[1]
         
@@ -372,21 +372,21 @@ begin # for catching ctrl+c
         #             # FIXME, have a minify function 
         #             # FIXME, have a better way of doing replacements than a giant unlikely string
         #             save base_html.gsub( /###THIS IS WHERE YOU WANT TO REPLACE THE PAGE NAME###/, file_path ),  to:($template_dir+new_file_name+".html")
-        #         elsif basename_[-9..-1] == ".chunk.js"
-        #             puts "updating chunk"
-        #             # get rid of the "Website/" part and the ".chunk.js" part 
+        #         elsif basename_[-9..-1] == ".module.js"
+        #             puts "updating module"
+        #             # get rid of the "Website/" part and the ".module.js" part 
         #             file_path = relative_path.sub(/^Website\//,"")
-        #             file_path.sub!(".chunk.js","")
+        #             file_path.sub!(".module.js","")
 
-        #             # create a route for the chunk
-        #             the_route_pair = route_for_chunk(file_path)
+        #             # create a route for the module
+        #             the_route_pair = route_for_module(file_path)
         #             routes_[the_route_pair[0]] = "\n"+the_route_pair[1]
 
-        #             # get the name of the chunk 
+        #             # get the name of the module 
         #             name_ = basename(file_path)
 
         #             # escape the name to be an acceptable file name 
-        #             new_file_name = file_name_escape(file_path)+".chunk.js"
+        #             new_file_name = file_name_escape(file_path)+".module.js"
         #             everything_that_should_be_in_static << $static_dir+new_file_name
                     
         #             # save output
@@ -398,7 +398,7 @@ begin # for catching ctrl+c
         #     # If a css file is updated
         #     elsif extension == ".css"
         #         puts "updating css"
-        #         # get rid of the "Website/" part and the ".chunk.js" part
+        #         # get rid of the "Website/" part and the ".module.js" part
         #         file_path = relative_path.sub(/^Website\//,"")
 
         #         # escape the name to be an acceptable file name 

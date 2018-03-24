@@ -16,16 +16,16 @@ Parent.add(hello_element)
 
 
 
-// // Add the hello.chunk 
+// // Add the hello.module 
 // var other_area = New("div")
 // Container.appendChild(other_area)
-// Add({chunk:"hello", to:other_area})
+// Add({module:"hello", to:other_area})
 
-// // Add the go_to_users.chunk 
+// // Add the go_to_users.module 
 // var second_area = New("div")
 // second_area.style.height = "500px"
 // Container.appendChild(second_area)
-// Add({chunk:"go_to_users", to:second_area})
+// Add({module:"go_to_users", to:second_area})
 
 
 

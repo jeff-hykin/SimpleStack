@@ -1,7 +1,7 @@
 if (Global.user_is_logged_in)
     {
-        thisChunk.listen("changes made to user settings")
-        if (thisChunk.hears["changes made to user settings"])
+        thisModule.listen("changes made to user settings")
+        if (thisModule.hears["changes made to user settings"])
             {
                 var div_helper     = document.createElement("div")
                 var save_button    = document.createElement("button")

@@ -2,5 +2,5 @@
 
 
 
-add({chunk:"balance", to:container})
-add({chunk:"settings", to:container})
+add({module:"balance", to:container})
+add({module:"settings", to:container})

@@ -1,4 +1,4 @@
-            LoadChunk = async function(Parent) 
+            LoadModule = async function(Parent) 
                 {
                     if (Parent.id != "PageParent")  { Parent.id = `Home${Global.__NumberOfParentsCreated++}` }
                     const WhenAnythingSays = (saying_,data_)=>(Global.WhenAnythingSays(Parent.id, saying_, data_))
@@ -26,16 +26,16 @@
                                     
                                     
                                     
-                                    // // Add the hello.chunk 
+                                    // // Add the hello.module 
                                     // var other_area = New("div")
                                     // Container.appendChild(other_area)
-                                    // Add({chunk:"hello", to:other_area})
+                                    // Add({module:"hello", to:other_area})
                                     
-                                    // // Add the go_to_users.chunk 
+                                    // // Add the go_to_users.module 
                                     // var second_area = New("div")
                                     // second_area.style.height = "500px"
                                     // Container.appendChild(second_area)
-                                    // Add({chunk:"go_to_users", to:second_area})
+                                    // Add({module:"go_to_users", to:second_area})
                                     
                                     
                                     

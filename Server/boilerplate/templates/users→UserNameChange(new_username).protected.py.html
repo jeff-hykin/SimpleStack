@@ -163,10 +163,10 @@
                     console.log("starting Run",function_name)
                     return await Request({path:"func/"+function_name, data:{arguments:array_of_arguments}})
                 }
-            Add      = async function({chunk,to})
+            Add      = async function({module,to})
                 {
-                    console.log("starting add for the",chunk," chunk")
-                    let js_code = await Request({path:"chunk/"+chunk})
+                    console.log("starting add for the",module," module")
+                    let js_code = await Request({path:"module/"+module})
                     // FIXME, check for errors here 
                     return await eval(js_code)(to)
                 }
