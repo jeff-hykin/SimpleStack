@@ -1,4 +1,3 @@
-
 var whenButtonIsClicked = async function()
     { 
         log("The button was pressed")
@@ -8,4 +7,3 @@ var whenButtonIsClicked = async function()
     }
 var a_button = New("Button", {innerHTML:"imma button", onclick: whenButtonIsClicked})
 Parent.add(a_button)
-HorizonallyCenterChildrenOf(Parent)

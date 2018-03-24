@@ -75,7 +75,7 @@
                 {
                     if (Parent.id != "PageParent")  { Parent.id = `#{name_}${Global.__NumberOfModulesCreated++}` }
                     const WhenAnythingSays = (saying_,data_)=>(Global.WhenAnythingSays(Parent.id, saying_, data_))
-                    #{name_} = 
+                    var #{name_} = 
                         {
                             Load: async function()
                                 {

@@ -144,7 +144,6 @@
 
             Run      = async function(function_name,array_of_arguments=[])
                 {
-                    console.log("starting Run",function_name)
                     return await Request({path:"func/"+function_name, data:{arguments:array_of_arguments}})
                 }
             var a = document.createElement('a')

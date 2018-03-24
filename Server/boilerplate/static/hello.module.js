@@ -2,12 +2,11 @@
                 {
                     if (Parent.id != "PageParent")  { Parent.id = `hello${Global.__NumberOfModulesCreated++}` }
                     const WhenAnythingSays = (saying_,data_)=>(Global.WhenAnythingSays(Parent.id, saying_, data_))
-                    hello = 
+                    var hello = 
                         {
                             Load: async function()
                                 {
                                     "use strict"
-                                    
                                     
                                     var whenButtonIsClicked = async function()
                                         { 
@@ -18,7 +17,6 @@
                                         }
                                     var a_button = New("Button", {innerHTML:"imma button", onclick: whenButtonIsClicked})
                                     Parent.add(a_button)
-                                    HorizonallyCenterChildrenOf(Parent)
                                 }
                         }
                     const DangerousEval = Global.Eval.bind(hello)

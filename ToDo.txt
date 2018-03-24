@@ -1,32 +1,36 @@
-FIXME,
-    DONE: the watcher doesn't work on edits for global files 
+next things: 
+    add backend functions as methods on a global object 'Server' 
+    add module functions as methods on a global object 'Modules' 
 
-make sure the back button/ history works properly 
-start work on security and users 
+next-next things:
+    make sure the back button/ history works properly 
+    create a login page
+    get Request to authorize 1 user 
+    save auth login to cookies/cache
 
-convert newlines to break statements and other things 
+soon-ish things:
+    get heroku working 
+    get mongoDB working and save some data to it
+    convert newlines to break statements and other things
+    import management
+        local style sheets
+        add relative paths to loadPage() and add(component: to:)
+    make boilerplate a hidden folder
+    in boilerplateget SimpleStackTools.js included instead of having to manually including it in the SimpleStackBase.html
+    add modules to html page documents, or find another way to load them in
 
-figure out more security tools
-    (Auth instead of jwt tokens )
+long term
+    add favicon.ico
+    error checking 
+        check for a homepage
+        extract the header + body in a better way
 
-make boilerplate a hidden folder
-
-import management
-    local style sheets
-    add relative paths to loadPage() and add(component: to:)
+version 2.0 things:
+    add npm package support
+        add local npm package support
 
 
-
-error checking 
-    check for a homepage
-    extract the header + body in a better way
-
-add Python functions as javascript functions on compile time 
-
-add npm package support
-    add local npm package support
-
-add favicon.ico
-
-in boilerplate
-    get SimpleStackTools.js included instead of having to manually including it in the SimpleStackBase.html
+DONE:
+    rename chunks to modules
+    get a container class working
+    fix the file watcher

@@ -108,12 +108,12 @@
                     Parent.add = Parent.appendChild
                     if (Parent.id != "PageParent")  { Parent.id = `#{name_}${Global.__NumberOfModulesCreated++}` }
                     const WhenAnythingSays = (saying_,data_)=>(Global.WhenAnythingSays(Parent.id, saying_, data_))
-                    #{name_} = 
+                    var #{name_} = 
                         {
                             Load: async function()
                                 {
                                     "use strict"
-                                    \n#{readFile(each)}
+                                    \n#{indent(readFile(each),(9*4))}
                                 }
                         }
                     const DangerousEval = Global.Eval.bind(#{name_})

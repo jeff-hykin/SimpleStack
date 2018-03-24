@@ -1,24 +1,11 @@
-
-// var a_container = new Container()
-// a_container.add(New("div", {innerHTML:"BLAH"}))
-// // var a_div          = New("div", {style:{width:"100px",height:"100px",position:"relative"}})
-// // var a_relative_div = New("div", {innerHTML:"BLAH", style:{position:"absolute",bottom:0,left:0} })
-// // a_div.add(a_relative_div)
-// container.add(a_container)
-
-
-
-
 HorizonallyCenterChildrenOf(Parent)
 
 // Create the title
 var hello_element = New("h1",{innerHTML:"Hello World!"})
 Parent.add(hello_element)
 
-
 // Add the hello module
-var other_area = New("div")
-Parent.add(other_area.add("hello"))
+Parent.add("hello")
 
 
 // // Add the go_to_users.module 
