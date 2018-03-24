@@ -9,17 +9,17 @@
 
 
 
+HorizonallyCenterChildrenOf(Parent)
+
 // Create the title
 var hello_element = New("h1",{innerHTML:"Hello World!"})
 Parent.add(hello_element)
 
 
+// Add the hello module
+var other_area = New("div")
+Parent.add(other_area.add("hello"))
 
-
-// // Add the hello.module 
-// var other_area = New("div")
-// Container.appendChild(other_area)
-// Add({module:"hello", to:other_area})
 
 // // Add the go_to_users.module 
 // var second_area = New("div")

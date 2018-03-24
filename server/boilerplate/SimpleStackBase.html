@@ -147,14 +147,23 @@
                     console.log("starting Run",function_name)
                     return await Request({path:"func/"+function_name, data:{arguments:array_of_arguments}})
                 }
-            //
-            
-            Add      = async function({module,to})
+            var a = document.createElement('a')
+            a.__proto__.__proto__.__proto__.add = function (...inputs_)
                 {
-                    console.log("starting add for the",module," module")
-                    let js_code = await Request({path:"module/"+module})
-                    // FIXME, check for errors here 
-                    return await eval(js_code)(to)
+                    if (typeof inputs_[0] == "string")
+                        {
+                            // load input as a module
+                            var parent_elem = this
+                            var loadModule = async function ()
+                                {
+                                    return ( await eval(await Request({path:"module/"+inputs_[0]}))(parent_elem)  )
+                                }
+                            loadModule() // load the module asyncly
+                            // FIXME, check for network errors here 
+                            return this
+                        }
+                    this.appendChild(...inputs_)
+                    return this
                 }
             LoadPage = async function(page_name)
                 {
@@ -167,11 +176,9 @@
                     var main_module = document.getElementById("GlobalModule")
                     main_module.parentNode.removeChild(main_module)
                     // create a new main_module 
-                    console.log(`about to set Global.Module`)
                     Global.Module = document.createElement('div')
                     Global.Module.id = "GlobalModule"
                     document.body.appendChild(Global.Module)
-                    console.log(`Finished making global module`)
                     // run the page with the new main_module 
                     return await eval(js_code)(Global.Module)
                 }

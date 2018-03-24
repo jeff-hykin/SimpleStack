@@ -1,6 +1,6 @@
             LoadModule = async function(Parent) 
                 {
-                    if (Parent.id != "PageParent")  { Parent.id = `<string:name>${Global.__NumberOfParentsCreated++}` }
+                    if (Parent.id != "PageParent")  { Parent.id = `<string:name>${Global.__NumberOfModulesCreated++}` }
                     const WhenAnythingSays = (saying_,data_)=>(Global.WhenAnythingSays(Parent.id, saying_, data_))
                     <string:name> = 
                         {

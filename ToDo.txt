@@ -1,12 +1,12 @@
 FIXME,
-    the watcher doesn't work on edits for global files 
+    DONE: the watcher doesn't work on edits for global files 
 
 make sure the back button/ history works properly 
 start work on security and users 
 
 convert newlines to break statements and other things 
 
-figure out more security tools 
+figure out more security tools
     (Auth instead of jwt tokens )
 
 make boilerplate a hidden folder

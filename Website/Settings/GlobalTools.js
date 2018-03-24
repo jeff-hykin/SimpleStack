@@ -1,9 +1,5 @@
 Global.Debugging = true
 Global.Website = "http://localhost:5000/"
-// add prototypes
-var a = document.createElement('a')
-a.__proto__.__proto__.__proto__.add = a.appendChild // adds the add function to all Nodes 
-// end adding prototypes
 var log = console.log
 var classof = Function.prototype.call.bind(Object.prototype.toString)
 function New(element_name,attributes={}) 
@@ -14,10 +10,6 @@ function New(element_name,attributes={})
                 output_.className = "waves-effect waves-light btn"
             }
         // before returning, set the add function, and the attributes
-        output_.add = function (...element) 
-            {
-                output_.appendChild(...element)
-            }
         for (var each_key of Object.keys(attributes))
             {
                 if (typeof attributes[each_key] == "object" && attributes[each_key] != null )
@@ -116,9 +108,13 @@ function GetByXpath(path)
     {
         return document.evaluate(path, document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue;
     }
-function Center(element)
+function HorizonallyCenterChildrenOf(element)
     {
         element.classList.add('center-align')
+    }
+function VerticallyCenterChildrenOf(element)
+    {
+        element.classList.add('valign-wrapper')
     }
 function TimerFor(time_amount)
     {
@@ -127,7 +123,4 @@ function TimerFor(time_amount)
                 setTimeout(()=>{ resolve(null) }, time_amount)
             })
     }
-function CenterVertically(element)
-    {
-        element.parentNode.classList.add('valign-wrapper')
-    }
+

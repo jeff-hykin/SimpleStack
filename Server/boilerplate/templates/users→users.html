@@ -164,14 +164,23 @@
                     console.log("starting Run",function_name)
                     return await Request({path:"func/"+function_name, data:{arguments:array_of_arguments}})
                 }
-            //
-            
-            Add      = async function({module,to})
+            var a = document.createElement('a')
+            a.__proto__.__proto__.__proto__.add = function (...inputs_)
                 {
-                    console.log("starting add for the",module," module")
-                    let js_code = await Request({path:"module/"+module})
-                    // FIXME, check for errors here 
-                    return await eval(js_code)(to)
+                    if (typeof inputs_[0] == "string")
+                        {
+                            // load input as a module
+                            var parent_elem = this
+                            var loadModule = async function ()
+                                {
+                                    return ( await eval(await Request({path:"module/"+inputs_[0]}))(parent_elem)  )
+                                }
+                            loadModule() // load the module asyncly
+                            // FIXME, check for network errors here 
+                            return this
+                        }
+                    this.appendChild(...inputs_)
+                    return this
                 }
             LoadPage = async function(page_name)
                 {
@@ -184,11 +193,9 @@
                     var main_module = document.getElementById("GlobalModule")
                     main_module.parentNode.removeChild(main_module)
                     // create a new main_module 
-                    console.log(`about to set Global.Module`)
                     Global.Module = document.createElement('div')
                     Global.Module.id = "GlobalModule"
                     document.body.appendChild(Global.Module)
-                    console.log(`Finished making global module`)
                     // run the page with the new main_module 
                     return await eval(js_code)(Global.Module)
                 }
@@ -198,10 +205,6 @@
         //
             Global.Debugging = true
             Global.Website = "http://localhost:5000/"
-            // add prototypes
-            var a = document.createElement('a')
-            a.__proto__.__proto__.__proto__.add = a.appendChild // adds the add function to all Nodes 
-            // end adding prototypes
             var log = console.log
             var classof = Function.prototype.call.bind(Object.prototype.toString)
             function New(element_name,attributes={}) 
@@ -212,10 +215,6 @@
                             output_.className = "waves-effect waves-light btn"
                         }
                     // before returning, set the add function, and the attributes
-                    output_.add = function (...element) 
-                        {
-                            output_.appendChild(...element)
-                        }
                     for (var each_key of Object.keys(attributes))
                         {
                             if (typeof attributes[each_key] == "object" && attributes[each_key] != null )
@@ -314,9 +313,13 @@
                 {
                     return document.evaluate(path, document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue;
                 }
-            function Center(element)
+            function HorizonallyCenterChildrenOf(element)
                 {
                     element.classList.add('center-align')
+                }
+            function VerticallyCenterChildrenOf(element)
+                {
+                    element.classList.add('valign-wrapper')
                 }
             function TimerFor(time_amount)
                 {
@@ -325,10 +328,7 @@
                             setTimeout(()=>{ resolve(null) }, time_amount)
                         })
                 }
-            function CenterVertically(element)
-                {
-                    element.parentNode.classList.add('valign-wrapper')
-                }
+            
 
 
             Main = async function () 

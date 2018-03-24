@@ -1,6 +1,6 @@
             LoadModule = async function(Parent) 
                 {
-                    if (Parent.id != "PageParent")  { Parent.id = `Home${Global.__NumberOfParentsCreated++}` }
+                    if (Parent.id != "PageParent")  { Parent.id = `Home${Global.__NumberOfModulesCreated++}` }
                     const WhenAnythingSays = (saying_,data_)=>(Global.WhenAnythingSays(Parent.id, saying_, data_))
                     Home = 
                         {
@@ -19,17 +19,17 @@
                                     
                                     
                                     
+                                    HorizonallyCenterChildrenOf(Parent)
+                                    
                                     // Create the title
                                     var hello_element = New("h1",{innerHTML:"Hello World!"})
                                     Parent.add(hello_element)
                                     
                                     
+                                    // Add the hello module
+                                    var other_area = New("div")
+                                    Parent.add(other_area.add("hello"))
                                     
-                                    
-                                    // // Add the hello.module 
-                                    // var other_area = New("div")
-                                    // Container.appendChild(other_area)
-                                    // Add({module:"hello", to:other_area})
                                     
                                     // // Add the go_to_users.module 
                                     // var second_area = New("div")
