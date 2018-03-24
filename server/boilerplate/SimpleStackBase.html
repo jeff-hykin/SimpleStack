@@ -12,15 +12,15 @@
     </head>
     <body>
         ###THIS IS WHERE YOU WANT TO REPLACE THE BODY STUFF###
-        <box id="PageBox">
-        </box>
+        <page id="GlobalModule">
+        </page>
         <script>
             Global = 
                 {
                     Eval: function (input_){eval(input_)},
-                    Box: document.getElementById("PageBox"),
+                    Module: document.getElementById("GlobalModule"),
                     Debugging: false,
-                    __NumberOfBoxesCreated: 0,
+                    __NumberOfModulesCreated: 0,
                     __IdsToCheck: new Set([]),
                     WhenAnythingSays : async function(element_id, saying_, action_obj)
                         {
@@ -160,18 +160,18 @@
                     // FIXME, check for errors here (encase page doesn't exist)
                     // TODO, utilize state for something useful
                     history.pushState({}, page_name, page_name)
-                    // delete the existing main_box
-                    // FIXME, add a check to see if the main_box exists
-                    var main_box = document.getElementById("PageBox")
-                    main_box.parentNode.removeChild(main_box)
-                    // create a new main_box 
-                    console.log(`about to set Global.Box`)
-                    Global.Box = document.createElement('div')
-                    Global.Box.id = "PageBox"
-                    document.body.appendChild(Global.Box)
-                    console.log(`Finished making global box`)
-                    // run the page with the new main_box 
-                    return await eval(js_code)(Global.Box)
+                    // delete the existing main_module
+                    // FIXME, add a check to see if the main_module exists
+                    var main_module = document.getElementById("GlobalModule")
+                    main_module.parentNode.removeChild(main_module)
+                    // create a new main_module 
+                    console.log(`about to set Global.Module`)
+                    Global.Module = document.createElement('div')
+                    Global.Module.id = "GlobalModule"
+                    document.body.appendChild(Global.Module)
+                    console.log(`Finished making global module`)
+                    // run the page with the new main_module 
+                    return await eval(js_code)(Global.Module)
                 }
             ###THIS IS WHERE YOU WANT TO REPLACE THE GENERAL TOOLS###
             Main = async function () 
@@ -179,6 +179,7 @@
                     LoadPage("###THIS IS WHERE YOU WANT TO REPLACE THE PAGE NAME###")
                 }
             Main()
+
         </script>
     </body>
 </html>

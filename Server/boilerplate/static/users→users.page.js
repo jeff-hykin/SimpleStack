@@ -1,20 +1,20 @@
-            LoadChunk = async function(Box) 
+            LoadChunk = async function(Parent) 
                 {
-                    if (Box.id != "PageBox")  { Box.id = `users${Global.__NumberOfBoxesCreated++}` }
-                    const WhenAnythingSays = (saying_,data_)=>(Global.WhenAnythingSays(Box.id, saying_, data_))
+                    if (Parent.id != "PageParent")  { Parent.id = `users${Global.__NumberOfParentsCreated++}` }
+                    const WhenAnythingSays = (saying_,data_)=>(Global.WhenAnythingSays(Parent.id, saying_, data_))
                     users = 
                         {
                             Load: async function()
                                 {
                                     "use strict"
                                     
-
-
-
-var title_ = New("h2")
-title_.innerHTML = "Welcome to the user page"
-Container.appendChild(title_)
-
+                                    
+                                    
+                                    
+                                    var title_ = New("h2")
+                                    title_.innerHTML = "Welcome to the user page"
+                                    Container.appendChild(title_)
+                                    
 
                                 }
                         }

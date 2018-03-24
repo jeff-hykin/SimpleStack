@@ -1,19 +1,19 @@
-            LoadChunk = async function(Box) 
+            LoadChunk = async function(Parent) 
                 {
-                    if (Box.id != "PageBox")  { Box.id = `dashboard${Global.__NumberOfBoxesCreated++}` }
-                    const WhenAnythingSays = (saying_,data_)=>(Global.WhenAnythingSays(Box.id, saying_, data_))
+                    if (Parent.id != "PageParent")  { Parent.id = `dashboard${Global.__NumberOfParentsCreated++}` }
+                    const WhenAnythingSays = (saying_,data_)=>(Global.WhenAnythingSays(Parent.id, saying_, data_))
                     dashboard = 
                         {
                             Load: async function()
                                 {
                                     "use strict"
                                     
-
-
-
-
-add({chunk:"balance", to:container})
-add({chunk:"settings", to:container})
+                                    
+                                    
+                                    
+                                    
+                                    add({chunk:"balance", to:container})
+                                    add({chunk:"settings", to:container})
                                 }
                         }
                     const DangerousEval = Global.Eval.bind(dashboard)

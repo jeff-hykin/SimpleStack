@@ -103,11 +103,11 @@
 
     def code_generate(name_,each)
         return <<-HEREDOC
-            LoadChunk = async function(Box) 
+            LoadChunk = async function(Parent) 
                 {
-                    Box.add = Box.appendChild
-                    if (Box.id != "PageBox")  { Box.id = `#{name_}${Global.__NumberOfBoxesCreated++}` }
-                    const WhenAnythingSays = (saying_,data_)=>(Global.WhenAnythingSays(Box.id, saying_, data_))
+                    Parent.add = Parent.appendChild
+                    if (Parent.id != "PageParent")  { Parent.id = `#{name_}${Global.__NumberOfParentsCreated++}` }
+                    const WhenAnythingSays = (saying_,data_)=>(Global.WhenAnythingSays(Parent.id, saying_, data_))
                     #{name_} = 
                         {
                             Load: async function()
@@ -240,141 +240,188 @@
 #   End Helper tools 
 #
 
-puts "Watching files starting from: #{__dir__}"
-# change to the top directory
-Dir.chdir __dir__
-Dir.chdir "../.."
+begin # for catching ctrl+c
+    
 
+    puts "Watching files starting from: #{__dir__}"
+    # change to the top directory
+    Dir.chdir __dir__
+    Dir.chdir "../.."
 
-puts "starting server\n\n"
-$my_pid = rand(999999)
-$command_ = "source \"Server/boilerplate/PythonVirtualEnv/bin/activate\" && python3 \"Server/boilerplate/flask_template.py\" && echo #{$my_pid}"
-$server_std_in, $server_std_out_and_error, $server_thread = Open3.popen2e($command_)
+    # locations 
+    $hidden_backend_dir         = Dir.pwd+"/Server/boilerplate/"
+    $static_dir                 = $hidden_backend_dir+"static/"
+    $template_dir               = $hidden_backend_dir+"templates/"
+    $routes_file_location       = $hidden_backend_dir+"routes.py"
+    $server_output_name         = "Server/server_output.txt"
+    $server_pid_file_locaion    = "Server/.server_pid.txt"
 
-# puts -"source \"Server/boilerplate/PythonVirtualEnv/bin/activate\" && python3 \"Server/boilerplate/flask_template.py\" &"
-
-# update the files as theyre being changed
-Filewatcher.new(['**/*.*']).watch do |filename, event|
-    #DUMB FILE WATCHER:
-        
-        path = Pathname.new(filename)
-        relative_path = "#{path.realpath}".sub( /^#{Regexp.escape(Dir.pwd+"/")}/,"" )
-        first_folder = relative_path[/\w+/]
-        # if the file isnt in the Server, then recompile everything
-        puts "#{relative_path} was changed"
-        if first_folder != "Server"
-            process = `ps | grep '#{$command_}'`
-            pid = process.match /\A\d\d\d\d\d/
-            # puts "processes is: #{process}"
-            # puts "match is:#{pid[0]}"
-            # if there is a match then kill it
-            if not pid.nil?
-                `kill #{pid}`
+    def startServer()
+        if exists($server_pid_file_locaion)
+            server_pid = readFile($server_pid_file_locaion).chomp
+            if server_pid.length > 0 
+                # kill the process 
+                `kill #{server_pid}`
+                # clear the file that was holding the PID
+                `rm #{$server_pid_file_locaion};touch #{$server_pid_file_locaion}`
             end
-            # just re-compile everything
-            puts "...recompiling"
-            puts indent(`ruby Server/boilerplate/compile_files.rb`)
-            # restart the server
-            $my_pid = rand(999999)
-            $command_ = "source \"Server/boilerplate/PythonVirtualEnv/bin/activate\" && python3 \"Server/boilerplate/flask_template.py\" && echo #{$my_pid}"
-            $server_std_in, $server_std_out_and_error, $server_thread = Open3.popen2e($command_)
-            puts "...restarted server"
+
         end
-    
-    
-    
-    #SMART (but broken) FILE WATCHER:
-    # path = Pathname.new(filename)
-    # relative_path = "#{path.realpath}".sub(/^#{Regexp.escape(Dir.pwd+"/")}/,"")
-    # first_folder = relative_path[/\w+/]
-    # puts "File update : #{event}"
-    
-    # if first_folder != "Server"
-    #     basename_ = "#{path.basename}"
-    #     extension = "#{path.extname}"
-    #     # puts "first_folder     : #{first_folder}"
-    #     # puts "extension        : #{extension}"
-    #     # puts "Basename         : #{basename_}"
-    #     # puts "Relative         : #{relative_path}"
-        
-    #     # If a python file is updated
-    #     if extension == ".py"
-    #         # get rid of the "Website/" part and the ".py" part 
-    #         file_path = relative_path.sub(/^Website\//,"")
-    #         # FIXME, check if protected or not
-    #         file_path.sub!(".py","")
-    #         # create a route for the chunk
-    #         the_route_pair = route_for_func(file_path)
-    #         routes_[the_route_pair[0]] = "\n"+the_route_pair[1]
-        
-    #     # If a javascript file is updated
-    #     elsif extension == ".js"
-    #         if basename_[-8..-1] == ".page.js"
-    #             # get rid of the "Website/" part and the ".page.js" part 
-    #             file_path = each.sub(/^Website\//,"")
-    #             file_path.sub!(".page.js","")
+        $server_std_in, $server_std_out_and_error, $server_thread = Open3.popen2e("bash\n")
+        $server_std_in.puts("source \"#{$hidden_backend_dir}PythonVirtualEnv/bin/activate\"")
+        $server_std_in.puts("python3 \"#{$hidden_backend_dir}flask_template.py\" &>'#{$server_output_name}' &")
+        $server_std_in.puts("echo $! &>#{$server_pid_file_locaion}")
 
-    #             name_ = basename(file_path)
-    #             # create a route for the page (actually 2 routes per page, one for html one for js)
-    #             the_route_pair = route_for_page(file_path)
-
-    #             routes_[the_route_pair[0]] = "\n"+the_route_pair[1]
-
-    #             # escape the name to be an acceptable file name 
-    #             new_file_name = file_name_escape(file_path)
-    #             everything_that_should_be_in_static << static_dir+new_file_name+".page.js"
+    end
+    startServer()
 
 
-    #             # save output
-    #             # FIXME, have a minify function 
-    #             # code_ = <<-HEREDOC
-    #             code_ = code_generate(name_,each)
 
-    #             save code_,   to:(static_dir+new_file_name+".page.js") 
-    #             # create html for the page
-    #             # FIXME, use a base.html to allow things to be injected into the head and body
-    #             # FIXME, have a minify function 
-    #             # FIXME, have a better way of doing replacements than a giant unlikely string
-    #             save base_html.gsub( /###THIS IS WHERE YOU WANT TO REPLACE THE PAGE NAME###/, file_path ),  to:(template_dir+new_file_name+".html")
-    #         elsif basename_[-9..-1] == ".chunk.js"
-    #             puts "updating chunk"
-    #             # get rid of the "Website/" part and the ".chunk.js" part 
-    #             file_path = relative_path.sub(/^Website\//,"")
-    #             file_path.sub!(".chunk.js","")
 
-    #             # create a route for the chunk
-    #             the_route_pair = route_for_chunk(file_path)
-    #             routes_[the_route_pair[0]] = "\n"+the_route_pair[1]
-
-    #             # get the name of the chunk 
-    #             name_ = basename(file_path)
-
-    #             # escape the name to be an acceptable file name 
-    #             new_file_name = file_name_escape(file_path)+".chunk.js"
-    #             everything_that_should_be_in_static << static_dir+new_file_name
-                
-    #             # save output
-    #             # FIXME, have a minify function
-    #             code_ =  code_generate(name_,relative_path)
-    #             save code_,   to:(static_dir+new_file_name) 
-    #         end
-        
-    #     # If a css file is updated
-    #     elsif extension == ".css"
-    #         puts "updating css"
-    #         # get rid of the "Website/" part and the ".chunk.js" part
-    #         file_path = relative_path.sub(/^Website\//,"")
-
-    #         # escape the name to be an acceptable file name 
-    #         # FIXME, this will cause referencing problems if the css is not directly in the Website/ folder
-    #         new_file_name = file_name_escape(file_path)
-    #         everything_that_should_be_in_static << static_dir+new_file_name
+    # update the files as theyre being changed
+    Filewatcher.new(['**/*.*']).watch do |filename, event|
+        #DUMB FILE WATCHER:
+            event = "#{event}"
             
-    #         # save output
-    #         # FIXME, have a minify function
-    #         save (readFile(relative_path)),   to:(static_dir+new_file_name) 
-    #     end 
-    #     # update the routes no matter which file updated
-    #     save(routes_as_string(routes_), to:routes_file_location)
-    # end 
+            if (event != "deleted")
+                path = Pathname.new(filename)
+                relative_path = "#{path.realpath}".sub( /^#{Regexp.escape(Dir.pwd+"/")}/,"" )
+                first_folder = relative_path[/\w+/]
+                puts "#{relative_path} was changed"
+            else
+                puts "#{filename} was deleted"
+            end
+
+            # if the logging file is deleted dont do anything 
+            if filename == Dir.pwd+"/"+$server_output_name
+                if not (event == "deleted")
+                    puts readFile($server_output_name)
+                    # erase the existing file
+                    -"rm #{$server_output_name}"
+                end
+
+            # if its any of the auto generated stuff then ignore it
+            elsif not "#{path}".match(/\A(#{Regexp.quote($static_dir)}|#{Regexp.quote($template_dir)}|#{Regexp.quote($routes_file_location)}).+/)
+                # # kill the existing server process 
+                # if (-"kill #{$server_pid}").match(/No such process/)
+                #     puts "trying to kill #{$server_pid}"
+                #     puts indent(-"ps")
+                # end
+
+
+                # re-compile everything
+                puts "...recompiling"
+                puts indent(`ruby Server/boilerplate/compile_files.rb`)
+                # restart the server
+                startServer
+                puts "...restarted server"
+            end#if not
+
+        
+        #SMART (but broken) FILE WATCHER:
+        # path = Pathname.new(filename)
+        # relative_path = "#{path.realpath}".sub(/^#{Regexp.escape(Dir.pwd+"/")}/,"")
+        # first_folder = relative_path[/\w+/]
+        # puts "File update : #{event}"
+        
+        # if first_folder != "Server"
+        #     basename_ = "#{path.basename}"
+        #     extension = "#{path.extname}"
+        #     # puts "first_folder     : #{first_folder}"
+        #     # puts "extension        : #{extension}"
+        #     # puts "Basename         : #{basename_}"
+        #     # puts "Relative         : #{relative_path}"
+            
+
+        #     # If a python file is updated
+        #     if extension == ".py"
+        #         # get rid of the "Website/" part and the ".py" part 
+        #         file_path = relative_path.sub(/^Website\//,"")
+        #         # FIXME, check if protected or not
+        #         file_path.sub!(".py","")
+        #         # create a route for the chunk
+        #         the_route_pair = route_for_func(file_path)
+        #         routes_[the_route_pair[0]] = "\n"+the_route_pair[1]
+        
+        #     # If a javascript file is updated
+        #     elsif extension == ".js"
+        #         if basename_[-8..-1] == ".page.js"
+        #             # get rid of the "Website/" part and the ".page.js" part 
+        #             file_path = each.sub(/^Website\//,"")
+        #             file_path.sub!(".page.js","")
+
+        #             name_ = basename(file_path)
+        #             # create a route for the page (actually 2 routes per page, one for html one for js)
+        #             the_route_pair = route_for_page(file_path)
+
+        #             routes_[the_route_pair[0]] = "\n"+the_route_pair[1]
+
+        #             # escape the name to be an acceptable file name 
+        #             new_file_name = file_name_escape(file_path)
+        #             everything_that_should_be_in_static << $static_dir+new_file_name+".page.js"
+
+
+        #             # save output
+        #             # FIXME, have a minify function 
+        #             # code_ = <<-HEREDOC
+        #             code_ = code_generate(name_,each)
+
+        #             save code_,   to:($static_dir+new_file_name+".page.js") 
+        #             # create html for the page
+        #             # FIXME, use a base.html to allow things to be injected into the head and body
+        #             # FIXME, have a minify function 
+        #             # FIXME, have a better way of doing replacements than a giant unlikely string
+        #             save base_html.gsub( /###THIS IS WHERE YOU WANT TO REPLACE THE PAGE NAME###/, file_path ),  to:($template_dir+new_file_name+".html")
+        #         elsif basename_[-9..-1] == ".chunk.js"
+        #             puts "updating chunk"
+        #             # get rid of the "Website/" part and the ".chunk.js" part 
+        #             file_path = relative_path.sub(/^Website\//,"")
+        #             file_path.sub!(".chunk.js","")
+
+        #             # create a route for the chunk
+        #             the_route_pair = route_for_chunk(file_path)
+        #             routes_[the_route_pair[0]] = "\n"+the_route_pair[1]
+
+        #             # get the name of the chunk 
+        #             name_ = basename(file_path)
+
+        #             # escape the name to be an acceptable file name 
+        #             new_file_name = file_name_escape(file_path)+".chunk.js"
+        #             everything_that_should_be_in_static << $static_dir+new_file_name
+                    
+        #             # save output
+        #             # FIXME, have a minify function
+        #             code_ =  code_generate(name_,relative_path)
+        #             save code_,   to:($static_dir+new_file_name) 
+        #         end
+            
+        #     # If a css file is updated
+        #     elsif extension == ".css"
+        #         puts "updating css"
+        #         # get rid of the "Website/" part and the ".chunk.js" part
+        #         file_path = relative_path.sub(/^Website\//,"")
+
+        #         # escape the name to be an acceptable file name 
+        #         # FIXME, this will cause referencing problems if the css is not directly in the Website/ folder
+        #         new_file_name = file_name_escape(file_path)
+        #         everything_that_should_be_in_static << $static_dir+new_file_name
+                
+        #         # save output
+        #         # FIXME, have a minify function
+        #         save (readFile(relative_path)),   to:($static_dir+new_file_name) 
+        #     end 
+        #     # update the routes no matter which file updated
+        #     save(routes_as_string(routes_), to:$routes_file_location)
+        # end 
+    end
+
+rescue Interrupt, SystemExit 
+    # puts "Catching system Interrupt"
+    # puts "before killing: #{$server_pid}"
+    # puts `ps`
+    # puts `kill #{$server_pid}`
+    # puts "after killing:"
+    # puts `ps`
+    # exit
+
 end

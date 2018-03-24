@@ -71,16 +71,16 @@
 
     def code_generate(name_,each)
         return <<-HEREDOC
-            LoadChunk = async function(Box) 
+            LoadChunk = async function(Parent) 
                 {
-                    if (Box.id != "PageBox")  { Box.id = `#{name_}${Global.__NumberOfBoxesCreated++}` }
-                    const WhenAnythingSays = (saying_,data_)=>(Global.WhenAnythingSays(Box.id, saying_, data_))
+                    if (Parent.id != "PageParent")  { Parent.id = `#{name_}${Global.__NumberOfParentsCreated++}` }
+                    const WhenAnythingSays = (saying_,data_)=>(Global.WhenAnythingSays(Parent.id, saying_, data_))
                     #{name_} = 
                         {
                             Load: async function()
                                 {
                                     "use strict"
-                                    \n#{readFile(each)}
+                                    \n#{indent(readFile(each),(9*4))}
                                 }
                         }
                     const DangerousEval = Global.Eval.bind(#{name_})
@@ -272,7 +272,7 @@ if exists(Dir.pwd+"/Website/Settings")
 
     # FIXME, this method of replacement def. needs to be improved 
     if exists(location_of_general_tools) 
-        regex_multiple_replacement << [replacement_keys["tools"],  "\n#{readFile(location_of_general_tools)}\n"]
+        regex_multiple_replacement << [replacement_keys["tools"],  "\n         //\n        //    User Defined Global Tools\n        //\n#{indent(readFile(location_of_general_tools),(3*4))}\n"]
     else 
         regex_multiple_replacement << [replacement_keys["tools"],  "\n"]
     end 
@@ -337,7 +337,8 @@ for each in dirs_of_pages
     code_ = code_generate(name_,each)
 
 
-    puts "Saving to #{static_dir+new_file_name+".page.js"}"
+
+    puts "Saving to #{new_file_name+".page.js"}"
     save code_,   to:(static_dir+new_file_name+".page.js") 
     # create html for the page
     # FIXME, use a base.html to allow things to be injected into the head and body
@@ -400,3 +401,5 @@ list_of_files_to_delete = all_paths_in_static - everything_that_should_be_in_sta
 for each in list_of_files_to_delete
     File.delete each
 end
+
+

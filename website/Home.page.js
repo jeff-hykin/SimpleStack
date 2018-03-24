@@ -8,11 +8,11 @@
 
 
 
+
 // Create the title
 var hello_element = New("h1",{innerHTML:"Hello World!"})
-Box.appendChild(hello_element)
+Parent.add(hello_element)
 
-log("blah")
 
 
 

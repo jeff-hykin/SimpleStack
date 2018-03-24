@@ -1,5 +1,9 @@
 Global.Debugging = true
 Global.Website = "http://localhost:5000/"
+// add prototypes
+var a = document.createElement('a')
+a.__proto__.__proto__.__proto__.add = a.appendChild // adds the add function to all Nodes 
+// end adding prototypes
 var log = console.log
 var classof = Function.prototype.call.bind(Object.prototype.toString)
 function New(element_name,attributes={}) 
