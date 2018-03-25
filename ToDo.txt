@@ -1,4 +1,6 @@
+
 next things: 
+    - add SimpleID to element proto, and add ther sets and gets for it
     - add a 'Server()' function for running python 
     - add a 'Module()' function for .add()-ing modules
     - on LoadPage keep track of the path in Global.Path
@@ -8,7 +10,8 @@ next things:
       - make sure that the WhenSomeoneSays() functions are removed when the child is removed
 
 next-next things:
-    - make sure the back button/ history works properly 
+    - make sure the back button/ history works properly
+    - get images working
     - create a login page
     - make a GET Request to authorize 1 user 
     - save auth login to cookies/cache
@@ -44,3 +47,7 @@ DONE:
     rename chunks to modules
     get a container class working
     fix the file watcher
+
+
+notes:
+    Server/boilerplate/static/**,*.py,Server/boilerplate/templates/**,Server/boilerplate/PythonVirtualEnv/**

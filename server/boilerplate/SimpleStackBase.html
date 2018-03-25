@@ -12,7 +12,7 @@
     </head>
     <body>
         ###THIS IS WHERE YOU WANT TO REPLACE THE BODY STUFF###
-        <page id="GlobalModule">
+        <page id="GlobalModule" style="background-color: #f5f5f5;" >
         </page>
         <script>
             Global = 
@@ -22,6 +22,12 @@
                     Debugging: false,
                     __NumberOfModulesCreated: 0,
                     __IdsToCheck: new Set([]),
+                    __NumberOfIDs : 0,
+                    GetSimpleId : function ()
+                        {
+                            Global.__NumberOfIDs++
+                            return `${Math.random()}_${Global.__NumberOfIDs}`
+                        },
                     WhenAnythingSays : async function(element_id, saying_, action_obj)
                         {
                             console.log(`starting WhenAnythingSays for element with id ${element_id} for the saying "${saying_}"`)
@@ -147,22 +153,34 @@
                     return await Request({path:"func/"+function_name, data:{arguments:array_of_arguments}})
                 }
             var a = document.createElement('a')
-            a.__proto__.__proto__.__proto__.add = function (...inputs_)
+            a.__proto__.__proto__.__proto__.add = function (input_)
                 {
+                    console.log(`about to add`,input_)
                     // if input is a string
-                    if (typeof inputs_[0] == "string")
+                    if (typeof input_ == "string")
                         {
                             // if inputload input as a module
                             var parent_elem = this
                             var loadModule = async function ()
                                 {
-                                    return ( await eval(await Request({path:"module/"+inputs_[0]}))(parent_elem)  )
+                                    return ( await eval(await Request({path:"module/"+input_}))(parent_elem)  )
                                 }
                             loadModule() // load the module asyncly
                             // FIXME, check for network errors here 
-                            return this
                         }
-                    this.appendChild(...inputs_)
+                    else if (input_ instanceof SimpleElement)
+                        {
+                            this.appendChild(input_.__MainNode)
+                        }
+                    else if (input_ instanceof Node)
+                        {
+                            this.appendChild(input_)
+                        }
+                    else
+                        {
+                            var type_ = typeof input_
+                            if ( type_ == "object" && "constructor" in input_ ) { var type_ = input_.constructor.name }
+                        }
                     return this
                 }
             LoadPage = async function(page_name)
@@ -170,7 +188,7 @@
                     let js_code = await Request({path:"page/"+page_name})
                     // FIXME, check for errors here (encase page doesn't exist)
                     // TODO, utilize state for something useful
-                    history.pushState({}, page_name, page_name)
+                    // history.pushState({}, page_name, page_name.replace(/\/.+?$/,""))
                     // delete the existing main_module
                     // FIXME, add a check to see if the main_module exists
                     var main_module = document.getElementById("GlobalModule")
@@ -178,6 +196,7 @@
                     // create a new main_module 
                     Global.Module = document.createElement('div')
                     Global.Module.id = "GlobalModule"
+                    Global.Module.style.backgroundColor = "#f5f5f5"
                     document.body.appendChild(Global.Module)
                     // run the page with the new main_module 
                     return await eval(js_code)(Global.Module)

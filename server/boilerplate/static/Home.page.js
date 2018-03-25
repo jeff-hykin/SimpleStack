@@ -1,6 +1,6 @@
             LoadModule = async function(Parent) 
                 {
-                    if (Parent.id != "PageParent")  { Parent.id = `Home${Global.__NumberOfModulesCreated++}` }
+                    if (Parent.id != "GlobalModule")  { Parent.id = `Home${Global.__NumberOfModulesCreated++}` }
                     const WhenAnythingSays = (saying_,data_)=>(Global.WhenAnythingSays(Parent.id, saying_, data_))
                     var Home = 
                         {
@@ -8,49 +8,44 @@
                                 {
                                     "use strict"
                                     
+                                    // create
+                                    var vertical_list = new List()
+                                    var title         = New("h1"    ,{ innerHTML : "Hello World!"     })
+                                    var login_button  = New("Button",{ innerHTML : "go to login page" })
+                                    
+                                    // set attributes
                                     HorizonallyCenterChildrenOf(Parent)
-                                    
-                                    // Create the title
-                                    var hello_element = New("h1",{innerHTML:"Hello World!"})
-                                    Parent.add(hello_element)
-                                    
-                                    
-                                    // add a button for going to the login page
-                                    var whenButtonIsClicked = async function()
-                                        { 
+                                    vertical_list.alignEach("center horizontally")
+                                    login_button.onclick = function ()
+                                        {
                                             LoadPage("Login/Login")
                                         }
-                                    var a_button = New("Button", {innerHTML:"imma button", onclick: whenButtonIsClicked})
-                                    Parent.add(a_button)
                                     
-                                    class List
-                                        {
-                                            constructor()
-                                                {
-                                                    this.__main_div = New("div",{style:{class:"List"}})
-                                                    this.__wrapped_list = []
-                                                }
-                                            add(element)
-                                                {
-                                                    // check input
-                                                    if (!(element instanceof Node))
-                                                        {
-                                                            console.error("Somewhere you're trying to add this:",element," to a List, but that <- thing isnt a Node")
-                                                        }
-                                                    // add a wrapper then add to list and __main_div 
-                                                    var wrapper = New("div",{style:{class:"ListItemWrapper"}})
-                                                    wrapper.add(element)
-                                                    this.__wrapped_list.push(wrapper)
-                                                    this.__main_div.add(wrapper)
-                                                }
-                                        }
+                                    // attach 
+                                    Parent.add(vertical_list)
+                                    vertical_list.add(title)
+                                    vertical_list.add(login_button)
                                     
                                     
-                                    var stuff = new List()
+                                    
+                                    
+                                    // // add a button for going to the login page
+                                    // var whenLoginButtonIsClicked = async function()
+                                    //     { 
+                                    //         LoadPage("Login/Login")
+                                    //     }
+                                    // var a_button = New("Button", {innerHTML:"Login", onclick: whenLoginButtonIsClicked})
+                                    // list_container.add(a_button)
+                                    
+                                    // var div_item = New("div",{innerHTML:"login_button#2!",id:"test"})
+                                    // console.log(`div_item.id is:`,div_item.id)
+                                    // // HorizontallyCenter(div_item)
+                                    // list_container.add(div_item)
+                                    
                                     
                                     
                                     // Add the hello module
-                                    Parent.add("hello")
+                                    // Parent.add("hello")
                                     
                                     
                                     
