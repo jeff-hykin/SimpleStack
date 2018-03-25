@@ -1,6 +1,6 @@
 
 next things: 
-    - add SimpleID to element proto, and add ther sets and gets for it
+    - add SimpleID to element proto, and add sets and gets for it
     - add a 'Server()' function for running python 
     - add a 'Module()' function for .add()-ing modules
     - on LoadPage keep track of the path in Global.Path
@@ -27,6 +27,7 @@ soon-ish things:
     - add modules to html page documents, or find another way to load them in
 
 refinement 
+    - add validation to input boxes, add a form class 
     - add favicon.ico
     - error checking 
         - check for a homepage

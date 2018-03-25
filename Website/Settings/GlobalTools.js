@@ -15,7 +15,6 @@ function SetStyle(element,style_obj)
     }
 function New(element_name,attributes={}) 
     {
-        
         var default_attributes = {}
         if (element_name=="Button")
             {
@@ -466,7 +465,7 @@ class Container extends SimpleElement
                 // reset the centering status
                 this.__container_centering_status = null
                 // delete the sub div, and add a new one to be centered 
-                this.__inner_div.parentNode.removeChild(this.__inner_div)
+                this.__inner_div.delete()
                 this.__inner_div = New("div", { position:"relative", style:{textAlign: "center"} })
                 this.__MainNode.add(this.__inner_div)
             }
@@ -504,17 +503,17 @@ class Container extends SimpleElement
     }
 class List extends SimpleElement
     {
-        constructor(attributes_for_parents) 
+        constructor(attributes_) 
             {
-                super(attributes_for_parents)
-                this.__MainNode = New("div",{className:"List" , style:{display:"grid",gridTemplateColumns:"auto",textAlign:"initial"} })
+                super(attributes_)
+                this.__MainNode = New("div",{className:"List" , style:{display:"grid",gridTemplateColumns:"auto",textAlign:"initial",} })
                 this.__wrapped_list = []
                 this.__actual_elem_list = []
                 this.__item_alignment = "None"
             }
         add(element)
             {
-                console.log(`adding element to list!`,element)
+                // console.log(`adding element to list!`,element)
                 // add a wrapper then add to list and __MainNode
                 var wrapper = New("div",{className:"ListItemWrapper", style:{}})
                 wrapper.add(element)
@@ -544,6 +543,118 @@ class List extends SimpleElement
         get element()
             {
                 return this.__MainNode
+            }
+    }
+class Input extends SimpleElement
+    {
+        // FIXME, add all the events 
+        constructor(attributes_)
+            {
+                super()
+                // create 
+                this.__Wrapper  = New("div")
+                this.__MainNode = New("Input",attributes_)
+
+                // set 
+                if (this.id == "") { this.id = `${Math.random()}` } 
+                this.__validator = ()=>{ return {valid: true, error_message:"Invalid" } }
+                this.onInvalidOnBlur     = this.defaultOnInvalidOnBlur
+                this.onInvalidOnGetValue = this.defaultOnInvalidOnGetValue
+                this.__Wrapper.onBlur = function (eventObj)
+                    {
+                        var error_data = this.__validator(this.__MainNode.value)
+                        if (!error_data.valid)
+                            {
+                                this.onInvalidOnBlur(eventObj)
+                            }
+                        this.onBlur(eventObj)
+                    }
+                this.__Wrapper.onChange = function()
+                    {
+                        // remove the invalid cases
+                        this.__MainNode.classList.remove("invalid")
+                    }
+                // attach
+                this.__Wrapper.add(this.__MainNode)
+            }
+        get defaultOnInvalidOnGetValue()
+            {
+                return function (error_data)
+                    {
+                        // add the invalid class
+                        this.__MainNode.classList.add("invalid")
+                        // if there is an error message, show it
+                        if (!('error_message' in this) && 'error_message' in error_data)
+                            {
+                                this.error_message = New("span",{ dataError:error_data.error_message, className:"helper-text" })
+                                this.__Wrapper.add(this.error_message)
+                            }
+                        else if ('error_message' in this && 'error_message' in error_data)
+                            {
+                                this.error_message.dataError = error_data.error_message
+                            }
+                    }
+            }
+        get defaultOnInvalidOnBlur()
+            {
+                return function (error_data) { this.__MainNode.classList.add("invalid") }
+            }
+        set label(value_)
+            {
+                // if the value is a string
+                if (typeof value_ == "string")
+                    {
+                        
+                        // if label doesnt exist create it and set the value 
+                        if (!('label' in this) || this.label == null) 
+                            { 
+                                console.log(`no this.label yet`)
+                                this.label = New("label",{innerHTML:value_}) 
+                                this.__Wrapper.add(this.label)
+                            }
+                        // if label does exist just set the value
+                        else 
+                            { 
+                                console.log(`this.label is:`,this.label)
+                                this.label.innerHTML = value_ 
+                            }
+                        // make sure to set the id
+                        this.label.setAttribute('for', this.__MainNode.id)
+                    }
+                // FIXME, add support for things other than strings
+            }
+        set id(value_)
+            {
+                if ('label' in this && this.label != null) 
+                    { 
+                        this.label.setAttribute('for', this.__MainNode.id)
+                    }
+                this.__MainNode.id = value_
+            }
+        get id() 
+            { 
+                return this.__MainNode.id 
+            }
+        get value()
+            {
+                var error_data = this.__validator(this.__MainNode.value)
+                if (!error_data.valid)
+                    {
+                        this.onInvalidOnBlur()
+                    }
+                return this.__MainNode.value
+            }
+        set validator(value_)
+            {
+                if (typeof value_ == "function")
+                    {
+                        this.__validator = value_
+                    }
+                // FIXME, add regex and string/preset support 
+            }
+        get validator()
+            {
+                return this.__validator
             }
     }
 class LabeledInput extends SimpleElement

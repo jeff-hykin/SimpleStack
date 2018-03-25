@@ -39,19 +39,30 @@ def SystemRoutes(): #this is name-specific
                     file.close()
                     return output
 
-                @Route('/Login/Login')
+                @Route('/Login/SignUp')
                 def route4():
+                    return  render_template('Login→SignUp.html')
+
+                @Route('/page/Login/SignUp')
+                def page_route4():
+                    file = open('/Users/jeffhykin/Documents/_Programming/SimpleStack/Server/boilerplate/static/Login→SignUp.page.js', "r")
+                    output = file.read()
+                    file.close()
+                    return output
+
+                @Route('/Login/Login')
+                def route5():
                     return  render_template('Login→Login.html')
 
                 @Route('/page/Login/Login')
-                def page_route4():
+                def page_route5():
                     file = open('/Users/jeffhykin/Documents/_Programming/SimpleStack/Server/boilerplate/static/Login→Login.page.js', "r")
                     output = file.read()
                     file.close()
                     return output
 
                 @Route('/module/hello')
-                def module_route5():
+                def module_route6():
                     file = open('/Users/jeffhykin/Documents/_Programming/SimpleStack/Server/boilerplate/static/hello.module.js', "r")
                     output = file.read()
                     file.close()
@@ -59,7 +70,7 @@ def SystemRoutes(): #this is name-specific
 
                 
                 @Route('/func/HelloWorld', methods=['POST'])
-                def func_route6():
+                def func_route7():
                     DATA_FROM_CLIENT = ReceiveJsonData()
                     
 
@@ -68,7 +79,7 @@ def SystemRoutes(): #this is name-specific
 
                 
                 @Route('/func/Hello', methods=['POST'])
-                def func_route7():
+                def func_route8():
                     DATA_FROM_CLIENT = ReceiveJsonData()
                     
                     name_ = DATA_FROM_CLIENT['arguments'][0]
@@ -78,7 +89,7 @@ def SystemRoutes(): #this is name-specific
 
                 @RequireLoginForThis
                 @Route('/func/users/UserNameChange', methods=['POST'])
-                def func_route8():
+                def func_route9():
                     DATA_FROM_CLIENT = ReceiveJsonData()
                     
                     new_username = DATA_FROM_CLIENT['arguments'][0]
@@ -94,7 +105,7 @@ def SystemRoutes(): #this is name-specific
 
                 @RequireLoginForThis
                 @Route('/func/users/UserBalance', methods=['POST'])
-                def func_route9():
+                def func_route10():
                     DATA_FROM_CLIENT = ReceiveJsonData()
                     
                     username = DATA_FROM_CLIENT['arguments'][0]
@@ -104,3 +115,28 @@ def SystemRoutes(): #this is name-specific
                         return User.withUsername(username).balance
                     else:
                         return None
+
+                
+                @Route('/func/Login/Login', methods=['POST'])
+                def func_route11():
+                    DATA_FROM_CLIENT = ReceiveJsonData()
+                    
+                    username = DATA_FROM_CLIENT['arguments'][0]
+                    password = DATA_FROM_CLIENT['arguments'][1]
+
+                    
+                    possible_outputs = \
+                        { 
+                            "really": "-_- really?",
+                            "password_len": "Sorry, passwords need to be 8 characters or more",
+                            "username_len": "Usernames, need to be 8 characters or more",
+                            "success" : "Success!",
+                        }
+                    if password == "password":
+                        return possible_outputs["really"]
+                    elif len(password) < 8:
+                        return possible_outputs["password_len"]
+                    elif len(username) < 8:
+                        return possible_outputs["username_len"]
+                    else:
+                        return possible_outputs["success"]

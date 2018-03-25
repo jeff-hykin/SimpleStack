@@ -10,9 +10,9 @@
         <!-- import other things -->
         ###THIS IS WHERE YOU WANT TO REPLACE THE HEAD STUFF###
     </head>
-    <body>
+    <body style="background-color: #f5f5f5;">
         ###THIS IS WHERE YOU WANT TO REPLACE THE BODY STUFF###
-        <page id="GlobalModule" style="background-color: #f5f5f5;" >
+        <page id="GlobalModule"  >
         </page>
         <script>
             Global = 
@@ -153,9 +153,13 @@
                     return await Request({path:"func/"+function_name, data:{arguments:array_of_arguments}})
                 }
             var a = document.createElement('a')
+            a.__proto__.__proto__.__proto__.delete = function ()
+                {
+                    this.parentNode.removeChild(this)
+                }
             a.__proto__.__proto__.__proto__.add = function (input_)
                 {
-                    console.log(`about to add`,input_)
+                    // console.log(`about to add`,input_)
                     // if input is a string
                     if (typeof input_ == "string")
                         {
@@ -192,11 +196,10 @@
                     // delete the existing main_module
                     // FIXME, add a check to see if the main_module exists
                     var main_module = document.getElementById("GlobalModule")
-                    main_module.parentNode.removeChild(main_module)
+                    main_module.delete()
                     // create a new main_module 
                     Global.Module = document.createElement('div')
                     Global.Module.id = "GlobalModule"
-                    Global.Module.style.backgroundColor = "#f5f5f5"
                     document.body.appendChild(Global.Module)
                     // run the page with the new main_module 
                     return await eval(js_code)(Global.Module)
