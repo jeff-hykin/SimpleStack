@@ -9,7 +9,7 @@
                                     "use strict"
                                     
                                     // create
-                                    var login_card      = New("Card",{ width:"35%", height:"400px", marginTop:"12%", padding:"50px 30px" })
+                                    var login_card      = New("Card",{ width:"35%", height:"auto", marginTop:"12%", padding:"50px 30px" })
                                     var vertical_list   = new List()
                                     var two_cents_title = New("h2", { innerHTML:"YOUR SITE", fontWeight:"100", marginBottom:"30px" })
                                     var username_box    = new Input({ placeholder:"Username", })
@@ -21,6 +21,8 @@
                                     // set attributes
                                     HorizonallyCenterChildrenOf(Parent)
                                     vertical_list.alignEach("center horizontally")
+                                    username_box.validator = (value)=>{ if (value.length < 8) { return {valid: false, error_message:"needs to be 8 characters"} }; return true }
+                                    password_box.validator = (value)=>{ if (value.length < 8) { return {valid: false, error_message:"needs to be 8 characters"} }; return true }
                                     login_button.onclick = async function()
                                         {
                                             console.log(`username is `, username_box.value)

@@ -103,7 +103,14 @@ function TimerFor(time_amount)
     }
 class SimpleElement
     {
-        constructor(element) { this.__MainNode = element }
+        constructor(element) 
+            { 
+                this.__MainNode = element 
+            }
+        get outerMostNode()
+            {
+                return this.__MainNode
+            }
         get asElem() { return this.__MainNode }
         // html properties
             get accept()                 { return this.__MainNode.accept             } set accept                   (value_) { this.__MainNode.accept          = value_ }
@@ -505,11 +512,19 @@ class List extends SimpleElement
     {
         constructor(attributes_) 
             {
-                super(attributes_)
+                super()
                 this.__MainNode = New("div",{className:"List" , style:{display:"grid",gridTemplateColumns:"auto",textAlign:"initial",} })
                 this.__wrapped_list = []
                 this.__actual_elem_list = []
                 this.__item_alignment = "None"
+            }
+        set width(value_)
+            {
+                this.__MainNode.style.width = value_
+            }
+        get width()
+            {
+                return this.__MainNode.style.width
             }
         add(element)
             {
@@ -517,6 +532,8 @@ class List extends SimpleElement
                 // add a wrapper then add to list and __MainNode
                 var wrapper = New("div",{className:"ListItemWrapper", style:{}})
                 wrapper.add(element)
+                var this_ = this;
+                var index_ = this.__actual_elem_list.length - 1
                 this.__actual_elem_list.push(element)
                 this.__wrapped_list.push(wrapper)
                 this.__MainNode.add(wrapper)
@@ -524,6 +541,20 @@ class List extends SimpleElement
                     {
                         HorizonallyCenterChildrenOf(wrapper)
                     }
+                // set the delete function for the element 
+                element.delete = ()=> 
+                    {
+                        // remove element from array 
+                        this_.__actual_elem_list.splice(index_,1)
+                        // remove wrapper from array
+                        this_.__wrapped_list.splice(index_,1)
+                        // delete wrapper
+                        wrapper.delete()
+                    }
+            }
+        horizontallyCenter(index)
+            {
+                HorizonallyCenterChildrenOf(this.__wrapped_list[index])
             }
         at(index)
             {
@@ -551,11 +582,19 @@ class Input extends SimpleElement
         constructor(attributes_)
             {
                 super()
+                if (!('marginBottom' in attributes_) || attributes_.marginBottom == "")
+                    {
+                        attributes_.marginBottom = "5px"
+                    }
                 // create 
-                this.__Wrapper  = New("div")
+                this.__Wrapper  = New("div", {width:"100%"})
+                this.__list = new List({width:"100%"})
                 this.__MainNode = New("Input",attributes_)
+                this.error_message = New("span",{  innerHTML:"", className:"helper-text", color:"#F44336", marginLeft:"20px",marginTop:"0" })
 
                 // set 
+                HorizonallyCenterChildrenOf(this.__Wrapper)
+                this.__list.width = "100%"
                 if (this.id == "") { this.id = `${Math.random()}` } 
                 this.__validator = ()=>{ return {valid: true, error_message:"Invalid" } }
                 this.onInvalidOnBlur     = this.defaultOnInvalidOnBlur
@@ -565,7 +604,7 @@ class Input extends SimpleElement
                         var error_data = this.__validator(this.__MainNode.value)
                         if (!error_data.valid)
                             {
-                                this.onInvalidOnBlur(eventObj)
+                                this.onInvalidOnBlur(error_data)
                             }
                         this.onBlur(eventObj)
                     }
@@ -573,26 +612,34 @@ class Input extends SimpleElement
                     {
                         // remove the invalid cases
                         this.__MainNode.classList.remove("invalid")
+                        this.error_message.innerHTML = ""
                     }
                 // attach
-                this.__Wrapper.add(this.__MainNode)
+                this.__list.add(this.__MainNode)
+                this.__list.add(this.error_message)
+                this.__Wrapper.add(this.__list)
+
+                // set again 
+                this.__list.horizontallyCenter(0)
+            }
+        set width(value_)
+            {
+                this.__Wrapper.style.width = value_ 
+            }
+        get width()
+            {
+                return this.__Wrapper.style.width
             }
         get defaultOnInvalidOnGetValue()
             {
                 return function (error_data)
                     {
+                        console.log(`onInvalidOnGetValue`)
+                        console.log(`error_data is:`,error_data)
                         // add the invalid class
                         this.__MainNode.classList.add("invalid")
                         // if there is an error message, show it
-                        if (!('error_message' in this) && 'error_message' in error_data)
-                            {
-                                this.error_message = New("span",{ dataError:error_data.error_message, className:"helper-text" })
-                                this.__Wrapper.add(this.error_message)
-                            }
-                        else if ('error_message' in this && 'error_message' in error_data)
-                            {
-                                this.error_message.dataError = error_data.error_message
-                            }
+                        this.error_message.innerHTML = error_data.error_message
                     }
             }
         get defaultOnInvalidOnBlur()
@@ -610,7 +657,7 @@ class Input extends SimpleElement
                             { 
                                 console.log(`no this.label yet`)
                                 this.label = New("label",{innerHTML:value_}) 
-                                this.__Wrapper.add(this.label)
+                                this.__list.add(this.label)
                             }
                         // if label does exist just set the value
                         else 
@@ -640,7 +687,7 @@ class Input extends SimpleElement
                 var error_data = this.__validator(this.__MainNode.value)
                 if (!error_data.valid)
                     {
-                        this.onInvalidOnBlur()
+                        this.onInvalidOnGetValue(error_data)
                     }
                 return this.__MainNode.value
             }
@@ -655,6 +702,10 @@ class Input extends SimpleElement
         get validator()
             {
                 return this.__validator
+            }
+        get outerMostNode()
+            {
+                return this.__Wrapper
             }
     }
 class LabeledInput extends SimpleElement

@@ -174,7 +174,8 @@
                         }
                     else if (input_ instanceof SimpleElement)
                         {
-                            this.appendChild(input_.__MainNode)
+                            console.log(`adding OuterMostNode`,input_.outerMostNode)
+                            this.appendChild(input_.outerMostNode)
                         }
                     else if (input_ instanceof Node)
                         {
