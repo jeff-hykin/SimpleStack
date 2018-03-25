@@ -1,5 +1,6 @@
 
 next things: 
+    - add events to SimpleElement
     - add SimpleID to element proto, and add sets and gets for it
     - add a 'Server()' function for running python 
     - add a 'Module()' function for .add()-ing modules

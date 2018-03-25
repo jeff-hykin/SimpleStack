@@ -1,11 +1,21 @@
 // create
-var login_card      = New("Card",{ width:"35%", height:"auto", marginTop:"12%", padding:"50px 30px" })
+var login_card      = New("Card",{ width:"520px", height:"auto", marginTop:"12%", padding:"50px 30px" })
 var vertical_list   = new List()
-var two_cents_title = New("h2", { innerHTML:"YOUR SITE", fontWeight:"100", marginBottom:"30px" })
+var a_title         = New("h2", { innerHTML:"YOUR SITE", fontWeight:"100", marginBottom:"30px" })
 var username_box    = new Input({ placeholder:"Username", })
 var password_box    = new Input({ placeholder:"Password", type:"password" })
 var login_button    = New("Button",{ innerHTML:"login", width:"95%", marginTop:"20px" })
 var error_msg_box   = New("div")
+
+
+// attach
+Parent.add(login_card)
+login_card.add(vertical_list)
+vertical_list.add(a_title)
+vertical_list.add(username_box)
+vertical_list.add(password_box)
+vertical_list.add(login_button)
+vertical_list.add(error_msg_box)
 
 
 // set attributes
@@ -32,11 +42,4 @@ login_button.onclick = async function()
 error_msg_box.style.marginTop = "10px"
 
 
-// attach
-Parent.add(login_card)
-login_card.add(vertical_list)
-vertical_list.add(two_cents_title)
-vertical_list.add(username_box)
-vertical_list.add(password_box)
-vertical_list.add(login_button)
-vertical_list.add(error_msg_box)
+

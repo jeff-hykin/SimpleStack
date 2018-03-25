@@ -174,7 +174,6 @@
                         }
                     else if (input_ instanceof SimpleElement)
                         {
-                            console.log(`adding OuterMostNode`,input_.outerMostNode)
                             this.appendChild(input_.outerMostNode)
                         }
                     else if (input_ instanceof Node)
@@ -195,7 +194,6 @@
                     // TODO, utilize state for something useful
                     // history.pushState({}, page_name, page_name.replace(/\/.+?$/,""))
                     // delete the existing main_module
-                    // FIXME, add a check to see if the main_module exists
                     var main_module = document.getElementById("GlobalModule")
                     main_module.delete()
                     // create a new main_module 

@@ -191,7 +191,6 @@
                         }
                     else if (input_ instanceof SimpleElement)
                         {
-                            console.log(`adding OuterMostNode`,input_.outerMostNode)
                             this.appendChild(input_.outerMostNode)
                         }
                     else if (input_ instanceof Node)
@@ -212,7 +211,6 @@
                     // TODO, utilize state for something useful
                     // history.pushState({}, page_name, page_name.replace(/\/.+?$/,""))
                     // delete the existing main_module
-                    // FIXME, add a check to see if the main_module exists
                     var main_module = document.getElementById("GlobalModule")
                     main_module.delete()
                     // create a new main_module 
@@ -234,11 +232,14 @@
             const html_tag_with_overlap = {img           : null, canvas         : null, embed      : null, iframe  : null, input     : null, object         : null, video              : null, meta              : null, basefont          : null, font                    : null, hr            : null, img                : null, object                  : null, table              : null } 
             var log = console.log
             var classof = Function.prototype.call.bind(Object.prototype.toString)
-            function SetStyle(element,style_obj) 
+            function SetStyle(element,style_obj=null) 
                 {
-                    for (var each_key of Object.keys(style_obj))
+                    if (style_obj != null && typeof style_obj == "object")
                         {
-                            element.style[each_key] = style_obj[each_key]
+                            for (var each_key of Object.keys(style_obj))
+                                {
+                                    element.style[each_key] = style_obj[each_key]
+                                }
                         }
                 }
             function New(element_name,attributes={}) 
@@ -742,6 +743,7 @@
                         {
                             super()
                             this.__MainNode = New("div",{className:"List" , style:{display:"grid",gridTemplateColumns:"auto",textAlign:"initial",} })
+                            SetStyle( this.__MainNode , attributes_ )
                             this.__wrapped_list = []
                             this.__actual_elem_list = []
                             this.__item_alignment = "None"

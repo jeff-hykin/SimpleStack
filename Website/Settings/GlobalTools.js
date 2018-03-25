@@ -6,11 +6,14 @@ const css_overlap           = {"border"      : null, "color"        : null, "con
 const html_tag_with_overlap = {img           : null, canvas         : null, embed      : null, iframe  : null, input     : null, object         : null, video              : null, meta              : null, basefont          : null, font                    : null, hr            : null, img                : null, object                  : null, table              : null } 
 var log = console.log
 var classof = Function.prototype.call.bind(Object.prototype.toString)
-function SetStyle(element,style_obj) 
+function SetStyle(element,style_obj=null) 
     {
-        for (var each_key of Object.keys(style_obj))
+        if (style_obj != null && typeof style_obj == "object")
             {
-                element.style[each_key] = style_obj[each_key]
+                for (var each_key of Object.keys(style_obj))
+                    {
+                        element.style[each_key] = style_obj[each_key]
+                    }
             }
     }
 function New(element_name,attributes={}) 
@@ -514,6 +517,7 @@ class List extends SimpleElement
             {
                 super()
                 this.__MainNode = New("div",{className:"List" , style:{display:"grid",gridTemplateColumns:"auto",textAlign:"initial",} })
+                SetStyle( this.__MainNode , attributes_ )
                 this.__wrapped_list = []
                 this.__actual_elem_list = []
                 this.__item_alignment = "None"

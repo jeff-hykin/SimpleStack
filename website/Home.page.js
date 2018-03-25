@@ -1,7 +1,14 @@
 // create
-var vertical_list = new List()
-var title         = New("h1"    ,{ innerHTML : "Hello World!"     })
-var login_button  = New("Button",{ innerHTML : "go to login page" })
+var vertical_list   = new List()
+var title           = New("h1"    ,{ innerHTML : "Hello World!"     })
+var login_button    = New("Button",{ innerHTML : "go to login page" , margin:"12px"})
+var sign_up_button  = New("Button",{ innerHTML : "sign up" , margin:"12px"})
+
+// attach 
+Parent.add(vertical_list)
+vertical_list.add(title)
+vertical_list.add(login_button)
+vertical_list.add(sign_up_button)
 
 // set attributes
 HorizonallyCenterChildrenOf(Parent)
@@ -10,12 +17,10 @@ login_button.onclick = function ()
     {
         LoadPage("Login/Login")
     }
-
-// attach 
-Parent.add(vertical_list)
-vertical_list.add(title)
-vertical_list.add(login_button)
-
+sign_up_button.onclick = function ()
+    {
+        LoadPage("Login/SignUp")
+    }
 
 
 
