@@ -1,3 +1,16 @@
+Parent.ifYouHear('test',()=>{ /*do stuff*/ })
+// Parent.addEventListener('test', function (e) 
+//     {
+//         /*do stuff*/
+//     }, false);
+
+Say('test')
+// var event = new Event('test');
+// Parent.dispatchEvent(event);
+
+
+
+
 
 next things: 
     - add events to SimpleElement
