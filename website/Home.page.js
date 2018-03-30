@@ -3,12 +3,14 @@ var vertical_list   = new List()
 var title           = New("h1"    ,{ innerHTML : "Hello World!"     })
 var login_button    = New("Button",{ innerHTML : "go to login page" , margin:"12px"})
 var sign_up_button  = New("Button",{ innerHTML : "sign up" , margin:"12px"})
+var a_link_to_google = new A({text:"Go to Google",link:"Login/Login"})
 
 // attach 
 Parent.add(vertical_list)
 vertical_list.add(title)
 vertical_list.add(login_button)
 vertical_list.add(sign_up_button)
+vertical_list.add(a_link_to_google)
 
 // set attributes
 HorizonallyCenterChildrenOf(Parent)

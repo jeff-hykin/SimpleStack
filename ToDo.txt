@@ -1,16 +1,3 @@
-Parent.ifYouHear('test',()=>{ /*do stuff*/ })
-// Parent.addEventListener('test', function (e) 
-//     {
-//         /*do stuff*/
-//     }, false);
-
-Say('test')
-// var event = new Event('test');
-// Parent.dispatchEvent(event);
-
-
-
-
 
 next things: 
     - add events to SimpleElement
@@ -65,4 +52,15 @@ DONE:
 
 
 notes:
+
+    Parent.ifYouHear('test',()=>{ /*do stuff*/ })
+    // Parent.addEventListener('test', function (e) 
+    //     {
+    //         /*do stuff*/
+    //     }, false);
+
+    Say('test')
+    // var event = new Event('test');
+    // Parent.dispatchEvent(event);
+
     Server/boilerplate/static/**,*.py,Server/boilerplate/templates/**,Server/boilerplate/PythonVirtualEnv/**

@@ -457,60 +457,6 @@ class SimpleElement
             get writingMode                     () { return this.__MainNode.style.writingMode                      } set writingMode                     (value_) { this.__MainNode.writingMode                     = value_ }
             get zIndex                          () { return this.__MainNode.style.zIndex                           } set zIndex                          (value_) { this.__MainNode.zIndex                          = value_ }
     }
-class Container extends SimpleElement
-    {
-        constructor(attributes_for_parents)
-            {
-                super(attributes_for_parents)
-                // create 
-                this.__MainNode = New("div")
-                this.__inner_div = New("div", { position:"relative" })
-                // attach
-                this.__MainNode.add(this.__inner_div)
-                // other attributes 
-                this.__container_centering_status = "None"
-            }
-        clearMiddle()
-            {
-                // reset the centering status
-                this.__container_centering_status = null
-                // delete the sub div, and add a new one to be centered 
-                this.__inner_div.delete()
-                this.__inner_div = New("div", { position:"relative", style:{textAlign: "center"} })
-                this.__MainNode.add(this.__inner_div)
-            }
-        center(element)
-            {
-                // FIXME
-                // this.clearMiddle() 
-                // this.__container_centering_status = "centered"
-                // element.style.position = "absolute"
-                // element.style.top = "50%"
-                // element.style.left = "50%"
-                // element.style.transform = "translate(-50%, -50%)"
-                // this.__inner_div.add(element)
-            }
-        add(...elements) 
-            {
-                if(this.__container_centering_status == "centered") 
-                    {
-                        // FIXME
-                        console.error(`So you`)
-                        return
-                    }
-                for (var each in elements)
-                    {
-                        if (elements[each] instanceof Container) 
-                            {
-                                this.__inner_div.appendChild(elements[each].__MainNode)
-                            }
-                        else 
-                            {
-                                this.__inner_div.appendChild(elements[each])
-                            }
-                    }
-            }
-    }
 class List extends SimpleElement
     {
         constructor(attributes_) 
@@ -769,3 +715,38 @@ class LabeledInput extends SimpleElement
                 this.input.style.placeholder = input_ 
             }
     }
+class A extends SimpleElement
+    {
+        constructor(inputs_={link:null, text:null})
+            {
+                if (inputs_.link != null)
+                    {
+                        inputs_.href = inputs_.link
+                    }
+                if (inputs_.text != null)
+                    {
+                        // FIXME, make sure to update this later to use the Text class
+                        inputs_.innerHTML = inputs_.text
+                    }
+                super(New("a", inputs_))
+            }
+    }
+class Link extends SimpleElement 
+    {
+        constructor(inputs_={link:null, text:null})
+            {
+                if (inputs_.link != null)
+                    {
+                        inputs_.href = inputs_.link
+                    }
+                if (inputs_.text != null)
+                    {
+                        // FIXME, make sure to update this later to use the Text class
+                        inputs_.innerHTML = inputs_.text
+                    }
+                super(New("a", inputs_))
+            }
+    }
+    
+
+// TODO figure out how to support map+img+area
