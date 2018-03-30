@@ -12,7 +12,7 @@ def SystemRoutes(): #this is name-specific
 
                 @Route('/page/Home')
                 def page_route1():
-                    file = open('/Users/jeffhykin/Documents/_Programming/SimpleStack/Server/boilerplate/static/Home.page.js', "r")
+                    file = open('/Users/jeffhykin/Documents/_Programming/SimpleStack/.Server/boilerplate/static/Home.page.js', "r")
                     output = file.read()
                     file.close()
                     return output
@@ -23,7 +23,7 @@ def SystemRoutes(): #this is name-specific
 
                 @Route('/page/users/<string:name>')
                 def page_route2():
-                    file = open('/Users/jeffhykin/Documents/_Programming/SimpleStack/Server/boilerplate/static/users→<string•name>.page.js', "r")
+                    file = open('/Users/jeffhykin/Documents/_Programming/SimpleStack/.Server/boilerplate/static/users→<string•name>.page.js', "r")
                     output = file.read()
                     file.close()
                     return output
@@ -34,7 +34,7 @@ def SystemRoutes(): #this is name-specific
 
                 @Route('/page/users/users')
                 def page_route3():
-                    file = open('/Users/jeffhykin/Documents/_Programming/SimpleStack/Server/boilerplate/static/users→users.page.js', "r")
+                    file = open('/Users/jeffhykin/Documents/_Programming/SimpleStack/.Server/boilerplate/static/users→users.page.js', "r")
                     output = file.read()
                     file.close()
                     return output
@@ -45,7 +45,7 @@ def SystemRoutes(): #this is name-specific
 
                 @Route('/page/Login/SignUp')
                 def page_route4():
-                    file = open('/Users/jeffhykin/Documents/_Programming/SimpleStack/Server/boilerplate/static/Login→SignUp.page.js', "r")
+                    file = open('/Users/jeffhykin/Documents/_Programming/SimpleStack/.Server/boilerplate/static/Login→SignUp.page.js', "r")
                     output = file.read()
                     file.close()
                     return output
@@ -56,14 +56,14 @@ def SystemRoutes(): #this is name-specific
 
                 @Route('/page/Login/Login')
                 def page_route5():
-                    file = open('/Users/jeffhykin/Documents/_Programming/SimpleStack/Server/boilerplate/static/Login→Login.page.js', "r")
+                    file = open('/Users/jeffhykin/Documents/_Programming/SimpleStack/.Server/boilerplate/static/Login→Login.page.js', "r")
                     output = file.read()
                     file.close()
                     return output
 
                 @Route('/module/hello')
                 def module_route6():
-                    file = open('/Users/jeffhykin/Documents/_Programming/SimpleStack/Server/boilerplate/static/hello.module.js', "r")
+                    file = open('/Users/jeffhykin/Documents/_Programming/SimpleStack/.Server/boilerplate/static/hello.module.js', "r")
                     output = file.read()
                     file.close()
                     return output

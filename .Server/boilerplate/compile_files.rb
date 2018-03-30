@@ -136,7 +136,7 @@
 
                 @Route('/page/#{name_}')
                 def page_route#{$routeNumber}():
-                    file = open('#{Dir.pwd}/Server/boilerplate/static/#{file_name_escape("#{name_}")}.page.js', "r")
+                    file = open('#{Dir.pwd}/.Server/boilerplate/static/#{file_name_escape("#{name_}")}.page.js', "r")
                     output = file.read()
                     file.close()
                     return output
@@ -156,7 +156,7 @@
         return [ "/module/#{name_}",  <<-HEREDOC
                 @Route('/module/#{name_}')
                 def module_route#{$routeNumber}():
-                    file = open('#{Dir.pwd}/Server/boilerplate/static/#{file_name_escape("#{name_}")}.module.js', "r")
+                    file = open('#{Dir.pwd}/.Server/boilerplate/static/#{file_name_escape("#{name_}")}.module.js', "r")
                     output = file.read()
                     file.close()
                     return output
@@ -172,10 +172,10 @@
         # if there is only one argument, make it a get request
         #    (this will also requre a change in the SimpleStackBase run() function)
         basename_ = basename(file_path)
+        argument_area = basename_[  /(?<=\()(.*?)(?=\))/  ]
 
-        # parse arguments 
+        # parse arguments
             # FIXME, this will throw an error if there are no ()'s in the name
-            argument_area = basename_[  /(?<=\()(.*?)(?=\))/  ]
             arguments     = argument_area.split(/ *, */)
             argument_assignment_string = "\n"
             argument_index = 0 
@@ -217,27 +217,30 @@ Dir.chdir "../.."
 
 
 # location 
-location_of_base_html      = Dir.pwd+"/Website/Settings/GlobalIndex.html"
-location_of_general_tools  = Dir.pwd+"/Website/Settings/GlobalTools.js"
-location_of_global_css     = Dir.pwd+"/Website/Settings/GlobalStyles.css"
-simple_stack_base_html_dir = Dir.pwd+"/Server/boilerplate/SimpleStackBase.html"
-static_dir                 = Dir.pwd+"/Server/boilerplate/static/"
-template_dir               = Dir.pwd+"/Server/boilerplate/templates/"
-routes_file_location       = Dir.pwd+"/Server/boilerplate/routes.py"
+location_of_global_python  = Dir.pwd+"/Website/Global/GlobalPython.py"
+location_of_base_html      = Dir.pwd+"/Website/Global/GlobalIndex.html"
+location_of_general_tools  = Dir.pwd+"/Website/Global/GlobalJavascript.js"
+location_of_global_css     = Dir.pwd+"/Website/Global/GlobalStyles.css"
+simple_stack_base_html_dir = Dir.pwd+"/.Server/boilerplate/SimpleStackBase.html"
+static_dir                 = Dir.pwd+"/.Server/boilerplate/static/"
+template_dir               = Dir.pwd+"/.Server/boilerplate/templates/"
+routes_file_location       = Dir.pwd+"/.Server/boilerplate/routes.py"
 dirs_of_pages              = Dir.glob("Website/**/*.page.js")
-dirs_of_modules             = Dir.glob("Website/**/*.module.js")
+dirs_of_modules            = Dir.glob("Website/**/*.module.js")
 dirs_of_python_files       = Dir.glob("Website/**/*.py")
 dirs_of_css_files          = Dir.glob("Website/**/*.css")
 favicon                    = Dir.glob("Website/**/favicon.ico")
 
 
 # initilize theses
-everything_that_should_be_in_static = [static_dir+'Settings→GlobalStyles.css',static_dir+'Home.page.js']
+everything_that_should_be_in_static = [static_dir+'Global→GlobalStyles.css',static_dir+'Home.page.js']
 everything_that_should_be_templates = ['Home.html']
 
 # move the base file
 # FileUtils.cp(location_of_base_html, template_dir)
 
+# move the python to the setup function
+save readFile(location_of_global_python), to:".Server/setup.py"
 
 #
 #   get the head and body from the base
@@ -254,8 +257,8 @@ replacement_keys = {
     "tools" => /###THIS IS WHERE YOU WANT TO REPLACE THE GENERAL TOOLS###/,
     "css"   => /###THIS IS WHERE YOU WANT TO REPLACE THE CSS STUFF###/,
 }
-# if the Settings exists 
-if exists(Dir.pwd+"/Website/Settings")
+# if the Global folder exists 
+if exists(Dir.pwd+"/Website/Global")
     regex_multiple_replacement = []
 
     if exists(location_of_base_html)
@@ -277,7 +280,7 @@ if exists(Dir.pwd+"/Website/Settings")
     end 
     
     if exists(location_of_global_css)
-        regex_multiple_replacement << [replacement_keys["css"] , '<link type="text/css" rel="stylesheet" href="{{ url_for(\'static\',filename=\'Settings→GlobalStyles.css\') }}"/>']
+        regex_multiple_replacement << [replacement_keys["css"] , '<link type="text/css" rel="stylesheet" href="{{ url_for(\'static\',filename=\'Global→GlobalStyles.css\') }}"/>']
     else 
         regex_multiple_replacement << [replacement_keys["css"] , '\n']
     end
@@ -379,9 +382,14 @@ for each in dirs_of_python_files
     # FIXME, check if protected or not
     file_path.sub!(".py","")
 
-    # create a route for the func
-    the_route_pair = route_for_func(file_path)
-    routes_[the_route_pair[0]] = "\n"+the_route_pair[1]
+    basename_ = basename(file_path)
+    argument_area = basename_[  /(?<=\()(.*?)(?=\))/  ]
+    # if there are ()'s
+    if argument_area != nil
+        # create a route for the func
+        the_route_pair = route_for_func(file_path)
+        routes_[the_route_pair[0]] = "\n"+the_route_pair[1]
+    end 
 end 
 
 

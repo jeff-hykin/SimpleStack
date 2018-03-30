@@ -145,7 +145,7 @@
 
                 @Route('/page/#{name_}')
                 def page_route#{$routeNumber}():
-                    file = open('#{Dir.pwd}/Server/boilerplate/static/#{file_name_escape("#{name_}")}.page.js', "r")
+                    file = open('#{Dir.pwd}/.Server/boilerplate/static/#{file_name_escape("#{name_}")}.page.js', "r")
                     output = file.read()
                     file.close()
                     return output
@@ -165,7 +165,7 @@
         return [ "/module/#{name_}",  <<-HEREDOC
                 @Route('/module/#{name_}')
                 def module_route#{$routeNumber}():
-                    file = open('#{Dir.pwd}/Server/boilerplate/static/#{file_name_escape("#{name_}")}.module.js', "r")
+                    file = open('#{Dir.pwd}/.Server/boilerplate/static/#{file_name_escape("#{name_}")}.module.js', "r")
                     output = file.read()
                     file.close()
                     return output
@@ -226,13 +226,13 @@ begin # for catching ctrl+c
     Dir.chdir "../.."
 
     # locations 
-    $hidden_backend_dir         = Dir.pwd+"/Server/boilerplate/"
+    $hidden_backend_dir         = Dir.pwd+"/.Server/boilerplate/"
     $static_dir                 = $hidden_backend_dir+"static/"
     $template_dir               = $hidden_backend_dir+"templates/"
     $routes_file_location       = $hidden_backend_dir+"routes.py"
-    $server_output_name         = "Server/server_output.txt"
+    $server_output_name         = ".Server/server_output.txt"
     $full_path_to_server_ouput  = Dir.pwd+"/"+$server_output_name
-    $server_pid_file_locaion    = "Server/.server_pid.txt"
+    $server_pid_file_locaion    = ".Server/.server_pid.txt"
 
     def startServer()
         if exists($server_pid_file_locaion)
@@ -256,8 +256,8 @@ begin # for catching ctrl+c
 
 
     # update the files as theyre being changed
-    Filewatcher.new(['**/*.*']).watch do |filename, event|
-        #DUMB FILE WATCHER:
+    Filewatcher.new(['Website/','.Server/server_output.txt']).watch do |filename, event|
+        #DUMB FILE WATCHER (just recompiles everything everytime)
             event = "#{event}"
             
             if (event != "deleted")
@@ -277,8 +277,6 @@ begin # for catching ctrl+c
                         createFile(name:$server_output_name, code:"")
                     end
                     
-
-
                     # erase the existing file
                     
                 end
@@ -295,7 +293,7 @@ begin # for catching ctrl+c
                 # re-compile everything
                 puts "\n\n#{relative_path} was changed"
                 puts "...recompiling"
-                compilation_output = indent(`ruby Server/boilerplate/compile_files.rb`)
+                compilation_output = indent(`ruby .Server/boilerplate/compile_files.rb`)
                 if compilation_output.strip.length > 0
                     puts compilation_output
                 end 

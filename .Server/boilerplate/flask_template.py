@@ -87,7 +87,7 @@ if True:
 
 
     # get the database models 
-    file = open(pwd+"/Server/database.py", "r"); exec(file.read()); file.close()
+    file = open(pwd+"/.Server/database.py", "r"); exec(file.read()); file.close()
 
 #
 # Setup Security: JWT (boilerplate stuff)  see: http://flask-jwt-extended.readthedocs.io/en/latest/basic_usage.html
@@ -146,10 +146,10 @@ if True:
 if __name__ == "__main__":
 
     # System routes
-    file = open(pwd+"/Server/boilerplate/routes.py", "r"); exec(file.read()); file.close()
+    file = open(pwd+"/.Server/boilerplate/routes.py", "r"); exec(file.read()); file.close()
     SystemRoutes()
     # get the routes 
-    file = open(pwd+"/Server/setup.py", "r"); exec(file.read()); file.close()
+    file = open(pwd+"/.Server/setup.py", "r"); exec(file.read()); file.close()
     Routes()
 
 #
