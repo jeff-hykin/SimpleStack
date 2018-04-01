@@ -12,6 +12,9 @@
     # THE_APP, the flask app variable (use it if you know what you're doing)
     # THE_DATABASE, the SQL Alchemy database variable  use it if you know what you're doing)
 
+Global = {}
+
+
 
 # FIXME! Change this! 
 THE_SECRET_KEY = "FIXME, replace this with an actual key"  

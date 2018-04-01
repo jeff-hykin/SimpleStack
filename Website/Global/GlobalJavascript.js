@@ -82,7 +82,6 @@ function GetByXpath(path)
     }
 function HorizonallyCenterChildrenOf(element)
     {
-        // element.classList.add('center-align')
         element.style.display = "flex"
         element.style.justifyContent = "center"
         return element
@@ -109,6 +108,12 @@ class SimpleElement
         constructor(element) 
             { 
                 this.__MainNode = element 
+            }
+        add(element)
+            {
+                console.log(`calling SimpleElement add`)
+                this.__MainNode.add(element)
+                return this.__MainNode
             }
         get outerMostNode()
             {
@@ -230,232 +235,321 @@ class SimpleElement
             get value()                  { return this.__MainNode.value              } set value                    (value_) { this.__MainNode.value           = value_ }
             get wrap()                   { return this.__MainNode.wrap               } set wrap                     (value_) { this.__MainNode.wrap            = value_ }
         // css properties
-            get alignContent                    () { return this.__MainNode.style.alignContent                     } set alignContent                    (value_) { this.__MainNode.alignContent                    = value_ }
-            get alignItems                      () { return this.__MainNode.style.alignItems                       } set alignItems                      (value_) { this.__MainNode.alignItems                      = value_ }
-            get alignSelf                       () { return this.__MainNode.style.alignSelf                        } set alignSelf                       (value_) { this.__MainNode.alignSelf                       = value_ }
-            get all                             () { return this.__MainNode.style.all                              } set all                             (value_) { this.__MainNode.all                             = value_ }
-            get animation                       () { return this.__MainNode.style.animation                        } set animation                       (value_) { this.__MainNode.animation                       = value_ }
-            get animationDelay                  () { return this.__MainNode.style.animationDelay                   } set animationDelay                  (value_) { this.__MainNode.animationDelay                  = value_ }
-            get animationDirection              () { return this.__MainNode.style.animationDirection               } set animationDirection              (value_) { this.__MainNode.animationDirection              = value_ }
-            get animationDuration               () { return this.__MainNode.style.animationDuration                } set animationDuration               (value_) { this.__MainNode.animationDuration               = value_ }
-            get animationFillMode               () { return this.__MainNode.style.animationFillMode                } set animationFillMode               (value_) { this.__MainNode.animationFillMode               = value_ }
-            get animationIterationCount         () { return this.__MainNode.style.animationIterationCount          } set animationIterationCount         (value_) { this.__MainNode.animationIterationCount         = value_ }
-            get animationName                   () { return this.__MainNode.style.animationName                    } set animationName                   (value_) { this.__MainNode.animationName                   = value_ }
-            get animationPlayState              () { return this.__MainNode.style.animationPlayState               } set animationPlayState              (value_) { this.__MainNode.animationPlayState              = value_ }
-            get animationTimingFunction         () { return this.__MainNode.style.animationTimingFunction          } set animationTimingFunction         (value_) { this.__MainNode.animationTimingFunction         = value_ }
-            get backfaceVisibility              () { return this.__MainNode.style.backfaceVisibility               } set backfaceVisibility              (value_) { this.__MainNode.backfaceVisibility              = value_ }
-            get background                      () { return this.__MainNode.style.background                       } set background                      (value_) { this.__MainNode.background                      = value_ }
-            get backgroundAttachment            () { return this.__MainNode.style.backgroundAttachment             } set backgroundAttachment            (value_) { this.__MainNode.backgroundAttachment            = value_ }
-            get backgroundBlendMode             () { return this.__MainNode.style.backgroundBlendMode              } set backgroundBlendMode             (value_) { this.__MainNode.backgroundBlendMode             = value_ }
-            get backgroundClip                  () { return this.__MainNode.style.backgroundClip                   } set backgroundClip                  (value_) { this.__MainNode.backgroundClip                  = value_ }
-            get backgroundColor                 () { return this.__MainNode.style.backgroundColor                  } set backgroundColor                 (value_) { this.__MainNode.backgroundColor                 = value_ }
-            get backgroundImage                 () { return this.__MainNode.style.backgroundImage                  } set backgroundImage                 (value_) { this.__MainNode.backgroundImage                 = value_ }
-            get backgroundOrigin                () { return this.__MainNode.style.backgroundOrigin                 } set backgroundOrigin                (value_) { this.__MainNode.backgroundOrigin                = value_ }
-            get backgroundPosition              () { return this.__MainNode.style.backgroundPosition               } set backgroundPosition              (value_) { this.__MainNode.backgroundPosition              = value_ }
-            get backgroundRepeat                () { return this.__MainNode.style.backgroundRepeat                 } set backgroundRepeat                (value_) { this.__MainNode.backgroundRepeat                = value_ }
-            get backgroundSize                  () { return this.__MainNode.style.backgroundSize                   } set backgroundSize                  (value_) { this.__MainNode.backgroundSize                  = value_ }
-            get border                          () { return this.__MainNode.style.border                           } set border                          (value_) { this.__MainNode.border                          = value_ }
-            get borderBottom                    () { return this.__MainNode.style.borderBottom                     } set borderBottom                    (value_) { this.__MainNode.borderBottom                    = value_ }
-            get borderBottomColor               () { return this.__MainNode.style.borderBottomColor                } set borderBottomColor               (value_) { this.__MainNode.borderBottomColor               = value_ }
-            get borderBottomLeftRadius          () { return this.__MainNode.style.borderBottomLeftRadius           } set borderBottomLeftRadius          (value_) { this.__MainNode.borderBottomLeftRadius          = value_ }
-            get borderBottomRightRadius         () { return this.__MainNode.style.borderBottomRightRadius          } set borderBottomRightRadius         (value_) { this.__MainNode.borderBottomRightRadius         = value_ }
-            get borderBottomStyle               () { return this.__MainNode.style.borderBottomStyle                } set borderBottomStyle               (value_) { this.__MainNode.borderBottomStyle               = value_ }
-            get borderBottomWidth               () { return this.__MainNode.style.borderBottomWidth                } set borderBottomWidth               (value_) { this.__MainNode.borderBottomWidth               = value_ }
-            get borderCollapse                  () { return this.__MainNode.style.borderCollapse                   } set borderCollapse                  (value_) { this.__MainNode.borderCollapse                  = value_ }
-            get borderColor                     () { return this.__MainNode.style.borderColor                      } set borderColor                     (value_) { this.__MainNode.borderColor                     = value_ }
-            get borderImage                     () { return this.__MainNode.style.borderImage                      } set borderImage                     (value_) { this.__MainNode.borderImage                     = value_ }
-            get borderImageOutset               () { return this.__MainNode.style.borderImageOutset                } set borderImageOutset               (value_) { this.__MainNode.borderImageOutset               = value_ }
-            get borderImageRepeat               () { return this.__MainNode.style.borderImageRepeat                } set borderImageRepeat               (value_) { this.__MainNode.borderImageRepeat               = value_ }
-            get borderImageSlice                () { return this.__MainNode.style.borderImageSlice                 } set borderImageSlice                (value_) { this.__MainNode.borderImageSlice                = value_ }
-            get borderImageSource               () { return this.__MainNode.style.borderImageSource                } set borderImageSource               (value_) { this.__MainNode.borderImageSource               = value_ }
-            get borderImageWidth                () { return this.__MainNode.style.borderImageWidth                 } set borderImageWidth                (value_) { this.__MainNode.borderImageWidth                = value_ }
-            get borderLeft                      () { return this.__MainNode.style.borderLeft                       } set borderLeft                      (value_) { this.__MainNode.borderLeft                      = value_ }
-            get borderLeftColor                 () { return this.__MainNode.style.borderLeftColor                  } set borderLeftColor                 (value_) { this.__MainNode.borderLeftColor                 = value_ }
-            get borderLeftStyle                 () { return this.__MainNode.style.borderLeftStyle                  } set borderLeftStyle                 (value_) { this.__MainNode.borderLeftStyle                 = value_ }
-            get borderLeftWidth                 () { return this.__MainNode.style.borderLeftWidth                  } set borderLeftWidth                 (value_) { this.__MainNode.borderLeftWidth                 = value_ }
-            get borderRadius                    () { return this.__MainNode.style.borderRadius                     } set borderRadius                    (value_) { this.__MainNode.borderRadius                    = value_ }
-            get borderRight                     () { return this.__MainNode.style.borderRight                      } set borderRight                     (value_) { this.__MainNode.borderRight                     = value_ }
-            get borderRightColor                () { return this.__MainNode.style.borderRightColor                 } set borderRightColor                (value_) { this.__MainNode.borderRightColor                = value_ }
-            get borderRightStyle                () { return this.__MainNode.style.borderRightStyle                 } set borderRightStyle                (value_) { this.__MainNode.borderRightStyle                = value_ }
-            get borderRightWidth                () { return this.__MainNode.style.borderRightWidth                 } set borderRightWidth                (value_) { this.__MainNode.borderRightWidth                = value_ }
-            get borderSpacing                   () { return this.__MainNode.style.borderSpacing                    } set borderSpacing                   (value_) { this.__MainNode.borderSpacing                   = value_ }
-            get borderStyle                     () { return this.__MainNode.style.borderStyle                      } set borderStyle                     (value_) { this.__MainNode.borderStyle                     = value_ }
-            get borderTop                       () { return this.__MainNode.style.borderTop                        } set borderTop                       (value_) { this.__MainNode.borderTop                       = value_ }
-            get borderTopColor                  () { return this.__MainNode.style.borderTopColor                   } set borderTopColor                  (value_) { this.__MainNode.borderTopColor                  = value_ }
-            get borderTopLeftRadius             () { return this.__MainNode.style.borderTopLeftRadius              } set borderTopLeftRadius             (value_) { this.__MainNode.borderTopLeftRadius             = value_ }
-            get borderTopRightRadius            () { return this.__MainNode.style.borderTopRightRadius             } set borderTopRightRadius            (value_) { this.__MainNode.borderTopRightRadius            = value_ }
-            get borderTopStyle                  () { return this.__MainNode.style.borderTopStyle                   } set borderTopStyle                  (value_) { this.__MainNode.borderTopStyle                  = value_ }
-            get borderTopWidth                  () { return this.__MainNode.style.borderTopWidth                   } set borderTopWidth                  (value_) { this.__MainNode.borderTopWidth                  = value_ }
-            get borderWidth                     () { return this.__MainNode.style.borderWidth                      } set borderWidth                     (value_) { this.__MainNode.borderWidth                     = value_ }
-            get bottom                          () { return this.__MainNode.style.bottom                           } set bottom                          (value_) { this.__MainNode.bottom                          = value_ }
-            get boxDecorationBreak              () { return this.__MainNode.style.boxDecorationBreak               } set boxDecorationBreak              (value_) { this.__MainNode.boxDecorationBreak              = value_ }
-            get boxShadow                       () { return this.__MainNode.style.boxShadow                        } set boxShadow                       (value_) { this.__MainNode.boxShadow                       = value_ }
-            get boxSizing                       () { return this.__MainNode.style.boxSizing                        } set boxSizing                       (value_) { this.__MainNode.boxSizing                       = value_ }
-            get breakAfter                      () { return this.__MainNode.style.breakAfter                       } set breakAfter                      (value_) { this.__MainNode.breakAfter                      = value_ }
-            get breakBefore                     () { return this.__MainNode.style.breakBefore                      } set breakBefore                     (value_) { this.__MainNode.breakBefore                     = value_ }
-            get breakInside                     () { return this.__MainNode.style.breakInside                      } set breakInside                     (value_) { this.__MainNode.breakInside                     = value_ }
-            get captionSide                     () { return this.__MainNode.style.captionSide                      } set captionSide                     (value_) { this.__MainNode.captionSide                     = value_ }
-            get caretColor                      () { return this.__MainNode.style.caretColor                       } set caretColor                      (value_) { this.__MainNode.caretColor                      = value_ }
-            get Atcharset                       () { return this.__MainNode.style.Atcharset                        } set Atcharset                       (value_) { this.__MainNode.Atcharset                       = value_ }
-            get clear                           () { return this.__MainNode.style.clear                            } set clear                           (value_) { this.__MainNode.clear                           = value_ }
-            get clip                            () { return this.__MainNode.style.clip                             } set clip                            (value_) { this.__MainNode.clip                            = value_ }
-            get color                           () { return this.__MainNode.style.color                            } set color                           (value_) { this.__MainNode.color                           = value_ }
-            get columnCount                     () { return this.__MainNode.style.columnCount                      } set columnCount                     (value_) { this.__MainNode.columnCount                     = value_ }
-            get columnFill                      () { return this.__MainNode.style.columnFill                       } set columnFill                      (value_) { this.__MainNode.columnFill                      = value_ }
-            get columnGap                       () { return this.__MainNode.style.columnGap                        } set columnGap                       (value_) { this.__MainNode.columnGap                       = value_ }
-            get columnRule                      () { return this.__MainNode.style.columnRule                       } set columnRule                      (value_) { this.__MainNode.columnRule                      = value_ }
-            get columnRuleColor                 () { return this.__MainNode.style.columnRuleColor                  } set columnRuleColor                 (value_) { this.__MainNode.columnRuleColor                 = value_ }
-            get columnRuleStyle                 () { return this.__MainNode.style.columnRuleStyle                  } set columnRuleStyle                 (value_) { this.__MainNode.columnRuleStyle                 = value_ }
-            get columnRuleWidth                 () { return this.__MainNode.style.columnRuleWidth                  } set columnRuleWidth                 (value_) { this.__MainNode.columnRuleWidth                 = value_ }
-            get columnSpan                      () { return this.__MainNode.style.columnSpan                       } set columnSpan                      (value_) { this.__MainNode.columnSpan                      = value_ }
-            get columnWidth                     () { return this.__MainNode.style.columnWidth                      } set columnWidth                     (value_) { this.__MainNode.columnWidth                     = value_ }
-            get columns                         () { return this.__MainNode.style.columns                          } set columns                         (value_) { this.__MainNode.columns                         = value_ }
-            get content                         () { return this.__MainNode.style.content                          } set content                         (value_) { this.__MainNode.content                         = value_ }
-            get counterIncrement                () { return this.__MainNode.style.counterIncrement                 } set counterIncrement                (value_) { this.__MainNode.counterIncrement                = value_ }
-            get counterReset                    () { return this.__MainNode.style.counterReset                     } set counterReset                    (value_) { this.__MainNode.counterReset                    = value_ }
-            get cursor                          () { return this.__MainNode.style.cursor                           } set cursor                          (value_) { this.__MainNode.cursor                          = value_ }
-            get direction                       () { return this.__MainNode.style.direction                        } set direction                       (value_) { this.__MainNode.direction                       = value_ }
-            get display                         () { return this.__MainNode.style.display                          } set display                         (value_) { this.__MainNode.display                         = value_ }
-            get emptyCells                      () { return this.__MainNode.style.emptyCells                       } set emptyCells                      (value_) { this.__MainNode.emptyCells                      = value_ }
-            get filter                          () { return this.__MainNode.style.filter                           } set filter                          (value_) { this.__MainNode.filter                          = value_ }
-            get flex                            () { return this.__MainNode.style.flex                             } set flex                            (value_) { this.__MainNode.flex                            = value_ }
-            get flexBasis                       () { return this.__MainNode.style.flexBasis                        } set flexBasis                       (value_) { this.__MainNode.flexBasis                       = value_ }
-            get flexDirection                   () { return this.__MainNode.style.flexDirection                    } set flexDirection                   (value_) { this.__MainNode.flexDirection                   = value_ }
-            get flexFlow                        () { return this.__MainNode.style.flexFlow                         } set flexFlow                        (value_) { this.__MainNode.flexFlow                        = value_ }
-            get flexGrow                        () { return this.__MainNode.style.flexGrow                         } set flexGrow                        (value_) { this.__MainNode.flexGrow                        = value_ }
-            get flexShrink                      () { return this.__MainNode.style.flexShrink                       } set flexShrink                      (value_) { this.__MainNode.flexShrink                      = value_ }
-            get flexWrap                        () { return this.__MainNode.style.flexWrap                         } set flexWrap                        (value_) { this.__MainNode.flexWrap                        = value_ }
-            get float                           () { return this.__MainNode.style.float                            } set float                           (value_) { this.__MainNode.float                           = value_ }
-            get font                            () { return this.__MainNode.style.font                             } set font                            (value_) { this.__MainNode.font                            = value_ }
-            get AtfontFace                      () { return this.__MainNode.style.AtfontFace                       } set AtfontFace                      (value_) { this.__MainNode.AtfontFace                      = value_ }
-            get fontFamily                      () { return this.__MainNode.style.fontFamily                       } set fontFamily                      (value_) { this.__MainNode.fontFamily                      = value_ }
-            get fontFeatureSettings             () { return this.__MainNode.style.fontFeatureSettings              } set fontFeatureSettings             (value_) { this.__MainNode.fontFeatureSettings             = value_ }
-            get AtfontFeatureValues             () { return this.__MainNode.style.AtfontFeatureValues              } set AtfontFeatureValues             (value_) { this.__MainNode.AtfontFeatureValues             = value_ }
-            get fontKerning                     () { return this.__MainNode.style.fontKerning                      } set fontKerning                     (value_) { this.__MainNode.fontKerning                     = value_ }
-            get fontLanguageOverride            () { return this.__MainNode.style.fontLanguageOverride             } set fontLanguageOverride            (value_) { this.__MainNode.fontLanguageOverride            = value_ }
-            get fontSize                        () { return this.__MainNode.style.fontSize                         } set fontSize                        (value_) { this.__MainNode.fontSize                        = value_ }
-            get fontSizeAdjust                  () { return this.__MainNode.style.fontSizeAdjust                   } set fontSizeAdjust                  (value_) { this.__MainNode.fontSizeAdjust                  = value_ }
-            get fontStretch                     () { return this.__MainNode.style.fontStretch                      } set fontStretch                     (value_) { this.__MainNode.fontStretch                     = value_ }
-            get fontStyle                       () { return this.__MainNode.style.fontStyle                        } set fontStyle                       (value_) { this.__MainNode.fontStyle                       = value_ }
-            get fontSynthesis                   () { return this.__MainNode.style.fontSynthesis                    } set fontSynthesis                   (value_) { this.__MainNode.fontSynthesis                   = value_ }
-            get fontVariant                     () { return this.__MainNode.style.fontVariant                      } set fontVariant                     (value_) { this.__MainNode.fontVariant                     = value_ }
-            get fontVariantAlternates           () { return this.__MainNode.style.fontVariantAlternates            } set fontVariantAlternates           (value_) { this.__MainNode.fontVariantAlternates           = value_ }
-            get fontVariantCaps                 () { return this.__MainNode.style.fontVariantCaps                  } set fontVariantCaps                 (value_) { this.__MainNode.fontVariantCaps                 = value_ }
-            get fontVariantEastAsian            () { return this.__MainNode.style.fontVariantEastAsian             } set fontVariantEastAsian            (value_) { this.__MainNode.fontVariantEastAsian            = value_ }
-            get fontVariantLigatures            () { return this.__MainNode.style.fontVariantLigatures             } set fontVariantLigatures            (value_) { this.__MainNode.fontVariantLigatures            = value_ }
-            get fontVariantNumeric              () { return this.__MainNode.style.fontVariantNumeric               } set fontVariantNumeric              (value_) { this.__MainNode.fontVariantNumeric              = value_ }
-            get fontVariantPosition             () { return this.__MainNode.style.fontVariantPosition              } set fontVariantPosition             (value_) { this.__MainNode.fontVariantPosition             = value_ }
-            get fontWeight                      () { return this.__MainNode.style.fontWeight                       } set fontWeight                      (value_) { this.__MainNode.fontWeight                      = value_ }
-            get grid                            () { return this.__MainNode.style.grid                             } set grid                            (value_) { this.__MainNode.grid                            = value_ }
-            get gridArea                        () { return this.__MainNode.style.gridArea                         } set gridArea                        (value_) { this.__MainNode.gridArea                        = value_ }
-            get gridAutoColumns                 () { return this.__MainNode.style.gridAutoColumns                  } set gridAutoColumns                 (value_) { this.__MainNode.gridAutoColumns                 = value_ }
-            get gridAutoFlow                    () { return this.__MainNode.style.gridAutoFlow                     } set gridAutoFlow                    (value_) { this.__MainNode.gridAutoFlow                    = value_ }
-            get gridAutoRows                    () { return this.__MainNode.style.gridAutoRows                     } set gridAutoRows                    (value_) { this.__MainNode.gridAutoRows                    = value_ }
-            get gridColumn                      () { return this.__MainNode.style.gridColumn                       } set gridColumn                      (value_) { this.__MainNode.gridColumn                      = value_ }
-            get gridColumnEnd                   () { return this.__MainNode.style.gridColumnEnd                    } set gridColumnEnd                   (value_) { this.__MainNode.gridColumnEnd                   = value_ }
-            get gridColumnGap                   () { return this.__MainNode.style.gridColumnGap                    } set gridColumnGap                   (value_) { this.__MainNode.gridColumnGap                   = value_ }
-            get gridColumnStart                 () { return this.__MainNode.style.gridColumnStart                  } set gridColumnStart                 (value_) { this.__MainNode.gridColumnStart                 = value_ }
-            get gridGap                         () { return this.__MainNode.style.gridGap                          } set gridGap                         (value_) { this.__MainNode.gridGap                         = value_ }
-            get gridRow                         () { return this.__MainNode.style.gridRow                          } set gridRow                         (value_) { this.__MainNode.gridRow                         = value_ }
-            get gridRowEnd                      () { return this.__MainNode.style.gridRowEnd                       } set gridRowEnd                      (value_) { this.__MainNode.gridRowEnd                      = value_ }
-            get gridRowGap                      () { return this.__MainNode.style.gridRowGap                       } set gridRowGap                      (value_) { this.__MainNode.gridRowGap                      = value_ }
-            get gridRowStart                    () { return this.__MainNode.style.gridRowStart                     } set gridRowStart                    (value_) { this.__MainNode.gridRowStart                    = value_ }
-            get gridTemplate                    () { return this.__MainNode.style.gridTemplate                     } set gridTemplate                    (value_) { this.__MainNode.gridTemplate                    = value_ }
-            get gridTemplateAreas               () { return this.__MainNode.style.gridTemplateAreas                } set gridTemplateAreas               (value_) { this.__MainNode.gridTemplateAreas               = value_ }
-            get gridTemplateColumns             () { return this.__MainNode.style.gridTemplateColumns              } set gridTemplateColumns             (value_) { this.__MainNode.gridTemplateColumns             = value_ }
-            get gridTemplateRows                () { return this.__MainNode.style.gridTemplateRows                 } set gridTemplateRows                (value_) { this.__MainNode.gridTemplateRows                = value_ }
-            get hangingPunctuation              () { return this.__MainNode.style.hangingPunctuation               } set hangingPunctuation              (value_) { this.__MainNode.hangingPunctuation              = value_ }
-            get height                          () { return this.__MainNode.style.height                           } set height                          (value_) { this.__MainNode.height                          = value_ }
-            get hyphens                         () { return this.__MainNode.style.hyphens                          } set hyphens                         (value_) { this.__MainNode.hyphens                         = value_ }
-            get imageOrientation                () { return this.__MainNode.style.imageOrientation                 } set imageOrientation                (value_) { this.__MainNode.imageOrientation                = value_ }
-            get imageRendering                  () { return this.__MainNode.style.imageRendering                   } set imageRendering                  (value_) { this.__MainNode.imageRendering                  = value_ }
-            get imageResolution                 () { return this.__MainNode.style.imageResolution                  } set imageResolution                 (value_) { this.__MainNode.imageResolution                 = value_ }
-            get Atimport                        () { return this.__MainNode.style.Atimport                         } set Atimport                        (value_) { this.__MainNode.Atimport                        = value_ }
-            get justifyContent                  () { return this.__MainNode.style.justifyContent                   } set justifyContent                  (value_) { this.__MainNode.justifyContent                  = value_ }
-            get Atkeyframes                     () { return this.__MainNode.style.Atkeyframes                      } set Atkeyframes                     (value_) { this.__MainNode.Atkeyframes                     = value_ }
-            get left                            () { return this.__MainNode.style.left                             } set left                            (value_) { this.__MainNode.left                            = value_ }
-            get letterSpacing                   () { return this.__MainNode.style.letterSpacing                    } set letterSpacing                   (value_) { this.__MainNode.letterSpacing                   = value_ }
-            get lineBreak                       () { return this.__MainNode.style.lineBreak                        } set lineBreak                       (value_) { this.__MainNode.lineBreak                       = value_ }
-            get lineHeight                      () { return this.__MainNode.style.lineHeight                       } set lineHeight                      (value_) { this.__MainNode.lineHeight                      = value_ }
-            get listStyle                       () { return this.__MainNode.style.listStyle                        } set listStyle                       (value_) { this.__MainNode.listStyle                       = value_ }
-            get listStyleImage                  () { return this.__MainNode.style.listStyleImage                   } set listStyleImage                  (value_) { this.__MainNode.listStyleImage                  = value_ }
-            get listStylePosition               () { return this.__MainNode.style.listStylePosition                } set listStylePosition               (value_) { this.__MainNode.listStylePosition               = value_ }
-            get listStyleType                   () { return this.__MainNode.style.listStyleType                    } set listStyleType                   (value_) { this.__MainNode.listStyleType                   = value_ }
-            get margin                          () { return this.__MainNode.style.margin                           } set margin                          (value_) { this.__MainNode.margin                          = value_ }
-            get marginBottom                    () { return this.__MainNode.style.marginBottom                     } set marginBottom                    (value_) { this.__MainNode.marginBottom                    = value_ }
-            get marginLeft                      () { return this.__MainNode.style.marginLeft                       } set marginLeft                      (value_) { this.__MainNode.marginLeft                      = value_ }
-            get marginRight                     () { return this.__MainNode.style.marginRight                      } set marginRight                     (value_) { this.__MainNode.marginRight                     = value_ }
-            get marginTop                       () { return this.__MainNode.style.marginTop                        } set marginTop                       (value_) { this.__MainNode.marginTop                       = value_ }
-            get maxHeight                       () { return this.__MainNode.style.maxHeight                        } set maxHeight                       (value_) { this.__MainNode.maxHeight                       = value_ }
-            get maxWidth                        () { return this.__MainNode.style.maxWidth                         } set maxWidth                        (value_) { this.__MainNode.maxWidth                        = value_ }
-            get Atmedia                         () { return this.__MainNode.style.Atmedia                          } set Atmedia                         (value_) { this.__MainNode.Atmedia                         = value_ }
-            get minHeight                       () { return this.__MainNode.style.minHeight                        } set minHeight                       (value_) { this.__MainNode.minHeight                       = value_ }
-            get minWidth                        () { return this.__MainNode.style.minWidth                         } set minWidth                        (value_) { this.__MainNode.minWidth                        = value_ }
-            get objectFit                       () { return this.__MainNode.style.objectFit                        } set objectFit                       (value_) { this.__MainNode.objectFit                       = value_ }
-            get objectPosition                  () { return this.__MainNode.style.objectPosition                   } set objectPosition                  (value_) { this.__MainNode.objectPosition                  = value_ }
-            get opacity                         () { return this.__MainNode.style.opacity                          } set opacity                         (value_) { this.__MainNode.opacity                         = value_ }
-            get order                           () { return this.__MainNode.style.order                            } set order                           (value_) { this.__MainNode.order                           = value_ }
-            get orphans                         () { return this.__MainNode.style.orphans                          } set orphans                         (value_) { this.__MainNode.orphans                         = value_ }
-            get outline                         () { return this.__MainNode.style.outline                          } set outline                         (value_) { this.__MainNode.outline                         = value_ }
-            get outlineColor                    () { return this.__MainNode.style.outlineColor                     } set outlineColor                    (value_) { this.__MainNode.outlineColor                    = value_ }
-            get outlineOffset                   () { return this.__MainNode.style.outlineOffset                    } set outlineOffset                   (value_) { this.__MainNode.outlineOffset                   = value_ }
-            get outlineStyle                    () { return this.__MainNode.style.outlineStyle                     } set outlineStyle                    (value_) { this.__MainNode.outlineStyle                    = value_ }
-            get outlineWidth                    () { return this.__MainNode.style.outlineWidth                     } set outlineWidth                    (value_) { this.__MainNode.outlineWidth                    = value_ }
-            get overflowWrap                    () { return this.__MainNode.style.overflowWrap                     } set overflowWrap                    (value_) { this.__MainNode.overflowWrap                    = value_ }
-            get overflowX                       () { return this.__MainNode.style.overflowX                        } set overflowX                       (value_) { this.__MainNode.overflowX                       = value_ }
-            get overflowY                       () { return this.__MainNode.style.overflowY                        } set overflowY                       (value_) { this.__MainNode.overflowY                       = value_ }
-            get padding                         () { return this.__MainNode.style.padding                          } set padding                         (value_) { this.__MainNode.padding                         = value_ }
-            get paddingBottom                   () { return this.__MainNode.style.paddingBottom                    } set paddingBottom                   (value_) { this.__MainNode.paddingBottom                   = value_ }
-            get paddingLeft                     () { return this.__MainNode.style.paddingLeft                      } set paddingLeft                     (value_) { this.__MainNode.paddingLeft                     = value_ }
-            get paddingRight                    () { return this.__MainNode.style.paddingRight                     } set paddingRight                    (value_) { this.__MainNode.paddingRight                    = value_ }
-            get paddingTop                      () { return this.__MainNode.style.paddingTop                       } set paddingTop                      (value_) { this.__MainNode.paddingTop                      = value_ }
-            get pageBreakAfter                  () { return this.__MainNode.style.pageBreakAfter                   } set pageBreakAfter                  (value_) { this.__MainNode.pageBreakAfter                  = value_ }
-            get pageBreakBefore                 () { return this.__MainNode.style.pageBreakBefore                  } set pageBreakBefore                 (value_) { this.__MainNode.pageBreakBefore                 = value_ }
-            get pageBreakInside                 () { return this.__MainNode.style.pageBreakInside                  } set pageBreakInside                 (value_) { this.__MainNode.pageBreakInside                 = value_ }
-            get perspective                     () { return this.__MainNode.style.perspective                      } set perspective                     (value_) { this.__MainNode.perspective                     = value_ }
-            get perspectiveOrigin               () { return this.__MainNode.style.perspectiveOrigin                } set perspectiveOrigin               (value_) { this.__MainNode.perspectiveOrigin               = value_ }
-            get pointerEvents                   () { return this.__MainNode.style.pointerEvents                    } set pointerEvents                   (value_) { this.__MainNode.pointerEvents                   = value_ }
-            get position                        () { return this.__MainNode.style.position                         } set position                        (value_) { this.__MainNode.position                        = value_ }
-            get quotes                          () { return this.__MainNode.style.quotes                           } set quotes                          (value_) { this.__MainNode.quotes                          = value_ }
-            get resize                          () { return this.__MainNode.style.resize                           } set resize                          (value_) { this.__MainNode.resize                          = value_ }
-            get right                           () { return this.__MainNode.style.right                            } set right                           (value_) { this.__MainNode.right                           = value_ }
-            get tabSize                         () { return this.__MainNode.style.tabSize                          } set tabSize                         (value_) { this.__MainNode.tabSize                         = value_ }
-            get tableLayout                     () { return this.__MainNode.style.tableLayout                      } set tableLayout                     (value_) { this.__MainNode.tableLayout                     = value_ }
-            get textAlign                       () { return this.__MainNode.style.textAlign                        } set textAlign                       (value_) { this.__MainNode.textAlign                       = value_ }
-            get textAlignLast                   () { return this.__MainNode.style.textAlignLast                    } set textAlignLast                   (value_) { this.__MainNode.textAlignLast                   = value_ }
-            get textCombineUpright              () { return this.__MainNode.style.textCombineUpright               } set textCombineUpright              (value_) { this.__MainNode.textCombineUpright              = value_ }
-            get textDecoration                  () { return this.__MainNode.style.textDecoration                   } set textDecoration                  (value_) { this.__MainNode.textDecoration                  = value_ }
-            get textDecorationColor             () { return this.__MainNode.style.textDecorationColor              } set textDecorationColor             (value_) { this.__MainNode.textDecorationColor             = value_ }
-            get textDecorationLine              () { return this.__MainNode.style.textDecorationLine               } set textDecorationLine              (value_) { this.__MainNode.textDecorationLine              = value_ }
-            get textDecorationStyle             () { return this.__MainNode.style.textDecorationStyle              } set textDecorationStyle             (value_) { this.__MainNode.textDecorationStyle             = value_ }
-            get textIndent                      () { return this.__MainNode.style.textIndent                       } set textIndent                      (value_) { this.__MainNode.textIndent                      = value_ }
-            get textJustify                     () { return this.__MainNode.style.textJustify                      } set textJustify                     (value_) { this.__MainNode.textJustify                     = value_ }
-            get textOrientation                 () { return this.__MainNode.style.textOrientation                  } set textOrientation                 (value_) { this.__MainNode.textOrientation                 = value_ }
-            get textOverflow                    () { return this.__MainNode.style.textOverflow                     } set textOverflow                    (value_) { this.__MainNode.textOverflow                    = value_ }
-            get textShadow                      () { return this.__MainNode.style.textShadow                       } set textShadow                      (value_) { this.__MainNode.textShadow                      = value_ }
-            get textTransform                   () { return this.__MainNode.style.textTransform                    } set textTransform                   (value_) { this.__MainNode.textTransform                   = value_ }
-            get textUnderlinePosition           () { return this.__MainNode.style.textUnderlinePosition            } set textUnderlinePosition           (value_) { this.__MainNode.textUnderlinePosition           = value_ }
-            get top                             () { return this.__MainNode.style.top                              } set top                             (value_) { this.__MainNode.top                             = value_ }
-            get transform                       () { return this.__MainNode.style.transform                        } set transform                       (value_) { this.__MainNode.transform                       = value_ }
-            get transformOrigin                 () { return this.__MainNode.style.transformOrigin                  } set transformOrigin                 (value_) { this.__MainNode.transformOrigin                 = value_ }
-            get transformStyle                  () { return this.__MainNode.style.transformStyle                   } set transformStyle                  (value_) { this.__MainNode.transformStyle                  = value_ }
-            get transition                      () { return this.__MainNode.style.transition                       } set transition                      (value_) { this.__MainNode.transition                      = value_ }
-            get transitionDelay                 () { return this.__MainNode.style.transitionDelay                  } set transitionDelay                 (value_) { this.__MainNode.transitionDelay                 = value_ }
-            get transitionDuration              () { return this.__MainNode.style.transitionDuration               } set transitionDuration              (value_) { this.__MainNode.transitionDuration              = value_ }
-            get transitionProperty              () { return this.__MainNode.style.transitionProperty               } set transitionProperty              (value_) { this.__MainNode.transitionProperty              = value_ }
-            get transitionTimingFunction        () { return this.__MainNode.style.transitionTimingFunction         } set transitionTimingFunction        (value_) { this.__MainNode.transitionTimingFunction        = value_ }
-            get unicodeBidi                     () { return this.__MainNode.style.unicodeBidi                      } set unicodeBidi                     (value_) { this.__MainNode.unicodeBidi                     = value_ }
-            get userSelect                      () { return this.__MainNode.style.userSelect                       } set userSelect                      (value_) { this.__MainNode.userSelect                      = value_ }
-            get verticalAlign                   () { return this.__MainNode.style.verticalAlign                    } set verticalAlign                   (value_) { this.__MainNode.verticalAlign                   = value_ }
-            get visibility                      () { return this.__MainNode.style.visibility                       } set visibility                      (value_) { this.__MainNode.visibility                      = value_ }
-            get whiteSpace                      () { return this.__MainNode.style.whiteSpace                       } set whiteSpace                      (value_) { this.__MainNode.whiteSpace                      = value_ }
-            get widows                          () { return this.__MainNode.style.widows                           } set widows                          (value_) { this.__MainNode.widows                          = value_ }
-            get width                           () { return this.__MainNode.style.width                            } set width                           (value_) { this.__MainNode.width                           = value_ }
-            get wordBreak                       () { return this.__MainNode.style.wordBreak                        } set wordBreak                       (value_) { this.__MainNode.wordBreak                       = value_ }
-            get wordSpacing                     () { return this.__MainNode.style.wordSpacing                      } set wordSpacing                     (value_) { this.__MainNode.wordSpacing                     = value_ }
-            get wordWrap                        () { return this.__MainNode.style.wordWrap                         } set wordWrap                        (value_) { this.__MainNode.wordWrap                        = value_ }
-            get writingMode                     () { return this.__MainNode.style.writingMode                      } set writingMode                     (value_) { this.__MainNode.writingMode                     = value_ }
-            get zIndex                          () { return this.__MainNode.style.zIndex                           } set zIndex                          (value_) { this.__MainNode.zIndex                          = value_ }
+            get alignContent                    () { return this.__MainNode.style.alignContent                     } set alignContent                    (value_) { this.__MainNode.style.alignContent                    = value_ }
+            get alignItems                      () { return this.__MainNode.style.alignItems                       } set alignItems                      (value_) { this.__MainNode.style.alignItems                      = value_ }
+            get alignSelf                       () { return this.__MainNode.style.alignSelf                        } set alignSelf                       (value_) { this.__MainNode.style.alignSelf                       = value_ }
+            get all                             () { return this.__MainNode.style.all                              } set all                             (value_) { this.__MainNode.style.all                             = value_ }
+            get animation                       () { return this.__MainNode.style.animation                        } set animation                       (value_) { this.__MainNode.style.animation                       = value_ }
+            get animationDelay                  () { return this.__MainNode.style.animationDelay                   } set animationDelay                  (value_) { this.__MainNode.style.animationDelay                  = value_ }
+            get animationDirection              () { return this.__MainNode.style.animationDirection               } set animationDirection              (value_) { this.__MainNode.style.animationDirection              = value_ }
+            get animationDuration               () { return this.__MainNode.style.animationDuration                } set animationDuration               (value_) { this.__MainNode.style.animationDuration               = value_ }
+            get animationFillMode               () { return this.__MainNode.style.animationFillMode                } set animationFillMode               (value_) { this.__MainNode.style.animationFillMode               = value_ }
+            get animationIterationCount         () { return this.__MainNode.style.animationIterationCount          } set animationIterationCount         (value_) { this.__MainNode.style.animationIterationCount         = value_ }
+            get animationName                   () { return this.__MainNode.style.animationName                    } set animationName                   (value_) { this.__MainNode.style.animationName                   = value_ }
+            get animationPlayState              () { return this.__MainNode.style.animationPlayState               } set animationPlayState              (value_) { this.__MainNode.style.animationPlayState              = value_ }
+            get animationTimingFunction         () { return this.__MainNode.style.animationTimingFunction          } set animationTimingFunction         (value_) { this.__MainNode.style.animationTimingFunction         = value_ }
+            get backfaceVisibility              () { return this.__MainNode.style.backfaceVisibility               } set backfaceVisibility              (value_) { this.__MainNode.style.backfaceVisibility              = value_ }
+            get background                      () { return this.__MainNode.style.background                       } set background                      (value_) { this.__MainNode.style.background                      = value_ }
+            get backgroundAttachment            () { return this.__MainNode.style.backgroundAttachment             } set backgroundAttachment            (value_) { this.__MainNode.style.backgroundAttachment            = value_ }
+            get backgroundBlendMode             () { return this.__MainNode.style.backgroundBlendMode              } set backgroundBlendMode             (value_) { this.__MainNode.style.backgroundBlendMode             = value_ }
+            get backgroundClip                  () { return this.__MainNode.style.backgroundClip                   } set backgroundClip                  (value_) { this.__MainNode.style.backgroundClip                  = value_ }
+            get backgroundColor                 () { return this.__MainNode.style.backgroundColor                  } set backgroundColor                 (value_) { this.__MainNode.style.backgroundColor                 = value_ }
+            get backgroundImage                 () { return this.__MainNode.style.backgroundImage                  } set backgroundImage                 (value_) { this.__MainNode.style.backgroundImage                 = value_ }
+            get backgroundOrigin                () { return this.__MainNode.style.backgroundOrigin                 } set backgroundOrigin                (value_) { this.__MainNode.style.backgroundOrigin                = value_ }
+            get backgroundPosition              () { return this.__MainNode.style.backgroundPosition               } set backgroundPosition              (value_) { this.__MainNode.style.backgroundPosition              = value_ }
+            get backgroundRepeat                () { return this.__MainNode.style.backgroundRepeat                 } set backgroundRepeat                (value_) { this.__MainNode.style.backgroundRepeat                = value_ }
+            get backgroundSize                  () { return this.__MainNode.style.backgroundSize                   } set backgroundSize                  (value_) { this.__MainNode.style.backgroundSize                  = value_ }
+            get border                          () { return this.__MainNode.style.border                           } set border                          (value_) { this.__MainNode.style.border                          = value_ }
+            get borderBottom                    () { return this.__MainNode.style.borderBottom                     } set borderBottom                    (value_) { this.__MainNode.style.borderBottom                    = value_ }
+            get borderBottomColor               () { return this.__MainNode.style.borderBottomColor                } set borderBottomColor               (value_) { this.__MainNode.style.borderBottomColor               = value_ }
+            get borderBottomLeftRadius          () { return this.__MainNode.style.borderBottomLeftRadius           } set borderBottomLeftRadius          (value_) { this.__MainNode.style.borderBottomLeftRadius          = value_ }
+            get borderBottomRightRadius         () { return this.__MainNode.style.borderBottomRightRadius          } set borderBottomRightRadius         (value_) { this.__MainNode.style.borderBottomRightRadius         = value_ }
+            get borderBottomStyle               () { return this.__MainNode.style.borderBottomStyle                } set borderBottomStyle               (value_) { this.__MainNode.style.borderBottomStyle               = value_ }
+            get borderBottomWidth               () { return this.__MainNode.style.borderBottomWidth                } set borderBottomWidth               (value_) { this.__MainNode.style.borderBottomWidth               = value_ }
+            get borderCollapse                  () { return this.__MainNode.style.borderCollapse                   } set borderCollapse                  (value_) { this.__MainNode.style.borderCollapse                  = value_ }
+            get borderColor                     () { return this.__MainNode.style.borderColor                      } set borderColor                     (value_) { this.__MainNode.style.borderColor                     = value_ }
+            get borderImage                     () { return this.__MainNode.style.borderImage                      } set borderImage                     (value_) { this.__MainNode.style.borderImage                     = value_ }
+            get borderImageOutset               () { return this.__MainNode.style.borderImageOutset                } set borderImageOutset               (value_) { this.__MainNode.style.borderImageOutset               = value_ }
+            get borderImageRepeat               () { return this.__MainNode.style.borderImageRepeat                } set borderImageRepeat               (value_) { this.__MainNode.style.borderImageRepeat               = value_ }
+            get borderImageSlice                () { return this.__MainNode.style.borderImageSlice                 } set borderImageSlice                (value_) { this.__MainNode.style.borderImageSlice                = value_ }
+            get borderImageSource               () { return this.__MainNode.style.borderImageSource                } set borderImageSource               (value_) { this.__MainNode.style.borderImageSource               = value_ }
+            get borderImageWidth                () { return this.__MainNode.style.borderImageWidth                 } set borderImageWidth                (value_) { this.__MainNode.style.borderImageWidth                = value_ }
+            get borderLeft                      () { return this.__MainNode.style.borderLeft                       } set borderLeft                      (value_) { this.__MainNode.style.borderLeft                      = value_ }
+            get borderLeftColor                 () { return this.__MainNode.style.borderLeftColor                  } set borderLeftColor                 (value_) { this.__MainNode.style.borderLeftColor                 = value_ }
+            get borderLeftStyle                 () { return this.__MainNode.style.borderLeftStyle                  } set borderLeftStyle                 (value_) { this.__MainNode.style.borderLeftStyle                 = value_ }
+            get borderLeftWidth                 () { return this.__MainNode.style.borderLeftWidth                  } set borderLeftWidth                 (value_) { this.__MainNode.style.borderLeftWidth                 = value_ }
+            get borderRadius                    () { return this.__MainNode.style.borderRadius                     } set borderRadius                    (value_) { this.__MainNode.style.borderRadius                    = value_ }
+            get borderRight                     () { return this.__MainNode.style.borderRight                      } set borderRight                     (value_) { this.__MainNode.style.borderRight                     = value_ }
+            get borderRightColor                () { return this.__MainNode.style.borderRightColor                 } set borderRightColor                (value_) { this.__MainNode.style.borderRightColor                = value_ }
+            get borderRightStyle                () { return this.__MainNode.style.borderRightStyle                 } set borderRightStyle                (value_) { this.__MainNode.style.borderRightStyle                = value_ }
+            get borderRightWidth                () { return this.__MainNode.style.borderRightWidth                 } set borderRightWidth                (value_) { this.__MainNode.style.borderRightWidth                = value_ }
+            get borderSpacing                   () { return this.__MainNode.style.borderSpacing                    } set borderSpacing                   (value_) { this.__MainNode.style.borderSpacing                   = value_ }
+            get borderStyle                     () { return this.__MainNode.style.borderStyle                      } set borderStyle                     (value_) { this.__MainNode.style.borderStyle                     = value_ }
+            get borderTop                       () { return this.__MainNode.style.borderTop                        } set borderTop                       (value_) { this.__MainNode.style.borderTop                       = value_ }
+            get borderTopColor                  () { return this.__MainNode.style.borderTopColor                   } set borderTopColor                  (value_) { this.__MainNode.style.borderTopColor                  = value_ }
+            get borderTopLeftRadius             () { return this.__MainNode.style.borderTopLeftRadius              } set borderTopLeftRadius             (value_) { this.__MainNode.style.borderTopLeftRadius             = value_ }
+            get borderTopRightRadius            () { return this.__MainNode.style.borderTopRightRadius             } set borderTopRightRadius            (value_) { this.__MainNode.style.borderTopRightRadius            = value_ }
+            get borderTopStyle                  () { return this.__MainNode.style.borderTopStyle                   } set borderTopStyle                  (value_) { this.__MainNode.style.borderTopStyle                  = value_ }
+            get borderTopWidth                  () { return this.__MainNode.style.borderTopWidth                   } set borderTopWidth                  (value_) { this.__MainNode.style.borderTopWidth                  = value_ }
+            get borderWidth                     () { return this.__MainNode.style.borderWidth                      } set borderWidth                     (value_) { this.__MainNode.style.borderWidth                     = value_ }
+            get bottom                          () { return this.__MainNode.style.bottom                           } set bottom                          (value_) { this.__MainNode.style.bottom                          = value_ }
+            get boxDecorationBreak              () { return this.__MainNode.style.boxDecorationBreak               } set boxDecorationBreak              (value_) { this.__MainNode.style.boxDecorationBreak              = value_ }
+            get boxShadow                       () { return this.__MainNode.style.boxShadow                        } set boxShadow                       (value_) { this.__MainNode.style.boxShadow                       = value_ }
+            get boxSizing                       () { return this.__MainNode.style.boxSizing                        } set boxSizing                       (value_) { this.__MainNode.style.boxSizing                       = value_ }
+            get breakAfter                      () { return this.__MainNode.style.breakAfter                       } set breakAfter                      (value_) { this.__MainNode.style.breakAfter                      = value_ }
+            get breakBefore                     () { return this.__MainNode.style.breakBefore                      } set breakBefore                     (value_) { this.__MainNode.style.breakBefore                     = value_ }
+            get breakInside                     () { return this.__MainNode.style.breakInside                      } set breakInside                     (value_) { this.__MainNode.style.breakInside                     = value_ }
+            get captionSide                     () { return this.__MainNode.style.captionSide                      } set captionSide                     (value_) { this.__MainNode.style.captionSide                     = value_ }
+            get caretColor                      () { return this.__MainNode.style.caretColor                       } set caretColor                      (value_) { this.__MainNode.style.caretColor                      = value_ }
+            get Atcharset                       () { return this.__MainNode.style.Atcharset                        } set Atcharset                       (value_) { this.__MainNode.style.Atcharset                       = value_ }
+            get clear                           () { return this.__MainNode.style.clear                            } set clear                           (value_) { this.__MainNode.style.clear                           = value_ }
+            get clip                            () { return this.__MainNode.style.clip                             } set clip                            (value_) { this.__MainNode.style.clip                            = value_ }
+            get color                           () { return this.__MainNode.style.color                            } set color                           (value_) { this.__MainNode.style.color                           = value_ }
+            get columnCount                     () { return this.__MainNode.style.columnCount                      } set columnCount                     (value_) { this.__MainNode.style.columnCount                     = value_ }
+            get columnFill                      () { return this.__MainNode.style.columnFill                       } set columnFill                      (value_) { this.__MainNode.style.columnFill                      = value_ }
+            get columnGap                       () { return this.__MainNode.style.columnGap                        } set columnGap                       (value_) { this.__MainNode.style.columnGap                       = value_ }
+            get columnRule                      () { return this.__MainNode.style.columnRule                       } set columnRule                      (value_) { this.__MainNode.style.columnRule                      = value_ }
+            get columnRuleColor                 () { return this.__MainNode.style.columnRuleColor                  } set columnRuleColor                 (value_) { this.__MainNode.style.columnRuleColor                 = value_ }
+            get columnRuleStyle                 () { return this.__MainNode.style.columnRuleStyle                  } set columnRuleStyle                 (value_) { this.__MainNode.style.columnRuleStyle                 = value_ }
+            get columnRuleWidth                 () { return this.__MainNode.style.columnRuleWidth                  } set columnRuleWidth                 (value_) { this.__MainNode.style.columnRuleWidth                 = value_ }
+            get columnSpan                      () { return this.__MainNode.style.columnSpan                       } set columnSpan                      (value_) { this.__MainNode.style.columnSpan                      = value_ }
+            get columnWidth                     () { return this.__MainNode.style.columnWidth                      } set columnWidth                     (value_) { this.__MainNode.style.columnWidth                     = value_ }
+            get columns                         () { return this.__MainNode.style.columns                          } set columns                         (value_) { this.__MainNode.style.columns                         = value_ }
+            get content                         () { return this.__MainNode.style.content                          } set content                         (value_) { this.__MainNode.style.content                         = value_ }
+            get counterIncrement                () { return this.__MainNode.style.counterIncrement                 } set counterIncrement                (value_) { this.__MainNode.style.counterIncrement                = value_ }
+            get counterReset                    () { return this.__MainNode.style.counterReset                     } set counterReset                    (value_) { this.__MainNode.style.counterReset                    = value_ }
+            get cursor                          () { return this.__MainNode.style.cursor                           } set cursor                          (value_) { this.__MainNode.style.cursor                          = value_ }
+            get direction                       () { return this.__MainNode.style.direction                        } set direction                       (value_) { this.__MainNode.style.direction                       = value_ }
+            get display                         () { return this.__MainNode.style.display                          } set display                         (value_) { this.__MainNode.style.display                         = value_ }
+            get emptyCells                      () { return this.__MainNode.style.emptyCells                       } set emptyCells                      (value_) { this.__MainNode.style.emptyCells                      = value_ }
+            get filter                          () { return this.__MainNode.style.filter                           } set filter                          (value_) { this.__MainNode.style.filter                          = value_ }
+            get flex                            () { return this.__MainNode.style.flex                             } set flex                            (value_) { this.__MainNode.style.flex                            = value_ }
+            get flexBasis                       () { return this.__MainNode.style.flexBasis                        } set flexBasis                       (value_) { this.__MainNode.style.flexBasis                       = value_ }
+            get flexDirection                   () { return this.__MainNode.style.flexDirection                    } set flexDirection                   (value_) { this.__MainNode.style.flexDirection                   = value_ }
+            get flexFlow                        () { return this.__MainNode.style.flexFlow                         } set flexFlow                        (value_) { this.__MainNode.style.flexFlow                        = value_ }
+            get flexGrow                        () { return this.__MainNode.style.flexGrow                         } set flexGrow                        (value_) { this.__MainNode.style.flexGrow                        = value_ }
+            get flexShrink                      () { return this.__MainNode.style.flexShrink                       } set flexShrink                      (value_) { this.__MainNode.style.flexShrink                      = value_ }
+            get flexWrap                        () { return this.__MainNode.style.flexWrap                         } set flexWrap                        (value_) { this.__MainNode.style.flexWrap                        = value_ }
+            get float                           () { return this.__MainNode.style.float                            } set float                           (value_) { this.__MainNode.style.float                           = value_ }
+            get font                            () { return this.__MainNode.style.font                             } set font                            (value_) { this.__MainNode.style.font                            = value_ }
+            get AtfontFace                      () { return this.__MainNode.style.AtfontFace                       } set AtfontFace                      (value_) { this.__MainNode.style.AtfontFace                      = value_ }
+            get fontFamily                      () { return this.__MainNode.style.fontFamily                       } set fontFamily                      (value_) { this.__MainNode.style.fontFamily                      = value_ }
+            get fontFeatureSettings             () { return this.__MainNode.style.fontFeatureSettings              } set fontFeatureSettings             (value_) { this.__MainNode.style.fontFeatureSettings             = value_ }
+            get AtfontFeatureValues             () { return this.__MainNode.style.AtfontFeatureValues              } set AtfontFeatureValues             (value_) { this.__MainNode.style.AtfontFeatureValues             = value_ }
+            get fontKerning                     () { return this.__MainNode.style.fontKerning                      } set fontKerning                     (value_) { this.__MainNode.style.fontKerning                     = value_ }
+            get fontLanguageOverride            () { return this.__MainNode.style.fontLanguageOverride             } set fontLanguageOverride            (value_) { this.__MainNode.style.fontLanguageOverride            = value_ }
+            get fontSize                        () { return this.__MainNode.style.fontSize                         } set fontSize                        (value_) { this.__MainNode.style.fontSize                        = value_ }
+            get fontSizeAdjust                  () { return this.__MainNode.style.fontSizeAdjust                   } set fontSizeAdjust                  (value_) { this.__MainNode.style.fontSizeAdjust                  = value_ }
+            get fontStretch                     () { return this.__MainNode.style.fontStretch                      } set fontStretch                     (value_) { this.__MainNode.style.fontStretch                     = value_ }
+            get fontStyle                       () { return this.__MainNode.style.fontStyle                        } set fontStyle                       (value_) { this.__MainNode.style.fontStyle                       = value_ }
+            get fontSynthesis                   () { return this.__MainNode.style.fontSynthesis                    } set fontSynthesis                   (value_) { this.__MainNode.style.fontSynthesis                   = value_ }
+            get fontVariant                     () { return this.__MainNode.style.fontVariant                      } set fontVariant                     (value_) { this.__MainNode.style.fontVariant                     = value_ }
+            get fontVariantAlternates           () { return this.__MainNode.style.fontVariantAlternates            } set fontVariantAlternates           (value_) { this.__MainNode.style.fontVariantAlternates           = value_ }
+            get fontVariantCaps                 () { return this.__MainNode.style.fontVariantCaps                  } set fontVariantCaps                 (value_) { this.__MainNode.style.fontVariantCaps                 = value_ }
+            get fontVariantEastAsian            () { return this.__MainNode.style.fontVariantEastAsian             } set fontVariantEastAsian            (value_) { this.__MainNode.style.fontVariantEastAsian            = value_ }
+            get fontVariantLigatures            () { return this.__MainNode.style.fontVariantLigatures             } set fontVariantLigatures            (value_) { this.__MainNode.style.fontVariantLigatures            = value_ }
+            get fontVariantNumeric              () { return this.__MainNode.style.fontVariantNumeric               } set fontVariantNumeric              (value_) { this.__MainNode.style.fontVariantNumeric              = value_ }
+            get fontVariantPosition             () { return this.__MainNode.style.fontVariantPosition              } set fontVariantPosition             (value_) { this.__MainNode.style.fontVariantPosition             = value_ }
+            get fontWeight                      () { return this.__MainNode.style.fontWeight                       } set fontWeight                      (value_) { this.__MainNode.style.fontWeight                      = value_ }
+            get grid                            () { return this.__MainNode.style.grid                             } set grid                            (value_) { this.__MainNode.style.grid                            = value_ }
+            get gridArea                        () { return this.__MainNode.style.gridArea                         } set gridArea                        (value_) { this.__MainNode.style.gridArea                        = value_ }
+            get gridAutoColumns                 () { return this.__MainNode.style.gridAutoColumns                  } set gridAutoColumns                 (value_) { this.__MainNode.style.gridAutoColumns                 = value_ }
+            get gridAutoFlow                    () { return this.__MainNode.style.gridAutoFlow                     } set gridAutoFlow                    (value_) { this.__MainNode.style.gridAutoFlow                    = value_ }
+            get gridAutoRows                    () { return this.__MainNode.style.gridAutoRows                     } set gridAutoRows                    (value_) { this.__MainNode.style.gridAutoRows                    = value_ }
+            get gridColumn                      () { return this.__MainNode.style.gridColumn                       } set gridColumn                      (value_) { this.__MainNode.style.gridColumn                      = value_ }
+            get gridColumnEnd                   () { return this.__MainNode.style.gridColumnEnd                    } set gridColumnEnd                   (value_) { this.__MainNode.style.gridColumnEnd                   = value_ }
+            get gridColumnGap                   () { return this.__MainNode.style.gridColumnGap                    } set gridColumnGap                   (value_) { this.__MainNode.style.gridColumnGap                   = value_ }
+            get gridColumnStart                 () { return this.__MainNode.style.gridColumnStart                  } set gridColumnStart                 (value_) { this.__MainNode.style.gridColumnStart                 = value_ }
+            get gridGap                         () { return this.__MainNode.style.gridGap                          } set gridGap                         (value_) { this.__MainNode.style.gridGap                         = value_ }
+            get gridRow                         () { return this.__MainNode.style.gridRow                          } set gridRow                         (value_) { this.__MainNode.style.gridRow                         = value_ }
+            get gridRowEnd                      () { return this.__MainNode.style.gridRowEnd                       } set gridRowEnd                      (value_) { this.__MainNode.style.gridRowEnd                      = value_ }
+            get gridRowGap                      () { return this.__MainNode.style.gridRowGap                       } set gridRowGap                      (value_) { this.__MainNode.style.gridRowGap                      = value_ }
+            get gridRowStart                    () { return this.__MainNode.style.gridRowStart                     } set gridRowStart                    (value_) { this.__MainNode.style.gridRowStart                    = value_ }
+            get gridTemplate                    () { return this.__MainNode.style.gridTemplate                     } set gridTemplate                    (value_) { this.__MainNode.style.gridTemplate                    = value_ }
+            get gridTemplateAreas               () { return this.__MainNode.style.gridTemplateAreas                } set gridTemplateAreas               (value_) { this.__MainNode.style.gridTemplateAreas               = value_ }
+            get gridTemplateColumns             () { return this.__MainNode.style.gridTemplateColumns              } set gridTemplateColumns             (value_) { this.__MainNode.style.gridTemplateColumns             = value_ }
+            get gridTemplateRows                () { return this.__MainNode.style.gridTemplateRows                 } set gridTemplateRows                (value_) { this.__MainNode.style.gridTemplateRows                = value_ }
+            get hangingPunctuation              () { return this.__MainNode.style.hangingPunctuation               } set hangingPunctuation              (value_) { this.__MainNode.style.hangingPunctuation              = value_ }
+            get height                          () { return this.__MainNode.style.height                           } set height                          (value_) { this.__MainNode.style.height                          = value_ }
+            get hyphens                         () { return this.__MainNode.style.hyphens                          } set hyphens                         (value_) { this.__MainNode.style.hyphens                         = value_ }
+            get imageOrientation                () { return this.__MainNode.style.imageOrientation                 } set imageOrientation                (value_) { this.__MainNode.style.imageOrientation                = value_ }
+            get imageRendering                  () { return this.__MainNode.style.imageRendering                   } set imageRendering                  (value_) { this.__MainNode.style.imageRendering                  = value_ }
+            get imageResolution                 () { return this.__MainNode.style.imageResolution                  } set imageResolution                 (value_) { this.__MainNode.style.imageResolution                 = value_ }
+            get Atimport                        () { return this.__MainNode.style.Atimport                         } set Atimport                        (value_) { this.__MainNode.style.Atimport                        = value_ }
+            get justifyContent                  () { return this.__MainNode.style.justifyContent                   } set justifyContent                  (value_) { this.__MainNode.style.justifyContent                  = value_ }
+            get Atkeyframes                     () { return this.__MainNode.style.Atkeyframes                      } set Atkeyframes                     (value_) { this.__MainNode.style.Atkeyframes                     = value_ }
+            get left                            () { return this.__MainNode.style.left                             } set left                            (value_) { this.__MainNode.style.left                            = value_ }
+            get letterSpacing                   () { return this.__MainNode.style.letterSpacing                    } set letterSpacing                   (value_) { this.__MainNode.style.letterSpacing                   = value_ }
+            get lineBreak                       () { return this.__MainNode.style.lineBreak                        } set lineBreak                       (value_) { this.__MainNode.style.lineBreak                       = value_ }
+            get lineHeight                      () { return this.__MainNode.style.lineHeight                       } set lineHeight                      (value_) { this.__MainNode.style.lineHeight                      = value_ }
+            get listStyle                       () { return this.__MainNode.style.listStyle                        } set listStyle                       (value_) { this.__MainNode.style.listStyle                       = value_ }
+            get listStyleImage                  () { return this.__MainNode.style.listStyleImage                   } set listStyleImage                  (value_) { this.__MainNode.style.listStyleImage                  = value_ }
+            get listStylePosition               () { return this.__MainNode.style.listStylePosition                } set listStylePosition               (value_) { this.__MainNode.style.listStylePosition               = value_ }
+            get listStyleType                   () { return this.__MainNode.style.listStyleType                    } set listStyleType                   (value_) { this.__MainNode.style.listStyleType                   = value_ }
+            get margin                          () { return this.__MainNode.style.margin                           } set margin                          (value_) { this.__MainNode.style.margin                          = value_ }
+            get marginBottom                    () { return this.__MainNode.style.marginBottom                     } set marginBottom                    (value_) { this.__MainNode.style.marginBottom                    = value_ }
+            get marginLeft                      () { return this.__MainNode.style.marginLeft                       } set marginLeft                      (value_) { this.__MainNode.style.marginLeft                      = value_ }
+            get marginRight                     () { return this.__MainNode.style.marginRight                      } set marginRight                     (value_) { this.__MainNode.style.marginRight                     = value_ }
+            get marginTop                       () { return this.__MainNode.style.marginTop                        } set marginTop                       (value_) { this.__MainNode.style.marginTop                       = value_ }
+            get maxHeight                       () { return this.__MainNode.style.maxHeight                        } set maxHeight                       (value_) { this.__MainNode.style.maxHeight                       = value_ }
+            get maxWidth                        () { return this.__MainNode.style.maxWidth                         } set maxWidth                        (value_) { this.__MainNode.style.maxWidth                        = value_ }
+            get Atmedia                         () { return this.__MainNode.style.Atmedia                          } set Atmedia                         (value_) { this.__MainNode.style.Atmedia                         = value_ }
+            get minHeight                       () { return this.__MainNode.style.minHeight                        } set minHeight                       (value_) { this.__MainNode.style.minHeight                       = value_ }
+            get minWidth                        () { return this.__MainNode.style.minWidth                         } set minWidth                        (value_) { this.__MainNode.style.minWidth                        = value_ }
+            get objectFit                       () { return this.__MainNode.style.objectFit                        } set objectFit                       (value_) { this.__MainNode.style.objectFit                       = value_ }
+            get objectPosition                  () { return this.__MainNode.style.objectPosition                   } set objectPosition                  (value_) { this.__MainNode.style.objectPosition                  = value_ }
+            get opacity                         () { return this.__MainNode.style.opacity                          } set opacity                         (value_) { this.__MainNode.style.opacity                         = value_ }
+            get order                           () { return this.__MainNode.style.order                            } set order                           (value_) { this.__MainNode.style.order                           = value_ }
+            get orphans                         () { return this.__MainNode.style.orphans                          } set orphans                         (value_) { this.__MainNode.style.orphans                         = value_ }
+            get outline                         () { return this.__MainNode.style.outline                          } set outline                         (value_) { this.__MainNode.style.outline                         = value_ }
+            get outlineColor                    () { return this.__MainNode.style.outlineColor                     } set outlineColor                    (value_) { this.__MainNode.style.outlineColor                    = value_ }
+            get outlineOffset                   () { return this.__MainNode.style.outlineOffset                    } set outlineOffset                   (value_) { this.__MainNode.style.outlineOffset                   = value_ }
+            get outlineStyle                    () { return this.__MainNode.style.outlineStyle                     } set outlineStyle                    (value_) { this.__MainNode.style.outlineStyle                    = value_ }
+            get outlineWidth                    () { return this.__MainNode.style.outlineWidth                     } set outlineWidth                    (value_) { this.__MainNode.style.outlineWidth                    = value_ }
+            get overflowWrap                    () { return this.__MainNode.style.overflowWrap                     } set overflowWrap                    (value_) { this.__MainNode.style.overflowWrap                    = value_ }
+            get overflowX                       () { return this.__MainNode.style.overflowX                        } set overflowX                       (value_) { this.__MainNode.style.overflowX                       = value_ }
+            get overflowY                       () { return this.__MainNode.style.overflowY                        } set overflowY                       (value_) { this.__MainNode.style.overflowY                       = value_ }
+            get padding                         () { return this.__MainNode.style.padding                          } set padding                         (value_) { this.__MainNode.style.padding                         = value_ }
+            get paddingBottom                   () { return this.__MainNode.style.paddingBottom                    } set paddingBottom                   (value_) { this.__MainNode.style.paddingBottom                   = value_ }
+            get paddingLeft                     () { return this.__MainNode.style.paddingLeft                      } set paddingLeft                     (value_) { this.__MainNode.style.paddingLeft                     = value_ }
+            get paddingRight                    () { return this.__MainNode.style.paddingRight                     } set paddingRight                    (value_) { this.__MainNode.style.paddingRight                    = value_ }
+            get paddingTop                      () { return this.__MainNode.style.paddingTop                       } set paddingTop                      (value_) { this.__MainNode.style.paddingTop                      = value_ }
+            get pageBreakAfter                  () { return this.__MainNode.style.pageBreakAfter                   } set pageBreakAfter                  (value_) { this.__MainNode.style.pageBreakAfter                  = value_ }
+            get pageBreakBefore                 () { return this.__MainNode.style.pageBreakBefore                  } set pageBreakBefore                 (value_) { this.__MainNode.style.pageBreakBefore                 = value_ }
+            get pageBreakInside                 () { return this.__MainNode.style.pageBreakInside                  } set pageBreakInside                 (value_) { this.__MainNode.style.pageBreakInside                 = value_ }
+            get perspective                     () { return this.__MainNode.style.perspective                      } set perspective                     (value_) { this.__MainNode.style.perspective                     = value_ }
+            get perspectiveOrigin               () { return this.__MainNode.style.perspectiveOrigin                } set perspectiveOrigin               (value_) { this.__MainNode.style.perspectiveOrigin               = value_ }
+            get pointerEvents                   () { return this.__MainNode.style.pointerEvents                    } set pointerEvents                   (value_) { this.__MainNode.style.pointerEvents                   = value_ }
+            get position                        () { return this.__MainNode.style.position                         } set position                        (value_) { this.__MainNode.style.position                        = value_ }
+            get quotes                          () { return this.__MainNode.style.quotes                           } set quotes                          (value_) { this.__MainNode.style.quotes                          = value_ }
+            get resize                          () { return this.__MainNode.style.resize                           } set resize                          (value_) { this.__MainNode.style.resize                          = value_ }
+            get right                           () { return this.__MainNode.style.right                            } set right                           (value_) { this.__MainNode.style.right                           = value_ }
+            get tabSize                         () { return this.__MainNode.style.tabSize                          } set tabSize                         (value_) { this.__MainNode.style.tabSize                         = value_ }
+            get tableLayout                     () { return this.__MainNode.style.tableLayout                      } set tableLayout                     (value_) { this.__MainNode.style.tableLayout                     = value_ }
+            get textAlign                       () { return this.__MainNode.style.textAlign                        } set textAlign                       (value_) { this.__MainNode.style.textAlign                       = value_ }
+            get textAlignLast                   () { return this.__MainNode.style.textAlignLast                    } set textAlignLast                   (value_) { this.__MainNode.style.textAlignLast                   = value_ }
+            get textCombineUpright              () { return this.__MainNode.style.textCombineUpright               } set textCombineUpright              (value_) { this.__MainNode.style.textCombineUpright              = value_ }
+            get textDecoration                  () { return this.__MainNode.style.textDecoration                   } set textDecoration                  (value_) { this.__MainNode.style.textDecoration                  = value_ }
+            get textDecorationColor             () { return this.__MainNode.style.textDecorationColor              } set textDecorationColor             (value_) { this.__MainNode.style.textDecorationColor             = value_ }
+            get textDecorationLine              () { return this.__MainNode.style.textDecorationLine               } set textDecorationLine              (value_) { this.__MainNode.style.textDecorationLine              = value_ }
+            get textDecorationStyle             () { return this.__MainNode.style.textDecorationStyle              } set textDecorationStyle             (value_) { this.__MainNode.style.textDecorationStyle             = value_ }
+            get textIndent                      () { return this.__MainNode.style.textIndent                       } set textIndent                      (value_) { this.__MainNode.style.textIndent                      = value_ }
+            get textJustify                     () { return this.__MainNode.style.textJustify                      } set textJustify                     (value_) { this.__MainNode.style.textJustify                     = value_ }
+            get textOrientation                 () { return this.__MainNode.style.textOrientation                  } set textOrientation                 (value_) { this.__MainNode.style.textOrientation                 = value_ }
+            get textOverflow                    () { return this.__MainNode.style.textOverflow                     } set textOverflow                    (value_) { this.__MainNode.style.textOverflow                    = value_ }
+            get textShadow                      () { return this.__MainNode.style.textShadow                       } set textShadow                      (value_) { this.__MainNode.style.textShadow                      = value_ }
+            get textTransform                   () { return this.__MainNode.style.textTransform                    } set textTransform                   (value_) { this.__MainNode.style.textTransform                   = value_ }
+            get textUnderlinePosition           () { return this.__MainNode.style.textUnderlinePosition            } set textUnderlinePosition           (value_) { this.__MainNode.style.textUnderlinePosition           = value_ }
+            get top                             () { return this.__MainNode.style.top                              } set top                             (value_) { this.__MainNode.style.top                             = value_ }
+            get transform                       () { return this.__MainNode.style.transform                        } set transform                       (value_) { this.__MainNode.style.transform                       = value_ }
+            get transformOrigin                 () { return this.__MainNode.style.transformOrigin                  } set transformOrigin                 (value_) { this.__MainNode.style.transformOrigin                 = value_ }
+            get transformStyle                  () { return this.__MainNode.style.transformStyle                   } set transformStyle                  (value_) { this.__MainNode.style.transformStyle                  = value_ }
+            get transition                      () { return this.__MainNode.style.transition                       } set transition                      (value_) { this.__MainNode.style.transition                      = value_ }
+            get transitionDelay                 () { return this.__MainNode.style.transitionDelay                  } set transitionDelay                 (value_) { this.__MainNode.style.transitionDelay                 = value_ }
+            get transitionDuration              () { return this.__MainNode.style.transitionDuration               } set transitionDuration              (value_) { this.__MainNode.style.transitionDuration              = value_ }
+            get transitionProperty              () { return this.__MainNode.style.transitionProperty               } set transitionProperty              (value_) { this.__MainNode.style.transitionProperty              = value_ }
+            get transitionTimingFunction        () { return this.__MainNode.style.transitionTimingFunction         } set transitionTimingFunction        (value_) { this.__MainNode.style.transitionTimingFunction        = value_ }
+            get unicodeBidi                     () { return this.__MainNode.style.unicodeBidi                      } set unicodeBidi                     (value_) { this.__MainNode.style.unicodeBidi                     = value_ }
+            get userSelect                      () { return this.__MainNode.style.userSelect                       } set userSelect                      (value_) { this.__MainNode.style.userSelect                      = value_ }
+            get verticalAlign                   () { return this.__MainNode.style.verticalAlign                    } set verticalAlign                   (value_) { this.__MainNode.style.verticalAlign                   = value_ }
+            get visibility                      () { return this.__MainNode.style.visibility                       } set visibility                      (value_) { this.__MainNode.style.visibility                      = value_ }
+            get whiteSpace                      () { return this.__MainNode.style.whiteSpace                       } set whiteSpace                      (value_) { this.__MainNode.style.whiteSpace                      = value_ }
+            get widows                          () { return this.__MainNode.style.widows                           } set widows                          (value_) { this.__MainNode.style.widows                          = value_ }
+            get width                           () { return this.__MainNode.style.width                            } set width                           (value_) { this.__MainNode.style.width                           = value_ }
+            get wordBreak                       () { return this.__MainNode.style.wordBreak                        } set wordBreak                       (value_) { this.__MainNode.style.wordBreak                       = value_ }
+            get wordSpacing                     () { return this.__MainNode.style.wordSpacing                      } set wordSpacing                     (value_) { this.__MainNode.style.wordSpacing                     = value_ }
+            get wordWrap                        () { return this.__MainNode.style.wordWrap                         } set wordWrap                        (value_) { this.__MainNode.style.wordWrap                        = value_ }
+            get writingMode                     () { return this.__MainNode.style.writingMode                      } set writingMode                     (value_) { this.__MainNode.style.writingMode                     = value_ }
+            get zIndex                          () { return this.__MainNode.style.zIndex                           } set zIndex                          (value_) { this.__MainNode.style.zIndex                          = value_ }
+    }
+class Container extends SimpleElement
+    {
+        constructor(element)
+            {
+                super()
+                // create 
+                this.__Child    = element
+                // this.__Handlee  = New("div", { height: "fit-content", width: "fit-content"  })
+                this.__MainNode  = New("div", { height: "100%", width: "100%", display:"flex", position: "relative" })
+                // this.__MainNode = New("div", { height: "100%", width: "100%" })
+                // attach 
+                // this.__Handlee.add(this.__Child)
+                // this.__Handler.add(this.__Child)
+                this.__MainNode.add(this.__Child)
+            
+            }
+        add(...elements)
+            {
+                this.__Child.add(...elements)
+            }
+        // vertical choices
+            alignTop()
+                {
+                    // this.__Handlee.style.top = "0"
+                    // this.__Handlee.style.bottom = null
+                    this.__MainNode.style.alignItems = "flex-start"
+                }
+            alignBottom()
+                {
+                    // this.__Handlee.style.top = null
+                    // this.__Handlee.style.bottom = "0"
+                    this.__MainNode.style.alignItems = "flex-end"
+                }
+            centerVertically()
+                {
+                    // if already centered horizontally
+                    this.__MainNode.style.alignItems = "center"
+                    // if (this.__Handlee.style.left == "50%")
+                    //     {
+                    //         this.center()
+                    //     }
+                    // else
+                    //     {
+                    //         this.__Handlee.style.top = "50%"
+                    //         this.__Handlee.style.bottom = null
+                    //         this.__Handlee.style.transform = "translateY(-50%)"
+                    //     }
+                    
+                }
+        // horizontal choices
+            alignLeft()
+                {
+                    // this.__Handlee.style.left = "0"
+                    // this.__Handlee.style.right = null
+                    this.__MainNode.style.justifyContent = "flex-end"
+                }
+            alignRight()
+                {
+                    // this.__Handlee.style.left = null
+                    // this.__Handlee.style.right = "0"
+                    this.__MainNode.style.justifyContent = "flex-start"
+                }
+            centerHorizontally()
+                {
+                    // if already centered vertically 
+                    this.__MainNode.style.justifyContent = "center"
+                    // if (this.__Handlee.style.top == "50%")
+                    //     {
+                    //         this.center()
+                    //     }
+                    // else
+                    //     {
+                    //         this.__Handlee.style.left = "50%"
+                    //         this.__Handlee.style.right = null
+                    //         this.__Handlee.style.transform = "translateX(-50%)"
+                    //     }
+                }
+        // center both ways
+            center()
+                {
+                    this.__MainNode.style.justifyContent = "center"
+                    this.__MainNode.style.alignItems = "center"
+                    // this.__Handlee.style.top = "50%"
+                    // this.__Handlee.style.bottom = null
+                    // this.__Handlee.style.left = "50%"
+                    // this.__Handlee.style.right = null
+                    // this.__Handlee.style.transform = "translate(-50%,-50%)"
+                }
     }
 class List extends SimpleElement
     {
@@ -748,5 +842,66 @@ class Link extends SimpleElement
             }
     }
     
+
+class VerticalList extends SimpleElement
+    {
+        constructor(...elements)
+            {
+                super()
+                this.__MainNode = New('div')
+                this.__Wrappers = []
+                for (var each of elements)
+                    {
+                        var the_wrapper = new Container(each)
+                        the_wrapper.width = "100%"
+                        this.__Wrappers.push(the_wrapper)
+                        this.__MainNode.add(the_wrapper)
+                    }
+                // by default left align everything 
+                this.leftAlignEach()
+            }
+        centerEach()
+            {
+                this.__Alignment = "center"
+                for (var each of this.__Wrappers)
+                    {
+                        each.centerHorizontally()
+                    }
+            }
+        leftAlignEach()
+            {
+                this.__Alignment = "left"
+                for (var each of this.__Wrappers)
+                    {
+                        each.alignLeft()
+                    }
+            }
+        rightAlignEach()
+            {
+                this.__Alignment = "right"
+                for (var each of this.__Wrappers)
+                    {
+                        each.alignRight()
+                    }
+            }
+        add(element)
+            {
+                var the_wrapper = new Container(element)
+                if (this.__Alignment == "left")
+                    {
+                        the_wrapper.alignRight()
+                    }
+                else if (this.__Alignment == "")
+                    {
+                        the_wrapper.alignLeft()
+                    }
+                else
+                    {
+                        the_wrapper.centerHorizontally()
+                    }
+                this.__Wrappers.push(the_wrapper)
+                this.__MainNode.add(the_wrapper)
+            }
+    }
 
 // TODO figure out how to support map+img+area
