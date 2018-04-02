@@ -46,9 +46,23 @@ def SystemRoutes(): #this is name-specific
                     file.close()
                     return output
 
+                @Route('/module/Login/SignUp')
+                def module_route5():
+                    file = open('/Users/jeffhykin/Documents/_Programming/SimpleStack/.Server/boilerplate/static/Login→SignUp.module.js', "r")
+                    output = file.read()
+                    file.close()
+                    return output
+
+                @Route('/module/Login/Login')
+                def module_route6():
+                    file = open('/Users/jeffhykin/Documents/_Programming/SimpleStack/.Server/boilerplate/static/Login→Login.module.js', "r")
+                    output = file.read()
+                    file.close()
+                    return output
+
                 
                 @Route('/func/HelloWorld', methods=['POST'])
-                def func_route5():
+                def func_route7():
                     DATA_FROM_CLIENT = ReceiveJsonData()
                     
 
@@ -57,7 +71,7 @@ def SystemRoutes(): #this is name-specific
 
                 
                 @Route('/func/Hello', methods=['POST'])
-                def func_route6():
+                def func_route8():
                     DATA_FROM_CLIENT = ReceiveJsonData()
                     
                     name_ = DATA_FROM_CLIENT['arguments'][0]
@@ -67,7 +81,7 @@ def SystemRoutes(): #this is name-specific
 
                 
                 @Route('/func/Login/Login', methods=['POST'])
-                def func_route7():
+                def func_route9():
                     DATA_FROM_CLIENT = ReceiveJsonData()
                     
                     username = DATA_FROM_CLIENT['arguments'][0]

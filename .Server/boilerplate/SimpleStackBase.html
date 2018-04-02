@@ -15,6 +15,11 @@
         <page id="GlobalModule"  >
         </page>
         <script>
+            window.onpopstate = function()
+                {
+                    console.log(`user just went back:`,history.state)
+                    LoadPage(history.state)
+                }
             Global = 
                 {
                     Eval: function (input_){eval(input_)},
@@ -148,7 +153,7 @@
                     return request_result
                 }
 
-            Run      = async function(function_name,array_of_arguments=[])
+            Server   = async function(function_name,array_of_arguments=[])
                 {
                     return await Request({path:"func/"+function_name, data:{arguments:array_of_arguments}})
                 }
@@ -174,7 +179,21 @@
                         }
                     else if (input_ instanceof SimpleElement)
                         {
-                            this.appendChild(input_.outerMostNode)
+                            var the_main_node = input_.__MainNode
+                            // drill down until finding a regular html node
+                            while(true)
+                                {
+                                    if (the_main_node instanceof SimpleElement )
+                                        {
+                                            the_main_node = the_main_node.__MainNode
+                                        }
+                                    else
+                                        {
+                                            break
+                                        }
+                                }
+                            // console.log(`the_main_node is:`,the_main_node)
+                            this.appendChild(the_main_node)
                         }
                     else if (input_ instanceof Node)
                         {
@@ -189,7 +208,34 @@
                 }
             LoadPage = async function(page_name)
                 {
-                    let js_code = await Request({path:"page/"+page_name})
+                    if (!('CurrentPath' in Global))
+                        {
+                            Global.CurrentPath = ""
+                        }
+                    // go up a directory
+                    if (page_name.match(/^\.\.\/.+$/))
+                        {
+                            // FIXME
+                            Global.CurrentPath = Global.CurrentPath.replace(/\/.+?$/,"")
+                            Global.CurrentPath = Global.CurrentPath.replace(/\/.+?\/$/,"")
+                        }
+                    // absolute directory
+                    else if (page_name.match(/^\/.+$/))
+                        {
+                            Global.CurrentPath = page_name
+                        }
+                    // relative directory
+                    else
+                        {
+                            console.log(`Global.CurrentPath before is:`,Global.CurrentPath)
+                            Global.CurrentPath = Global.CurrentPath.replace(/\/.+?$/,"")
+                            Global.CurrentPath += "/"+ page_name
+                        }
+                    console.log(`Global.CurrentPath is:`,Global.CurrentPath)
+                    let js_code = await Request({path:"page"+Global.CurrentPath})
+                    history.pushState(Global.CurrentPath,"Home", Global.CurrentPath)
+                    
+                    
                     // FIXME, check for errors here (encase page doesn't exist)
                     // TODO, utilize state for something useful
                     // history.pushState({}, page_name, page_name.replace(/\/.+?$/,""))

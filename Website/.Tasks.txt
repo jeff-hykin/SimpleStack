@@ -104,31 +104,9 @@
         on Global set, set global, the asyncly write to indexDB
         on Global get, just return global
     
-    (1 month) create SimpleDOM
-        create a Container class that only holds one element
-            allows any alignment relative to the Container
-                vertical:
-                    center
-                    top
-                    bottom
-                horizontal:
-                    centered
-                    left
-                    right
-
-        create a Card Container
-            the same as Container
-            except has a material card background
-
+    (2 weeks) create SimpleDOM
         create a Button
             have a preset option for different forms
-
-        create a vertical list class
-            all elements stored in an array
-                each element can be aligned to the 
-                    left 
-                    right
-                    horizontal center 
 
         create an Input
             have a preset option for different forms
@@ -244,39 +222,3 @@
                 if it has not been paid, pay it to them
                 mark the account as paid
                 check if any more companies have not been paid
-
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        

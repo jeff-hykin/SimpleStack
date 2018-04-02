@@ -1,5 +1,7 @@
 
 next things: 
+    - why does reloading the page mess up the history
+    - why does going forward in the browser not work
     - add events to SimpleElement
     - add SimpleID to element proto, and add sets and gets for it
     - add a 'Server()' function for running python 
