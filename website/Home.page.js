@@ -1,18 +1,19 @@
 // create
-var vertical_list   = new List()
-var title           = New("h1"    ,{ innerHTML : "Hello World!"     })
-var login_button    = New("Button",{ innerHTML : "go to login page" , margin:"12px"})
-var sign_up_button  = New("Button",{ innerHTML : "sign up" , margin:"12px"})
+var organizer       = new VerticalList()
+var title           = new H1({innerHTML : "Hello World!"})
+var login_button    = new Button({ innerHTML : "go to login page" , margin:"12px"})
+var sign_up_button  = new Button({ innerHTML : "sign up" , margin:"12px"})
 
-// attach 
-Parent.add(vertical_list)
-vertical_list.add(title)
-vertical_list.add(login_button)
-vertical_list.add(sign_up_button)
+
+// attach
+organizer.add(title)
+organizer.add(login_button)
+organizer.add(sign_up_button)
+Parent.add(organizer)
+
 
 // set attributes
-HorizonallyCenterChildrenOf(Parent)
-vertical_list.alignEach("center horizontally")
+organizer.centerEach()
 login_button.onclick = function ()
     {
         LoadPage("Login/Login")
@@ -23,33 +24,4 @@ sign_up_button.onclick = function ()
     }
 
 
-
-// // add a button for going to the login page
-// var whenLoginButtonIsClicked = async function()
-//     { 
-//         LoadPage("Login/Login")
-//     }
-// var a_button = New("Button", {innerHTML:"Login", onclick: whenLoginButtonIsClicked})
-// list_container.add(a_button)
-
-// var div_item = New("div",{innerHTML:"login_button#2!",id:"test"})
-// console.log(`div_item.id is:`,div_item.id)
-// // HorizontallyCenter(div_item)
-// list_container.add(div_item)
-
-
-
-// Add the hello module
-// Parent.add("hello")
-
-
-
-// Tell(Module("hello"),"Run that python again")
-
-
-// WhenAnythingSays("Python sent:",{do: async function (data) {
-//     hello_element.innerHTML = data
-//     await TimerFor(2000)
-//     hello_element.innerHTML += await Run("HelloWorld")
-// }})
 
