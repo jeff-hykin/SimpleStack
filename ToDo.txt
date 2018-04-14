@@ -1,5 +1,6 @@
 
 next things: 
+    - set a "execution location" Global variable for each module for debugging and global event logging
     - why does reloading the page mess up the history
     - why does going forward in the browser not work
     - add events to SimpleElement
