@@ -26,6 +26,11 @@
                                     
                                     // set attributes
                                     organizer.centerEach()
+                                    Global.on.greeting = function ()
+                                        {
+                                            console.log(`triggered!`)
+                                            title.innerHTML = Global.greeting 
+                                        }
                                     login_button.onclick = function ()
                                         {
                                             LoadPage("Login/Login")

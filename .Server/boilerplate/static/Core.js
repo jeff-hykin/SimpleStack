@@ -16,6 +16,23 @@ if (1) // Database setup
     }
 if (1) // setup for Global 
     {
+        var OnChangerProxy =
+            {
+                // FOR: events
+                set : function (target, key, new_value)
+                    {
+                        console.log(`Global.Loading is:`,Global.Loading)
+                        // try 
+                            // {
+                                var the_node = Global.Loading[Global.Loading.length-1].Node
+                                console.log(`the_node is:`,the_node)
+                                var event_name = 'Global.Vars.'+key
+                                the_node.addEventListener(event_name,new_value)
+                            // }
+                        
+                        return true 
+                    },
+            }
         var __GlobalInitObj = 
             {
                 Vars: 
@@ -53,6 +70,7 @@ if (1) // setup for Global
                                 Global.Changes = []
                             }
                     },
+                on: new Proxy({}, OnChangerProxy),
             }
         var GlobalProxy =
             {
@@ -75,11 +93,13 @@ if (1) // setup for Global
                     },
                 set : function (target, key, new_value)
                     {
-                        target.Changes.push({'previous':{ [key]:target[key] },'next':{ [key]:new_value }})
+                        target.Changes.push({[key]:{'previous value':target[key],'new value':new_value }})
                         target.Vars[key] = new_value
                         localforage.setItem("Global.Vars."+key, new_value)
+                        
                         // FIXME, this should be O(1), but right now its O(n)
                         console.log(`Object.keys(Global.Vars) is:`,Object.keys(Global.Vars))
+                        window.dispatchEvent(new CustomEvent('Global.Vars.'+key)) // FIXME // FOR: events
                         // wait till site loads
                         if (target.SystemVars.CurrentPath)
                             {
@@ -148,7 +168,7 @@ if (1) // protos
     }
 if (1) // Core functions
     {
-        function Say(saying)
+        var Say = function  (saying)
             {
                 try 
                     {
@@ -158,7 +178,7 @@ if (1) // Core functions
                 catch(e){}
                 return window.dispatchEvent(new Event(saying))
             }
-        Request  = async function({username=null, password=null, url, path, data=null, method="GET",timeout=10}) 
+        var Request  = async function({username=null, password=null, url, path, data=null, method="GET",timeout=10}) 
             {
                 if (Global.Debugging) { console.log("starting Request for ",[url,path,method]) }
                 let request_result = await new Promise
@@ -244,11 +264,11 @@ if (1) // Core functions
                 if (Global.Debugging) { console.log("finished Request for ",[url,path,method]) }
                 return request_result
             }
-        Server   = async function(function_name,array_of_arguments=[])
+        var Server   = async function(function_name,array_of_arguments=[])
             {
                 return await Request({path:"func/"+function_name, data:{arguments:array_of_arguments}})
             }
-        LoadPage = async function(page_name)
+        var LoadPage = async function(page_name)
             {
                 // normal click
                 if (page_name)
@@ -277,7 +297,6 @@ if (1) // Core functions
                                         // go up a directory
                                         if (page_name.match(/^\.\.\/.+$/))
                                             {
-                                                console.log(`up a dir`)
                                                 // FIXME
                                                 Global.SystemVars.CurrentPath = Global.SystemVars.CurrentPath.replace(/\/.+?$/,"")
                                                 Global.SystemVars.CurrentPath = Global.SystemVars.CurrentPath.replace(/\/.+?\/$/,"")
@@ -285,13 +304,11 @@ if (1) // Core functions
                                         // absolute directory
                                         else if (page_name.match(/^\/.+$/))
                                             {
-                                                console.log(`abs dir`)
                                                 Global.SystemVars.CurrentPath = page_name
                                             }
                                         // relative directory
                                         else
                                             {
-                                                console.log(`rel a dir`)
                                                 Global.SystemVars.CurrentPath = Global.SystemVars.CurrentPath.replace(/\/.+?$/,"")
                                                 Global.SystemVars.CurrentPath += "/"+ page_name
                                             }
