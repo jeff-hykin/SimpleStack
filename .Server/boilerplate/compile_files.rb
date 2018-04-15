@@ -69,22 +69,40 @@
         return content
     end 
 
-    def code_generate(name_,each)
+    def code_generate(module_name,each)
         return <<-HEREDOC
             LoadModule = async function(Parent) 
                 {
-                    if (Parent.id != "GlobalModule")  { Parent.id = `#{name_}${Global.__NumberOfModulesCreated++}` }
-                    const WhenAnythingSays = (saying_,data_)=>(Global.WhenAnythingSays(Parent.id, saying_, data_))
-                    var #{name_} = 
+                    // so attached listeners know who attached them
+                    Global.SystemVars.CurrentOrigin = "#{module_name}"
+                    // create the module in an object so that DangerousEval can be used 
+                    const #{module_name} = 
                         {
+                            Node: document.createElement("module"),
                             Load: async function()
                                 {
                                     "use strict"
                                     \n#{indent(readFile(each),(9*4))}
                                 }
                         }
-                    const DangerousEval = Global.Eval.bind(#{name_})
-                    await #{name_}.Load()
+                    // set the id
+                    #{module_name}.Node.id = "#{module_name}"
+                    // setup DangerousEval
+                    const DangerousEval = Global.Eval.bind(#{module_name})
+                    // set Loading
+                    Global.SystemVars.Loading.push(#{module_name})
+                    
+                    //
+                    // load module 
+                    //
+                    await #{module_name}.Load()
+                    
+                    // attach to parent
+                    Parent.add(#{module_name}.Node)
+                    // turn off loading
+                    Global.SystemVars.Loading.pop()
+                    // turn off the CurrentOrigin since the module is done loading
+                    Global.SystemVars.CurrentOrigin = undefined
                 }
             HEREDOC
     end 
@@ -233,8 +251,18 @@ favicon                    = Dir.glob("Website/**/favicon.ico")
 
 
 # initilize theses
-everything_that_should_be_in_static = [static_dir+'Global→GlobalStyles.css',static_dir+'Home.page.js']
-everything_that_should_be_templates = ['Home.html']
+everything_that_should_be_in_static = 
+    [
+        static_dir+'Global→GlobalStyles.css',
+        static_dir+'Home.page.js',
+        static_dir+'Core.js',
+        # library
+        static_dir+'localforage.min.js',
+    ]
+everything_that_should_be_templates = 
+    [
+        template_dir+'Home.html'
+    ]
 
 # move the base file
 # FileUtils.cp(location_of_base_html, template_dir)
@@ -330,21 +358,28 @@ for each in dirs_of_pages
 
     # escape the name to be an acceptable file name 
     new_file_name = file_name_escape(file_path)
-    everything_that_should_be_in_static << static_dir+new_file_name+".page.js"
+
+    # set locations 
+    static_location = static_dir+new_file_name+".page.js"
+    template_location = template_dir+new_file_name+".html"
+
+    # record them in the "should_be" list
+    everything_that_should_be_in_static << static_location
+    everything_that_should_be_templates << template_location
 
 
     # save output
     # FIXME, have a minify function 
     # code_ = <<-HEREDOC
-    code_ = code_generate(name_,each)
-
-
-    save code_,   to:(static_dir+new_file_name+".page.js") 
+    javascript_version = code_generate(name_,each)
+    save javascript_version, to:static_location
+    
     # create html for the page
     # FIXME, use a base.html to allow things to be injected into the head and body
     # FIXME, have a minify function 
     # FIXME, have a better way of doing replacements than a giant unlikely string
-    save base_html.gsub( /###THIS IS WHERE YOU WANT TO REPLACE THE PAGE NAME###/, file_path ),  to:(template_dir+new_file_name+".html")
+    the_html_version = base_html.gsub( /###THIS IS WHERE YOU WANT TO REPLACE THE PAGE NAME###/, file_path )
+    save the_html_version, to:template_location
 end 
 
 #
@@ -400,9 +435,12 @@ save(routes_as_string(routes_), to:routes_file_location)
 #FIXME, compile the python after to make it more efficient 
 #FIXME, make it so that general_tools and styles.css apply to all sub folders but not all parent folders
 
-
+#
+#   Delete unneeded files
+#
 all_paths_in_static = Dir.glob(static_dir+"*")
-list_of_files_to_delete = all_paths_in_static - everything_that_should_be_in_static
+all_paths_in_templates = Dir.glob(template_dir+"*")
+list_of_files_to_delete = (all_paths_in_static - everything_that_should_be_in_static) + (all_paths_in_templates - everything_that_should_be_templates)
 for each in list_of_files_to_delete
     File.delete each
 end

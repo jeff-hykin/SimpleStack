@@ -1,6 +1,14 @@
-
 next things: 
-    - set a "execution location" Global variable for each module for debugging and global event logging
+    - get history to load from localforage
+    - set a "execution location" Global variable for each module 
+        - for debugging
+        - global event logging
+        - knowing who used Tell()
+        - might need to overload all on___'s to include this global location too
+        - when a DOM object is given an on___, log the execution location
+    - how to handle deletion of a module
+    - have something limit the length of Global.Changes 
+    - have the changes to Global be saved to the indexedDB instead of in memory 
     - why does reloading the page mess up the history
     - why does going forward in the browser not work
     - add events to SimpleElement
