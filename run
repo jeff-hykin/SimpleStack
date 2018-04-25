@@ -1,6 +1,7 @@
 #!/bin/sh
 
 # FIXME, add auto install here
+# source /Users/jeffhykin/Documents/_Programming/SimpleStack/.Server/boilerplate/PythonVirtualEnv/bin/activate
 
 # first compile the files
 ruby .Server/boilerplate/compile_files.rb

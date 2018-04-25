@@ -63,7 +63,7 @@ def SystemRoutes(): #this is name-specific
                 
                 @Route('/func/HelloWorld', methods=['POST'])
                 def func_route7():
-                    DATA_FROM_CLIENT = ReceiveJsonData()
+                    DATA_FROM_CLIENT = request.get_json()
                     
 
                     
@@ -72,7 +72,7 @@ def SystemRoutes(): #this is name-specific
                 
                 @Route('/func/Hello', methods=['POST'])
                 def func_route8():
-                    DATA_FROM_CLIENT = ReceiveJsonData()
+                    DATA_FROM_CLIENT = request.get_json()
                     
                     name_ = DATA_FROM_CLIENT['arguments'][0]
 
@@ -82,7 +82,7 @@ def SystemRoutes(): #this is name-specific
                 
                 @Route('/func/Login/Login', methods=['POST'])
                 def func_route9():
-                    DATA_FROM_CLIENT = ReceiveJsonData()
+                    DATA_FROM_CLIENT = request.get_json()
                     
                     username = DATA_FROM_CLIENT['arguments'][0]
                     password = DATA_FROM_CLIENT['arguments'][1]

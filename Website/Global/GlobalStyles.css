@@ -1,27 +1,3 @@
-
-/* HTML stuff */
-html {
-    font-family: "Roboto", sans-serif;
-}
-
-@media only screen and (min-width: 0) {
-    html {
-        font-size: 14px
-    }
-}
-
-@media only screen and (min-width: 992px) {
-    html {
-        font-size: 14.5px
-    }
-}
-
-@media only screen and (min-width: 1200px) {
-    html {
-        font-size: 15px
-    }
-}
-
-#my_thing {
+#css_test {
     color:purple;
 }

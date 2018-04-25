@@ -215,7 +215,7 @@
                 #{requires_login}
                 @Route('/func/#{name_}', methods=['POST'])
                 def func_route#{$routeNumber}():
-                    DATA_FROM_CLIENT = ReceiveJsonData()
+                    DATA_FROM_CLIENT = request.get_json()
                     #{argument_assignment_string}
                     \n#{indent(readFile(Dir.pwd+"/Website/"+file_path+".py"),"                    ")}
                 HEREDOC

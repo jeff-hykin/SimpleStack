@@ -149,7 +149,6 @@ if (1) // protos
                     }
                 return this
             }
-
     }
 if (1) // Core functions
     {
