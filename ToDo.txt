@@ -2,9 +2,8 @@ NoStack
     - DONE auto API
     - DONE Global object
     - DONE use vanilla js for history (no helpers)
-    - get global css working
+    - DONE get global css working
     - REMOVAL get rid of/extract SimpleJS
-        - get rid of request()
     - move the flask setup function into the global/ folder
         - make sure no code depends on localhost
         - REMOVAL Manually do database stuff

@@ -54,10 +54,13 @@ if (1) // setup for Global
                         LoadAllVars: async function()
                             {
                                 var keys = await localforage.getItem('Vars.keys')
-                                for (let each of keys)
+                                if (keys)
                                     {
-                                        console.log(`about to call LoadValue for`,each)
-                                        Global.LoadValue(each)
+                                        for (let each of keys)
+                                            {
+                                                console.log(`about to call LoadValue for`,each)
+                                                Global.LoadValue(each)
+                                            }
                                     }
                             },
                         LoadValue: async function(key)
@@ -134,24 +137,6 @@ if (1) // protos
                             }
                         loadModule() // load the module asyncly
                         // FIXME, check for network errors here 
-                    }
-                else if (input_ instanceof SimpleElement)
-                    {
-                        var the_main_node = input_.__MainNode
-                        // drill down until finding a regular html node
-                        while(true)
-                            {
-                                if (the_main_node instanceof SimpleElement )
-                                    {
-                                        the_main_node = the_main_node.__MainNode
-                                    }
-                                else
-                                    {
-                                        break
-                                    }
-                            }
-                        // console.log(`the_main_node is:`,the_main_node)
-                        this.appendChild(the_main_node)
                     }
                 else if (input_ instanceof Node)
                     {
