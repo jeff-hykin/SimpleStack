@@ -1,39 +1,71 @@
-next things: 
-    - emit events on Global changes
-    - get history to load from localforage
-        - history doesn't work after a page reload 
-    - set a "execution location" Global variable for each module 
-        - for debugging
-        - global event logging
-        - knowing who used Tell()
-        - might need to overload all on___'s to include this global location too
-        - when a DOM object is given an on___, log the execution location
-    - how to handle deletion of a module
-    - have something limit the length of Global.Changes
-    - add all the events to SimpleElement
-    - add SimpleID to element proto, and add sets and gets for it
-    - add a 'Server()' function for running python 
+API sprint 
+    - add a 'Server()' function for running python
     - add a 'Module()' function for .add()-ing modules
+    - add a 'Server' proxy for running python
+    - add a 'Module' proxy for running python
     - add relative pathing to Server() and Module() and LoadPage()
-    - add Tell( module_ , message_ ) and WhenSomeoneSays( message_ , data_ )
-      - if telling a specific module something, and they dont have a listener for that something, then give a debugging message about it
-      - make sure that the WhenSomeoneSays() functions are removed when the child is removed
+    - add error handling
+    - test edge cases the routing 
 
-next-next things:
-    - make sure the back button/ history works properly
+History Sprint
+    - get history to load from localforage
+        - history doesn't work after a page reload
+        - prevent history being loaded back after closing the tab (use localsession)
+    - make sure the back button/ history works properly for all pages
+    - create a system for using the back button with modules (while on the same page)
+
+Global Sprint
+    - emit events on Global changes
+    - set a "execution location" Global variable for each module
+    - have something limit the length of Global.Changes  
+    DONE:
+        - global change logging
+
+Module ToolKit Sprint
+    - use module.Node instead of Parent
+        - have default attachment be to .Node instead of nothing
+    - how to handle deletion of a module
+    - wrap module code with catch for for debugging
+
+Module Communication Sprint
+    - add Tell( module_ , message_ ) and WhenSomeoneSays( message_ , data_ )
+        - if telling a specific module something, and they dont have a listener for that something, then give a debugging message about it
+        - make sure that the WhenSomeoneSays() functions are removed when the child is removed
+    
+Simple DOM Sprint
+    - get SimpleElement to use a proxy instead of manually setting everything
     - get images working
+    - create a Text element 
+        - convert newlines to break statements and other things
+
+Mongo Sprint
+    - add mongoDB to flask with a single document 
+    - get a mongoDB server running with the ./run command 
+    - get a Users document running
+        - add data for 1 user
+
+Login Once Sprint 
     - create a login page
-    - make a GET Request to authorize 1 user 
-    - save auth login to cookies/cache
+    - make a GET Request to authorize 1 user
+    - save auth login to cookies
+    - create the signup page
+
+Manage Users Sprint 
+    - create a the theoretical structure for a permissions framework
+        - database permissions, user roles
+        - flesh out the parser
+        - add errors / debugging
+
+Spinup Spring (heroku)
+    - create an account for some service
+    - get a static hello world page on the internet 
+    - get the basic simple stack running 
+    - bundle up all the dependencies
+
 
 soon-ish things:
-    - get heroku working 
-    - get mongoDB working and save some data to it
-    - convert newlines to break statements and other things
     - import management
         - local style sheets?
-    - make boilerplate a hidden folder
-    - in boilerplate get SimpleStackTools.js included instead of having to manually including it in the SimpleStackBase.html
     - add modules to html page documents, or find another way to load them in
 
 refinement 
@@ -53,18 +85,46 @@ version 2.0 things:
 
     
 
-
 DONE:
-    rename chunks to modules
-    get a container class working
-    fix the file watcher
-
-
-notes:
-
-
-DONE
+    - rename chunks to modules
+    - get a container class working
+    - fix the file watcher
     - have the changes to Global be saved to the indexedDB instead of in memory 
     - why does going forward in the browser not work
     - why does reloading the page mess up the history
     - on LoadPage keep track of the path in Global.Path
+    - make boilerplate a hidden folder
+    - in boilerplate get SimpleStackTools.js included instead of having to manually including it in the SimpleStackBase.html
+
+
+
+
+
+NoStack
+    - DONE auto API
+    - DONE Global object
+    - DONE use vanilla js for history (no helpers)
+    - get global css working
+    - REMOVAL get rid of/extract SimpleJS
+        - get rid of request()
+    - move the flask setup function into the global/ folder
+        - make sure no code depends on localhost
+        - REMOVAL Manually do database stuff
+    - change .py parsing to look for a def and allow dectorators
+        - set/overwrite the filename to match the function name
+    - allow installing npm packages somehow
+        - Browserify
+    - add install command
+        - have it check npm and pip for package
+        - save on npm install
+        - add to requirements.txt on pip install
+    - on ./run auto check/install npm and pip packages
+    - add Python() function/object for javascript
+    - add Module() function for javascript
+    - make sure ./run works on linux/vagrant
+        - ruby
+        - currently uses PID's and text 
+    - have an auto install method
+        - install/setup vagrant automatically
+        - install python/pip/npm/Browserify/flask
+    - import rather than eval code properly for better debugging
