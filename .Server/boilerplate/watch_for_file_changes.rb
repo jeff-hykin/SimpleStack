@@ -123,13 +123,11 @@ begin # for catching ctrl+c
 
         end
         $server_std_in, $server_std_out_and_error, $server_thread = Open3.popen2e("bash\n")
-        $server_std_in.puts("source \"#{$hidden_backend_dir}PythonVirtualEnv/bin/activate\"")
+        $server_std_in.puts("source \"#{$hidden_backend_dir}venv/bin/activate\"")
         $server_std_in.puts("python3 \"#{$hidden_backend_dir}flask_template.py\" &>'#{$server_output_name}' &")
         $server_std_in.puts("echo $! &>#{$server_pid_file_locaion}")
     end
     startServer()
-
-
 
 
     # update the files as theyre being changed

@@ -57,16 +57,12 @@ REAL_DECORATOR = a_real_decorator
 #
 if __name__ == "__main__":
 
-    # System routes
+    # auto-generated routes
     file = open(pwd+"/.Server/boilerplate/routes.py", "r"); exec(file.read()); file.close()
     SystemRoutes()
-    # get the routes
+    # custom routes
     file = open(pwd+"/Website/Global/GlobalPython.py", "r"); exec(file.read()); file.close()
     Routes()
-
-#
-# Run app
-#
-if __name__ == "__main__":
+    
     print('\n\ngo to http://localhost:'+str(PORT_NUM)+' to see the Server\n\n')
     THE_APP.run(port=PORT_NUM,debug=DEBUGGING)
