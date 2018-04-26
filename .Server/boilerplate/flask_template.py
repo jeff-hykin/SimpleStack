@@ -3,25 +3,26 @@
 #
 if True:
     import os,sys,inspect
+    from random import randint
+    from flask  import Flask, jsonify, request, render_template
+
+
     DEBUGGING = True
     PORT_NUM = 5000
-    pwd = os.getcwd()
-    # get the parent directory
+    THE_APP  = Flask(__name__)
+    CURRENT_DIRECTORY = os.getcwd()
+    
+    # go to the parent directory
     currentdir = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
     parentdir  = os.path.dirname(currentdir)
     sys.path.insert(0,parentdir)
-    
-    from pprint             import pprint
-    from random             import randint
-    from flask              import Flask, jsonify, request, render_template
 
 
 
 #
-#   Setup
+#   System code
 #
 if True:
-    THE_APP  = Flask(__name__)
     # Create the route decorator to jsonify the output of all the routes
     # this uses a pretty bad hack in order to get things working
     REAL_DECORATOR = None
@@ -58,10 +59,10 @@ REAL_DECORATOR = a_real_decorator
 if __name__ == "__main__":
 
     # auto-generated routes
-    file = open(pwd+"/.Server/boilerplate/routes.py", "r"); exec(file.read()); file.close()
+    file = open(CURRENT_DIRECTORY+"/.Server/boilerplate/routes.py", "r"); exec(file.read()); file.close()
     SystemRoutes()
     # custom routes
-    file = open(pwd+"/Website/Global/GlobalPython.py", "r"); exec(file.read()); file.close()
+    file = open(CURRENT_DIRECTORY+"/Website/Global/GlobalPython.py", "r"); exec(file.read()); file.close()
     Routes()
     
     print('\n\ngo to http://localhost:'+str(PORT_NUM)+' to see the Server\n\n')
