@@ -64,6 +64,6 @@ if __name__ == "__main__":
     # custom routes
     file = open(CURRENT_DIRECTORY+"/Website/Global/GlobalPython.py", "r"); exec(file.read()); file.close()
     Routes()
-    
+
     print('\n\ngo to http://localhost:'+str(PORT_NUM)+' to see the Server\n\n')
     THE_APP.run(port=PORT_NUM,debug=DEBUGGING)

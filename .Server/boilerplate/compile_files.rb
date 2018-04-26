@@ -183,13 +183,25 @@
     end
 
 
-    def route_for_func(file_path)
+    def route_for_func(file_name)
+        
         # increment the route number 
         $routeNumber = $routeNumber + 1
 
+        file_path = Dir.pwd+"/Website/"+file_name+".py"
+
+        # open the file and check out the content 
+        the_file_content = readFile(file_path)
+        if the_file_content.match /def *(.+?)\((.+)\):/
+            puts "I found a thing"
+            puts $&
+        else
+            puts "I think this is an incomplete python file"
+        end
+
         # if there is only one argument, make it a get request
         #    (this will also requre a change in the SimpleStackBase run() function)
-        basename_ = basename(file_path)
+        basename_ = basename(file_name)
         argument_area = basename_[  /(?<=\()(.*?)(?=\))/  ]
 
         # parse arguments
@@ -201,23 +213,16 @@
                 argument_assignment_string += "                    #{each_argument} = DATA_FROM_CLIENT['arguments'][#{argument_index}]\n"
                 argument_index += 1
             end
+
         
-        # parse protected 
-            # check if protected
-            requires_login = ""
-            if basename_[ /\.protected$/ ]
-                requires_login = "@RequireLoginForThis"
-            end
-        
-        name_ = file_path.sub(/(.+)\(.+/,"\\1")
+        name_ = file_name.sub(/(.+)\(.+/,"\\1")
 
         return [ "/func/#{name_}", route_template = <<-HEREDOC
-                #{requires_login}
                 @Route('/func/#{name_}', methods=['POST'])
                 def func_route#{$routeNumber}():
                     DATA_FROM_CLIENT = request.get_json()
                     #{argument_assignment_string}
-                    \n#{indent(readFile(Dir.pwd+"/Website/"+file_path+".py"),"                    ")}
+                    \n#{indent(the_file_content,"                    ")}
                 HEREDOC
                 ]
     end
@@ -266,9 +271,6 @@ everything_that_should_be_templates =
 
 # move the base file
 # FileUtils.cp(location_of_base_html, template_dir)
-
-# move the python to the setup function
-save readFile(location_of_global_python), to:".Server/setup.py"
 
 #
 #   get the head and body from the base
@@ -326,11 +328,11 @@ routes_ = {}
 #
 for each in dirs_of_css_files
     # get rid of the "Website/" part and the ".module.js" part
-    file_path = each.sub(/^Website\//,"")
+    file_name = each.sub(/^Website\//,"")
 
     # escape the name to be an acceptable file name 
     # FIXME, this will cause referencing problems if the css is not directly in the Website/ folder
-    new_file_name = file_name_escape(file_path)
+    new_file_name = file_name_escape(file_name)
     everything_that_should_be_in_static << static_dir+new_file_name
     
     # save output
@@ -345,19 +347,19 @@ end
 #
 for each in dirs_of_pages
     # get rid of the "Website/" part and the ".page.js" part 
-    file_path = each.sub(/^Website\//,"")
-    file_path.sub!(".page.js","")
+    file_name = each.sub(/^Website\//,"")
+    file_name.sub!(".page.js","")
 
 
 
-    name_ = basename(file_path)
+    name_ = basename(file_name)
     # create a route for the page (actually 2 routes per page, one for html one for js)
-    the_route_pair = route_for_page(file_path)
+    the_route_pair = route_for_page(file_name)
 
     routes_[the_route_pair[0]] = "\n"+the_route_pair[1]
 
     # escape the name to be an acceptable file name 
-    new_file_name = file_name_escape(file_path)
+    new_file_name = file_name_escape(file_name)
 
     # set locations 
     static_location = static_dir+new_file_name+".page.js"
@@ -378,7 +380,7 @@ for each in dirs_of_pages
     # FIXME, use a base.html to allow things to be injected into the head and body
     # FIXME, have a minify function 
     # FIXME, have a better way of doing replacements than a giant unlikely string
-    the_html_version = base_html.gsub( /###THIS IS WHERE YOU WANT TO REPLACE THE PAGE NAME###/, file_path )
+    the_html_version = base_html.gsub( /###THIS IS WHERE YOU WANT TO REPLACE THE PAGE NAME###/, file_name )
     save the_html_version, to:template_location
 end 
 
@@ -387,18 +389,18 @@ end
 #
 for each in dirs_of_modules
     # get rid of the "Website/" part and the ".module.js" part 
-    file_path = each.sub(/^Website\//,"")
-    file_path.sub!(".module.js","")
+    file_name = each.sub(/^Website\//,"")
+    file_name.sub!(".module.js","")
 
     # create a route for the module
-    the_route_pair = route_for_module(file_path)
+    the_route_pair = route_for_module(file_name)
     routes_[the_route_pair[0]] = "\n"+the_route_pair[1]
 
     # get the name of the module 
-    name_ = basename(file_path)
+    name_ = basename(file_name)
 
     # escape the name to be an acceptable file name 
-    new_file_name = file_name_escape(file_path)+".module.js"
+    new_file_name = file_name_escape(file_name)+".module.js"
     everything_that_should_be_in_static << static_dir+new_file_name
     
     # save output
@@ -413,16 +415,15 @@ end
 #
 for each in dirs_of_python_files
     # get rid of the "Website/" part and the ".py" part 
-    file_path = each.sub(/^Website\//,"")
-    # FIXME, check if protected or not
-    file_path.sub!(".py","")
+    file_name = each.sub(/^Website\//,"")
+    file_name.sub!(".py","")
 
-    basename_ = basename(file_path)
+    basename_ = basename(file_name)
     argument_area = basename_[  /(?<=\()(.*?)(?=\))/  ]
     # if there are ()'s
     if argument_area != nil
         # create a route for the func
-        the_route_pair = route_for_func(file_path)
+        the_route_pair = route_for_func(file_name)
         routes_[the_route_pair[0]] = "\n"+the_route_pair[1]
     end 
 end 

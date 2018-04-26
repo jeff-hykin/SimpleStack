@@ -60,7 +60,6 @@ def SystemRoutes(): #this is name-specific
                     file.close()
                     return output
 
-                
                 @Route('/func/HelloWorld', methods=['POST'])
                 def func_route7():
                     DATA_FROM_CLIENT = request.get_json()
@@ -69,7 +68,6 @@ def SystemRoutes(): #this is name-specific
                     
                     return "\nHello from python!"
 
-                
                 @Route('/func/Hello', methods=['POST'])
                 def func_route8():
                     DATA_FROM_CLIENT = request.get_json()
@@ -77,9 +75,11 @@ def SystemRoutes(): #this is name-specific
                     name_ = DATA_FROM_CLIENT['arguments'][0]
 
                     
-                    return "Hello "+name_+"!"
+                    
+                    
+                    def Hello(nam):
+                        return "Hello "+name_+"!"
 
-                
                 @Route('/func/Login/Login', methods=['POST'])
                 def func_route9():
                     DATA_FROM_CLIENT = request.get_json()

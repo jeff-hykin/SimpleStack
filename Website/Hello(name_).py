@@ -1,1 +1,4 @@
-return "Hello "+name_+"!"
+
+
+def Hello(nam):
+    return "Hello "+name_+"!"

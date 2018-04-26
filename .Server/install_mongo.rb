@@ -245,8 +245,11 @@ if OS.mac?
     if answer == "in the current folder"
         install_location = Dir.pwd + "/db"
     end
+    
+    overwriteFile(".database_install_location.txt",with:install_location)
     puts "creating/checking the folder"
     `mkdir -p '#{install_location}'`
+
     puts "setting permissions on the folder, (you'll need your password for this)"
     `sudo chmod u+rwx '#{install_location}'`
     puts "starting up the mongod service (mongo is ready for action)"
