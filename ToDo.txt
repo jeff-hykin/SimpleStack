@@ -4,9 +4,9 @@ NoStack
     - DONE use vanilla js for history (no helpers)
     - DONE get global css working
     - DONE REMOVAL get rid of/extract SimpleJS
-    - move the flask setup function into the global/ folder
-        - make sure no code depends on localhost
-        - REMOVAL Manually do database stuff
+    - DONE move the flask setup function into the global/ folder
+        - DONE make sure no code depends on localhost
+        - DONE REMOVAL Manually do database stuff
     - change .py parsing to look for a def and allow dectorators
         - set/overwrite the filename to match the function name
     - allow installing npm packages somehow
@@ -15,11 +15,11 @@ NoStack
         - have it check npm and pip for package
         - save on npm install
         - add to requirements.txt on pip install
-    - on ./run auto check/install npm and pip packages
+    - on ./run auto check/install npm and pip packages and run custom things 
     - add Python() function/object for javascript
     - add Module() function for javascript
     - make sure ./run works on linux/vagrant
-        - ruby
+        - make sure ruby is installed
         - currently uses PID's and text 
     - have an auto install method
         - install/setup vagrant automatically

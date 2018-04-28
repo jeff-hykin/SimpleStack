@@ -1,7 +1,7 @@
 //
 //    Main Tools 
 //
-if (1) // Database setup 
+if (1) // Front End Database setup 
     {
         var database_options = 
             {
@@ -44,6 +44,10 @@ if (1) // setup for Global
                     {
                         Module: document.getElementById("GlobalModule"),
                         CurrentPath: undefined,
+                        get CurrentDir()
+                            {
+                                return this.CurrentPath.replace(/(.*\/).+?$/,"$1")
+                            },
                         CurrentOrigin: undefined,
                         HistoryIndex: null,
                         History: [],
@@ -101,7 +105,6 @@ if (1) // setup for Global
                         localforage.setItem("Global.Vars."+key, new_value)
                         
                         // FIXME, this should be O(1), but right now its O(n)
-                        console.log(`Object.keys(Global.Vars) is:`,Object.keys(Global.Vars))
                         window.dispatchEvent(new CustomEvent('Global.Vars.'+key)) // FIXME // FOR: events
                         // wait till site loads
                         if (target.SystemVars.CurrentPath)
@@ -113,7 +116,7 @@ if (1) // setup for Global
             }
     }
 const Global = new Proxy(__GlobalInitObj, GlobalProxy)
-if (1) // protos 
+if (1) // protos
     {
         var a = document.createElement('a')
         node_proto = a.__proto__.__proto__.__proto__
@@ -133,7 +136,7 @@ if (1) // protos
                         var parent_elem = this
                         var loadModule = async function ()
                             {
-                                return ( await eval(await Request({path:"module/"+input_}))(parent_elem)  )
+                                return ( await eval(await Request({path:"module"+Global.SystemVars.CurrentDir+input_}))(parent_elem)  )
                             }
                         loadModule() // load the module asyncly
                         // FIXME, check for network errors here 
@@ -248,19 +251,20 @@ if (1) // Core functions
                 if (Global.Debugging) { console.log("finished Request for ",[url,path,method]) }
                 return request_result
             }
-        var Server   = async function(function_name,array_of_arguments=[])
+        var Server   = async function(function_name,...array_of_arguments)
             {
-                return await Request({path:"func/"+function_name, data:{arguments:array_of_arguments}})
+                console.log(`"func"+Global.SystemVars.CurrentDir+function_name is:`,"func"+Global.SystemVars.CurrentDir+function_name)
+                return await Request({path:"func"+Global.SystemVars.CurrentDir+function_name, data:{arguments:array_of_arguments}})
             }
         var LoadPage = async function(page_name)
             {
                 // normal click
                 if (page_name)
                     {
-                        console.log(`FROM CLICK/LOAD`)
-                        console.log(`page_name is:`,page_name)
-                        console.log(`history.state is:`,history.state)
-                        console.log(`Global.SystemVars.History is:`,Global.SystemVars.History)
+                        // console.log(`FROM CLICK/LOAD`)
+                        // console.log(`page_name is:`,page_name)
+                        // console.log(`history.state is:`,history.state)
+                        // console.log(`Global.SystemVars.History is:`,Global.SystemVars.History)
                         // first page 
                         if (history.state == null || Global.SystemVars.History.length == 0)
                             {
@@ -324,8 +328,6 @@ if (1) // Core functions
                     }
                 let js_code = await Request({path:"page"+Global.SystemVars.CurrentPath})
                 // history.pushState(Global.SystemVars.CurrentPath,"Home", Global.SystemVars.CurrentPath)
-                
-                
                 // FIXME, check for errors here (encase page doesn't exist)
                 // TODO, utilize state for something useful
                 // history.pushState({}, page_name, page_name.replace(/\/.+?$/,""))

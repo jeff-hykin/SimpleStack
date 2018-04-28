@@ -1,1 +1,0 @@
-return "\nHello from python!"

@@ -32,7 +32,7 @@
             indentation_ = ' '*indentation_
         end#if
         string_.gsub( /^#{indentation_}/, '')
-    end#indent 
+    end#indent
 
     class String
         def mgsub(key_value_pairs=[].freeze)
@@ -52,6 +52,10 @@
         return "#{Pathname.new(string_path).basename}"
     end
 
+    def dirname(string_path)
+        return "#{Pathname.new(string_path).dirname}"
+    end
+
     def exists(string_path)
         return File.exist?(string_path) || File.directory?(string_path)
     end
@@ -67,7 +71,13 @@
         the_file = File.open(file_name)
         content = the_file.read
         return content
-    end 
+    end
+
+    def save(string,to:nil)
+        new_file = File.open(to, "w")
+        new_file.write(string)
+        new_file.close
+    end
 
     def code_generate(module_name,each)
         return <<-HEREDOC
@@ -107,28 +117,6 @@
             HEREDOC
     end 
 
-    def routes_as_string(routes_hash)
-        routes_begining  = <<-HEREDOC
-        def SystemRoutes(): #this is name-specific
-                        print("setting system routes")
-        
-                        # root directory
-                        @Route('/')
-                        def root():
-                            return  render_template("Home.html")
-        HEREDOC
-        routes_begining = unindent(routes_begining,'        ')
-        for each_key in routes_hash
-            routes_begining += each_key[1]
-        end
-        return routes_begining
-    end 
-    def save(string,to:nil)
-        new_file = File.open(to, "w")
-        new_file.write(string)
-        new_file.close
-    end
-
     def file_name_escape(input_)
         name_ = "#{input_}"
         # :'s are not allowed in file names, they're replaced with →
@@ -136,6 +124,23 @@
         # /'s are not allowed in file names, they're replaced with →
         name_.sub!("\/","→") 
         return name_
+    end
+
+    def routes_as_string(routes_hash)
+        routes_begining  = <<-HEREDOC
+        def SystemRoutes(): #this is name-specific
+            print("setting system routes")
+
+            # root directory
+            @Route('/')
+            def root():
+                return  render_template("Home.html")
+        HEREDOC
+        routes_begining = unindent(routes_begining,'        ')
+        for each_key in routes_hash
+            routes_begining += each_key[1]
+        end
+        return routes_begining
     end
 
     def route_for_page(name_)
@@ -146,20 +151,22 @@
         name_.sub!("\\","\\\\") 
         name_.sub!("'","\\'")
 
-        # FIXME, check for <name>'s in the name so they can be added as input vars
-        return ["/#{name_}", <<-HEREDOC
-                @Route('/#{name_}')
-                def route#{$routeNumber}():
-                    return  render_template('#{file_name_escape("#{name_}")}.html')
+        route_ = "/#{name_}"
+        python_code = <<-HEREDOC
+            @Route('/#{name_}')
+            def route#{$routeNumber}():
+                return  render_template('#{file_name_escape("#{name_}")}.html')
 
-                @Route('/page/#{name_}')
-                def page_route#{$routeNumber}():
-                    file = open('#{Dir.pwd}/.Server/boilerplate/static/#{file_name_escape("#{name_}")}.page.js', "r")
-                    output = file.read()
-                    file.close()
-                    return output
-                HEREDOC
-                ]
+            @Route('/page/#{name_}')
+            def page_route#{$routeNumber}():
+                file = open('#{Dir.pwd}/.Server/boilerplate/static/#{file_name_escape("#{name_}")}.page.js', "r")
+                output = file.read()
+                file.close()
+                return output
+            HEREDOC
+        python_code = unindent(python_code,"        ")
+        # FIXME, check for <name>'s in the name so they can be added as input vars
+        return [route_ , python_code ]
     end
 
     def route_for_module(name_)
@@ -170,64 +177,22 @@
         name_.sub!("\\","\\\\") 
         name_.sub!("'","\\'")
 
+        route_ = "/module/#{name_}"
+        python_code = <<-HEREDOC
+            @Route('/module/#{name_}')
+            def module_route#{$routeNumber}():
+                file = open('#{Dir.pwd}/.Server/boilerplate/static/#{file_name_escape("#{name_}")}.module.js', "r")
+                output = file.read()
+                file.close()
+                return output
+            HEREDOC
+        python_code = unindent(python_code,"        ")
         # FIXME, check for <name>'s in the name so they can be added as input vars
-        return [ "/module/#{name_}",  <<-HEREDOC
-                @Route('/module/#{name_}')
-                def module_route#{$routeNumber}():
-                    file = open('#{Dir.pwd}/.Server/boilerplate/static/#{file_name_escape("#{name_}")}.module.js', "r")
-                    output = file.read()
-                    file.close()
-                    return output
-                HEREDOC
-                ]
+        return [ route_, python_code ]
     end
 
-
-    def route_for_func(file_name)
-        
-        # increment the route number 
-        $routeNumber = $routeNumber + 1
-
-        file_path = Dir.pwd+"/Website/"+file_name+".py"
-
-        # open the file and check out the content 
-        the_file_content = readFile(file_path)
-        if the_file_content.match /def *(.+?)\((.+)\):/
-            puts "I found a thing"
-            puts $&
-        else
-            puts "I think this is an incomplete python file"
-        end
-
-        # if there is only one argument, make it a get request
-        #    (this will also requre a change in the SimpleStackBase run() function)
-        basename_ = basename(file_name)
-        argument_area = basename_[  /(?<=\()(.*?)(?=\))/  ]
-
-        # parse arguments
-            # FIXME, this will throw an error if there are no ()'s in the name
-            arguments     = argument_area.split(/ *, */)
-            argument_assignment_string = "\n"
-            argument_index = 0 
-            for each_argument in arguments
-                argument_assignment_string += "                    #{each_argument} = DATA_FROM_CLIENT['arguments'][#{argument_index}]\n"
-                argument_index += 1
-            end
-
-        
-        name_ = file_name.sub(/(.+)\(.+/,"\\1")
-
-        return [ "/func/#{name_}", route_template = <<-HEREDOC
-                @Route('/func/#{name_}', methods=['POST'])
-                def func_route#{$routeNumber}():
-                    DATA_FROM_CLIENT = request.get_json()
-                    #{argument_assignment_string}
-                    \n#{indent(the_file_content,"                    ")}
-                HEREDOC
-                ]
-    end
 #
-#   End Helper tools 
+#   End Helper tools
 #
 
 
@@ -235,8 +200,6 @@
 # go to the top dir 
 Dir.chdir __dir__
 Dir.chdir "../.."
-
-# FIXME, remove files from static or templates that no longer exist in Website/
 
 
 # location 
@@ -247,7 +210,7 @@ location_of_global_css     = Dir.pwd+"/Website/Global/GlobalStyles.css"
 simple_stack_base_html_dir = Dir.pwd+"/.Server/boilerplate/SimpleStackBase.html"
 static_dir                 = Dir.pwd+"/.Server/boilerplate/static/"
 template_dir               = Dir.pwd+"/.Server/boilerplate/templates/"
-routes_file_location       = Dir.pwd+"/.Server/boilerplate/routes.py"
+routes_file_location       = Dir.pwd+"/.Server/boilerplate/SystemRoutes.py"
 dirs_of_pages              = Dir.glob("Website/**/*.page.js")
 dirs_of_modules            = Dir.glob("Website/**/*.module.js")
 dirs_of_python_files       = Dir.glob("Website/**/*.py")
@@ -255,12 +218,13 @@ dirs_of_css_files          = Dir.glob("Website/**/*.css")
 favicon                    = Dir.glob("Website/**/favicon.ico")
 
 
-# initilize theses
+# initilize stuff
 everything_that_should_be_in_static = 
     [
         static_dir+'Global→GlobalStyles.css',
         static_dir+'Home.page.js',
         static_dir+'Core.js',
+        static_dir+'favicon.ico',
         # library
         static_dir+'localforage.min.js',
     ]
@@ -341,9 +305,8 @@ for each in dirs_of_css_files
 end 
 
 
-
 #
-# Add all the pages
+# Add all the javascript pages
 #
 for each in dirs_of_pages
     # get rid of the "Website/" part and the ".page.js" part 
@@ -385,7 +348,7 @@ for each in dirs_of_pages
 end 
 
 #
-# add all of the modules
+# add all of the javascript modules
 #
 for each in dirs_of_modules
     # get rid of the "Website/" part and the ".module.js" part 
@@ -409,23 +372,78 @@ for each in dirs_of_modules
     save code_,   to:(static_dir+new_file_name) 
 end 
 
-
 #
 # add all of the python functions
 #
 for each in dirs_of_python_files
-    # get rid of the "Website/" part and the ".py" part 
+    absolute_path_to_each = Dir.pwd+"/"+each
+    # skip global stuff
+    if absolute_path_to_each == location_of_global_python
+        next
+    end
+    # get rid of the "Website/" part
     file_name = each.sub(/^Website\//,"")
-    file_name.sub!(".py","")
 
-    basename_ = basename(file_name)
-    argument_area = basename_[  /(?<=\()(.*?)(?=\))/  ]
-    # if there are ()'s
-    if argument_area != nil
-        # create a route for the func
-        the_route_pair = route_for_func(file_name)
-        routes_[the_route_pair[0]] = "\n"+the_route_pair[1]
-    end 
+    # open the file and get the content 
+    the_file_content = readFile(each)
+
+    # parse the function, make sure its formatted correctly
+    # for the line of code below
+        # FIXME, right now it not only gets decorators, but everything before the function
+        # FIXME, it also gets everything after the function
+        # FIXME, make sure the function name is a valid route name
+    match_results = the_file_content.match /\A(?<decorators>[\s\S]*?)def *(?<function_name>.+?)\((?<argument_area>.*)\):\n(?<function_body>[\s\S]+)/
+    if not match_results
+        # FIXME, have a better error message
+        puts "I think this is an incomplete python file:#{each}"
+    else
+        # puts "I found a python function that follows the correct general format: #{file_name}"
+        
+        function_name = match_results['function_name']
+        function_body = match_results['function_body']
+        decorators    = match_results['decorators'].strip
+        argument_area = match_results['argument_area']
+
+
+        # create the route for the function
+        # FIXME, need to escape the 's that might be in a dirname
+        the_files_directory = dirname(file_name)
+        if the_files_directory == "."
+            route_ = "/func/#{function_name}"
+        else
+            route_ = "/func/#{the_files_directory}/#{function_name}"
+        end
+
+        # the arguments for the python
+        # function actually need to be extracted from request.get_json() 
+        # (they are not received as actual arguments to the function)
+        # so this section generates the code for extracting those arguments
+            # FIXME, if argument defaults are set (ex: def foo(x=10)) it will break this section of the code
+            arguments     = argument_area.split(/ *, */)
+            argument_assignment_string = "\n"
+            argument_index = 0 
+            for each_argument in arguments
+                argument_assignment_string += "                #{each_argument} = DATA_FROM_CLIENT['arguments'][#{argument_index}]\n"
+                argument_index += 1
+            end
+
+        # we are going to need a flask route for the python function
+        # so increment the route number 
+        $routeNumber = $routeNumber + 1
+        
+        # FIXME, non-4-space indentation will break this code
+        # FIXME, routes with ' will break this
+        # generate the python code for the route
+        python_code = <<-HEREDOC
+            @Route('#{route_}', methods=['POST'])#{("\n"+indent(decorators,"            ")).rstrip}
+            def func_route#{$routeNumber}():
+                DATA_FROM_CLIENT = request.get_json()
+                # set the arguments#{argument_assignment_string}
+                # run the actual body of the function\n#{indent(function_body,"            ")}
+            HEREDOC
+        python_code = "\n"+unindent(python_code,"        ")
+        routes_[route_] = python_code
+    end
 end 
 
 

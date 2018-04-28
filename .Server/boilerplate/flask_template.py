@@ -5,6 +5,7 @@ if True:
     import os,sys,inspect
     from random import randint
     from flask  import Flask, jsonify, request, render_template
+    import regex as re
 
 
     DEBUGGING = True
@@ -31,22 +32,20 @@ if True:
         the_decorator_kwargs = kwargs
         wrapper_num = str(randint(1,2000000))
         global REAL_DECORATOR
-        REAL_DECORATOR = None
-        exec('''
-def a_real_decorator(the_function,the_decorator_args=the_decorator_args,the_decorator_kwargs=the_decorator_kwargs):
-    @THE_APP.route(*the_decorator_args,**the_decorator_kwargs)
-    def wrapper'''+wrapper_num+'''(*args, **kwargs):
-        output_ = the_function(*args, **kwargs)
-        if type(output_) == dict:
-            return jsonify(output_)
-        else:
-            return output_
-        
-        
-    return wrapper'''+wrapper_num+'''
-global REAL_DECORATOR
-REAL_DECORATOR = a_real_decorator
-''')
+        REAL_DECORATOR = None 
+        exec(re.sub('\n            ','\n', '''
+            def a_real_decorator(the_function,the_decorator_args=the_decorator_args,the_decorator_kwargs=the_decorator_kwargs):
+                @THE_APP.route(*the_decorator_args,**the_decorator_kwargs)
+                def wrapper'''+wrapper_num+'''(*args, **kwargs):
+                    output_ = the_function(*args, **kwargs)
+                    if type(output_) == dict:
+                        return jsonify(output_)
+                    else:
+                        return output_
+                return wrapper'''+wrapper_num+'''
+            global REAL_DECORATOR
+            REAL_DECORATOR = a_real_decorator
+            '''))
         return REAL_DECORATOR
 
 
@@ -58,8 +57,8 @@ REAL_DECORATOR = a_real_decorator
 #
 if __name__ == "__main__":
 
-    # auto-generated routes
-    file = open(CURRENT_DIRECTORY+"/.Server/boilerplate/routes.py", "r"); exec(file.read()); file.close()
+    # auto-generated SystemRoutes
+    file = open(CURRENT_DIRECTORY+"/.Server/boilerplate/SystemRoutes.py", "r"); exec(file.read()); file.close()
     SystemRoutes()
     # custom routes
     file = open(CURRENT_DIRECTORY+"/Website/Global/GlobalPython.py", "r"); exec(file.read()); file.close()

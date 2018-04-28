@@ -9,7 +9,7 @@
     # THE_APP, the flask app variable (use it if you know what you're doing)
 
 Global         = {}
-THE_SECRET_KEY = "blah, replace this with an actual key"
+THE_SECRET_KEY = "replace this with an actual key"
 PORT_NUM       = 5000
 DATABASE       = "Mongo"
 

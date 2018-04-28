@@ -76,8 +76,7 @@
         the_file = File.open(file_name)
         content = the_file.read
         return content
-    end 
-
+    end
 
     def file_name_escape(input_)
         name_ = "#{input_}"
@@ -96,7 +95,7 @@
 
 begin # for catching ctrl+c
 
-    puts "Starting SimpleStack"
+    puts "Starting FlatStack"
 
     # change to the top directory
     Dir.chdir __dir__

@@ -3,8 +3,9 @@
     <head>
         <meta charset="utf-8" />
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <title>Login/Login page</title>
+        <title>Home/Home page</title>
         <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
         <script type="text/javascript" src="{{ url_for('static', filename='localforage.min.js') }}"></script>
         <!--Import styles-->
         <link type="text/css" rel="stylesheet" href="{{ url_for('static',filename='Global→GlobalStyles.css') }}"/>
@@ -43,7 +44,7 @@
 
             Main = async function () 
                 {
-                    LoadPage("Login/Login")
+                    LoadPage("Home/Home")
                 }
             Main()
 
