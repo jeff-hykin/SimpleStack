@@ -50,6 +50,7 @@ if (1) // setup for Global
                             },
                         CurrentOrigin: undefined,
                         HistoryIndex: null,
+                        LoadedPackages:[],
                         History: [],
                         Loading: [],
                     },
@@ -255,6 +256,25 @@ if (1) // Core functions
             {
                 console.log(`"func"+Global.SystemVars.CurrentDir+function_name is:`,"func"+Global.SystemVars.CurrentDir+function_name)
                 return await Request({path:"func"+Global.SystemVars.CurrentDir+function_name, data:{arguments:array_of_arguments}})
+            }
+        
+        var Require  = async function(bundle_name)
+            {
+                return new Promise(resolve => 
+                    {
+                        if (!(bundle_name in Global.LoadedPackages))
+                            {
+                                var script = document.createElement('script');
+                                script.onload = function()
+                                    {
+                                        console.log(`Script loaded`)
+                                        Global.LoadedPackages[bundle_name] = window["__"+bundle_name]
+                                        resolve(Global.LoadedPackages[bundle_name])
+                                    }
+                                script.src = "bundle/"+bundle_name
+                                document.head.appendChild(script);
+                            }
+                    })
             }
         var LoadPage = async function(page_name)
             {

@@ -7,6 +7,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
         <script type="text/javascript" src="{{ url_for('static', filename='localforage.min.js') }}"></script>
+        <script type="text/javascript" src="{{ url_for('static', filename='pug.bundle.js') }}"></script>
         <!--Import styles-->
         <link type="text/css" rel="stylesheet" href="{{ url_for('static',filename='Global→GlobalStyles.css') }}"/>
         <!-- import other things -->
@@ -38,9 +39,10 @@
          //
         //    User Defined Global Tools
         //
+            // console.log(`GLOBAL JAVASCRIPT WAS RUN`)
+            
             Global.Debugging = true
             Global.Website = "http://127.0.0.1:5000/"
-
 
             Main = async function () 
                 {

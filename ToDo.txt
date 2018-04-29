@@ -7,7 +7,7 @@ NoStack
     - DONE move the flask setup function into the global/ folder
         - DONE make sure no code depends on localhost
         - DONE REMOVAL Manually do database stuff
-    - change .py parsing to look for a def and allow dectorators
+    - DONE change .py parsing to look for a def and allow dectorators
         - set/overwrite the filename to match the function name
     - allow installing npm packages somehow
         - Browserify

@@ -1,0 +1,85 @@
+#!/usr/bin/ruby
+
+def askForOneOf question_, options_
+    if options_.length <= 0
+        return nil
+    end
+    loop do 
+        puts question_
+        p options_
+        answer = STDIN.gets.chomp
+        for each in options_ 
+            if each == answer
+                return each
+            end
+        end
+        puts "Sorry, please pick one of the answers"
+    end
+end
+
+Dir.chdir ".Server"
+
+venv_command = "cd boilerplate;source venv/bin/activate"
+
+package_name = ARGV[0]
+if package_name
+    # check pip
+        # FIXME, go into venv before this
+        pip_has_the_package = false
+        packages_as_a_string = `#{venv_command}; pip search #{package_name}`
+        packages_as_a_string.gsub! /(.*?) \(.+/ , '\1'
+        packages_as_list = packages_as_a_string.split "\n"
+        for each in packages_as_list
+            if each == package_name
+                pip_has_the_package = true
+                puts "there is a #{package_name} for Python (pip)"
+                break
+            end
+        end
+    # check npm
+        npm_has_the_package = false
+        packages_as_a_string = `npm search #{package_name}`
+        packages_as_a_string.gsub! /(.*?)\|.+/ , '\1'
+        packages_as_list = packages_as_a_string.split "\n"
+        packages_as_list.shift
+        for each in packages_as_list
+            if each.strip == package_name
+                npm_has_the_package = true
+                puts "there is a #{package_name} for Javascript (npm)"
+                break
+            end
+        end
+    should_install_pip_package = false
+    should_install_npm_package = false
+    if pip_has_the_package and npm_has_the_package
+        answer = askForOneOf("\nDid you want the package for..", ["Python","Javascript","both","neither"] )
+        if answer == "Python"
+            should_install_pip_package = true
+        elsif answer == "Javascript"
+            should_install_npm_package = true
+        elsif answer == "both"
+            should_install_pip_package = true
+            should_install_npm_package = true
+        elsif answer == "neither"
+            # do nothing
+        end
+    elsif pip_has_the_package
+        should_install_pip_package = true
+    elsif npm_has_the_package
+        should_install_npm_package = true
+    end
+
+    if should_install_pip_package
+        `#{venv_command}; pip install #{package_name}; pip freeze >requirements.txt`
+        puts "Finished installing Python #{package_name}"
+    end
+
+    if should_install_npm_package
+        `npm install #{package_name} --save`
+        `ruby create_bundles.rb`
+        puts "Finished installing Javascript #{package_name}"
+    end
+end
+
+
+# pip install -r requirements.txt

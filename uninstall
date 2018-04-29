@@ -1,0 +1,90 @@
+#!/usr/bin/ruby
+
+require "rubygems"
+require "json"
+
+
+def readFile(file_name)
+    the_file = File.open(file_name)
+    content = the_file.read
+    return content
+end
+
+def askForOneOf question_, options_
+    if options_.length <= 0
+        return nil
+    end
+    loop do 
+        puts question_
+        p options_
+        answer = STDIN.gets.chomp
+        for each in options_ 
+            if each == answer
+                return each
+            end
+        end
+        puts "Sorry, please pick one of the answers"
+    end
+end
+
+location_of_requirements = "boilerplate/requirements.txt"
+venv_command = "cd boilerplate;source venv/bin/activate"
+
+
+Dir.chdir ".Server"
+
+package_name = ARGV[0]
+if package_name
+    # check pip
+        pip_has_the_package = false
+        packages_as_a_string = readFile(location_of_requirements)
+        packages_as_a_string.gsub! /(.*?)=.+/ , '\1'
+        packages_as_list = packages_as_a_string.split "\n"
+        for each in packages_as_list
+            if each == package_name
+                pip_has_the_package = true
+                puts "there is a Python #{package_name} installed"
+                break
+            end
+        end
+        
+    # check npm
+        npm_has_the_package = false
+        file = open("package.json")
+        parsed_package_file = JSON.parse(file.read)
+        dependencies = parsed_package_file['dependencies'].keys
+        if dependencies.include? package_name
+            puts "there is a Javascript #{package_name} installed"
+            npm_has_the_package = true
+        end
+    
+    should_uninstall_pip_package = false
+    should_uninstall_npm_package = false
+    if pip_has_the_package and npm_has_the_package
+        answer = askForOneOf("\nDid you want to uninstall the package for..", ["Python","Javascript","both","neither"] )
+        if answer == "Python"
+            should_uninstall_pip_package = true
+        elsif answer == "Javascript"
+            should_uninstall_npm_package = true
+        elsif answer == "both"
+            should_uninstall_pip_package = true
+            should_uninstall_npm_package = true
+        elsif answer == "neither"
+            # do nothing
+        end
+    elsif pip_has_the_package
+        should_uninstall_pip_package = true
+    elsif npm_has_the_package
+        should_uninstall_npm_package = true
+    end
+
+    if should_uninstall_pip_package
+        `#{venv_command}; pip uninstall #{package_name}; pip freeze >requirements.txt`
+        puts "Finished uninstalling Python #{package_name}"
+    end
+
+    if should_uninstall_npm_package
+        `npm uninstall #{package_name} --save`
+        puts "Finished uninstalling Javascript #{package_name}"
+    end
+end

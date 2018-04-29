@@ -1,15 +1,17 @@
 {
-  "name": "flat_stack",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"there is no test command\""
-  },
-  "author": "",
-  "license": "ISC",
-  "devDependencies": {
-    "webpack": "^4.6.0",
-    "webpack-cli": "^2.0.15"
-  }
+    "name": "flat_stack",
+    "version": "1.0.0",
+    "description": "_",
+    "private": true,
+    "main": "index.js",
+    "scripts": {
+        "test": "echo \"there is no test command\""
+    },
+    "author": "",
+    "license": "ISC",
+    "devDependencies": {},
+    "dependencies": {
+        "bcrypt": "^2.0.1",
+        "in-array": "^0.1.2"
+    }
 }

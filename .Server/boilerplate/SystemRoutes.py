@@ -35,15 +35,22 @@ def SystemRoutes(): #this is name-specific
         file.close()
         return output
 
-    @Route('/module/hello')
+    @Route('/module/Home/blah2')
     def module_route4():
+        file = open('/Users/jeffhykin/Documents/_Programming/SimpleStack/.Server/boilerplate/static/Home→blah2.module.js', "r")
+        output = file.read()
+        file.close()
+        return output
+
+    @Route('/module/hello')
+    def module_route5():
         file = open('/Users/jeffhykin/Documents/_Programming/SimpleStack/.Server/boilerplate/static/hello.module.js', "r")
         output = file.read()
         file.close()
         return output
 
     @Route('/func/Home/thingy', methods=['POST'])
-    def func_route5():
+    def func_route6():
         DATA_FROM_CLIENT = request.get_json()
         # set the arguments
 
@@ -51,7 +58,7 @@ def SystemRoutes(): #this is name-specific
         print ("wats uuppp")
 
     @Route('/func/Hello', methods=['POST'])
-    def func_route6():
+    def func_route7():
         DATA_FROM_CLIENT = request.get_json()
         # set the arguments
         name_ = DATA_FROM_CLIENT['arguments'][0]
@@ -59,3 +66,15 @@ def SystemRoutes(): #this is name-specific
         # run the actual body of the function
         print("name = ",name_)
         return "Hello "+name_+"!"
+
+    @Route('/bundle/bcrypt')
+    def bundle_route1():
+        return send_from_directory('static', "bcrypt.bundle.js")
+
+    @Route('/bundle/in-array')
+    def bundle_route2():
+        return send_from_directory('static', "in-array.bundle.js")
+
+    @Route('/bundle/pug')
+    def bundle_route3():
+        return send_from_directory('static', "pug.bundle.js")

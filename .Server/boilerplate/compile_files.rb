@@ -4,6 +4,7 @@
     require 'pathname'
     require 'FileUtils'
     require 'filewatcher'
+    require 'json'
 
 
 
@@ -202,20 +203,24 @@ Dir.chdir __dir__
 Dir.chdir "../.."
 
 
-# location 
-location_of_global_python  = Dir.pwd+"/Website/Global/GlobalPython.py"
-location_of_base_html      = Dir.pwd+"/Website/Global/GlobalIndex.html"
-location_of_general_tools  = Dir.pwd+"/Website/Global/GlobalJavascript.js"
-location_of_global_css     = Dir.pwd+"/Website/Global/GlobalStyles.css"
-simple_stack_base_html_dir = Dir.pwd+"/.Server/boilerplate/SimpleStackBase.html"
-static_dir                 = Dir.pwd+"/.Server/boilerplate/static/"
-template_dir               = Dir.pwd+"/.Server/boilerplate/templates/"
-routes_file_location       = Dir.pwd+"/.Server/boilerplate/SystemRoutes.py"
-dirs_of_pages              = Dir.glob("Website/**/*.page.js")
-dirs_of_modules            = Dir.glob("Website/**/*.module.js")
-dirs_of_python_files       = Dir.glob("Website/**/*.py")
-dirs_of_css_files          = Dir.glob("Website/**/*.css")
-favicon                    = Dir.glob("Website/**/favicon.ico")
+# establish locations
+simple_stack_base_html_dir  = Dir.pwd+"/.Server/boilerplate/SimpleStackBase.html"
+static_dir                  = Dir.pwd+"/.Server/boilerplate/static/"
+template_dir                = Dir.pwd+"/.Server/boilerplate/templates/"
+routes_file_location        = Dir.pwd+"/.Server/boilerplate/SystemRoutes.py"
+bundle_routes_file_location = Dir.pwd+"/.Server/boilerplate/BundleRoutes.py"
+location_of_package_json    = Dir.pwd+"/.Server/package.json"
+location_of_global_python   = Dir.pwd+"/Website/Global/GlobalPython.py"
+location_of_base_html       = Dir.pwd+"/Website/Global/GlobalIndex.html"
+location_of_general_tools   = Dir.pwd+"/Website/Global/GlobalJavascript.js"
+location_of_global_css      = Dir.pwd+"/Website/Global/GlobalStyles.css"
+dirs_of_pages               = Dir.glob("Website/**/*.page.js")
+dirs_of_modules             = Dir.glob("Website/**/*.module.js")
+dirs_of_python_files        = Dir.glob("Website/**/*.py")
+dirs_of_css_files           = Dir.glob("Website/**/*.css")
+favicon                     = Dir.glob("Website/**/favicon.ico")
+
+# FIXME, the favicon doesnt do anything
 
 
 # initilize stuff
@@ -225,9 +230,17 @@ everything_that_should_be_in_static =
         static_dir+'Home.page.js',
         static_dir+'Core.js',
         static_dir+'favicon.ico',
+        static_dir+'test.js',
         # library
         static_dir+'localforage.min.js',
     ]
+    # add bundles to everything_that_should_be_in_static
+    file = open(location_of_package_json)
+    parsed_package_file = JSON.parse(file.read)
+    dependencies = parsed_package_file['dependencies'].keys
+    for each in dependencies
+        everything_that_should_be_in_static << static_dir+each+".bundle.js"
+    end
 everything_that_should_be_templates = 
     [
         template_dir+'Home.html'
@@ -444,11 +457,13 @@ for each in dirs_of_python_files
         python_code = "\n"+unindent(python_code,"        ")
         routes_[route_] = python_code
     end
-end 
+end
 
 
+# save all routes into SystemRoutes (including the bundle Routes)
+save(routes_as_string(routes_)+readFile(bundle_routes_file_location), to:routes_file_location)
 
-save(routes_as_string(routes_), to:routes_file_location)
+
 
 
 #FIXME, compile the python after to make it more efficient 
