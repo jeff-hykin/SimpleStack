@@ -9,19 +9,24 @@ NoStack
         - DONE REMOVAL Manually do database stuff
     - DONE change .py parsing to look for a def and allow dectorators
         - set/overwrite the filename to match the function name
-    - allow installing npm packages somehow
-        - Browserify
-    - add install command
-        - have it check npm and pip for package
-        - save on npm install
-        - add to requirements.txt on pip install
-    - on ./run auto check/install npm and pip packages and run custom things 
-    - add Python() function/object for javascript
+    - DONE allow installing npm packages somehow
+        - DONE Browserify
+    - DONE add install command
+        - DONE have it check npm and pip for package
+        - DONE save on npm install
+        - DONE add to requirements.txt on pip install
+    - on ./run auto check/install npm and pip packages and run custom things
+    - DONE add Python() function/object for javascript
     - add Module() function for javascript
     - make sure ./run works on linux/vagrant
         - make sure ruby is installed
         - currently uses PID's and text 
     - have an auto install method
         - install/setup vagrant automatically
-        - install python/pip/npm/Browserify/flask
+        - install python/pip/npm/Browserify/flask/ruby/uglify
     - import rather than eval code properly for better debugging
+        - use flask's send_file method
+        - store the .js files on the client database
+        - minify the files 
+    - how to add images
+    - how to link to databases and run migrations
