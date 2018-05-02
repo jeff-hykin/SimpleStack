@@ -15,9 +15,15 @@ NoStack
         - DONE have it check npm and pip for package
         - DONE save on npm install
         - DONE add to requirements.txt on pip install
-    - on ./run auto check/install npm and pip packages and run custom things
     - DONE add Python() function/object for javascript
     - DONE add Module() function for javascript
+        - add the ".." syntax for relative pathing
+    - reorganize the files to have a .Advanced folder
+        - put the npm_modules in there
+        - take out the other stuff
+    - make an entry point file and get webpack working
+        - Get rid of html page generation, just use one html page
+    on ./run auto check/install npm and pip packages and run custom things
     - make sure ./run works on linux/vagrant
         - make sure ruby is installed
         - currently uses PID's and text 

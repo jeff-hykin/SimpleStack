@@ -10,7 +10,5 @@
     "author": "",
     "license": "ISC",
     "devDependencies": {},
-    "dependencies": {
-        "in-array": "^0.1.2"
-    }
+    "dependencies": {}
 }

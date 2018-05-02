@@ -47,7 +47,8 @@ for each_package_name in dependencies
     identifier = "__#{rand(0..99999999999999)}"
     `browserify temp_bundle_init.js --standalone '#{identifier}'>'#{relative_path}'`
     # FIXME, don't forget to uglify 
-    
+    puts "    creating bundle for "+each_package_name
+
     # perform a quick replace to convert g.identifier to g["package_name"]
     # FIXME, this is platform dependent (mac) linux doesnt need the first ''
     `sed -i '' 's/\\.#{identifier}/["__#{each_package_name}"]/g' '#{relative_path}'`
