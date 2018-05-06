@@ -17,7 +17,7 @@ def askForOneOf question_, options_
     end
 end
 
-Dir.chdir ".Server"
+Dir.chdir ".Advanced"
 
 venv_command = "cd boilerplate;source venv/bin/activate"
 

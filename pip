@@ -1,1 +1,1 @@
-cd .Server/boilerplate; source venv/bin/activate;pip $@
+cd .Advanced/boilerplate; source venv/bin/activate;pip $@

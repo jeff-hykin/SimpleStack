@@ -31,7 +31,7 @@ location_of_requirements = "boilerplate/requirements.txt"
 venv_command = "cd boilerplate;source venv/bin/activate"
 
 
-Dir.chdir ".Server"
+Dir.chdir ".Advanced"
 
 package_name = ARGV[0]
 if package_name

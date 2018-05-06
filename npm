@@ -1,1 +1,1 @@
-cd .Server;npm $@
+cd .Advanced;npm $@

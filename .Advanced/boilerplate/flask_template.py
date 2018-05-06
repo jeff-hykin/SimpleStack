@@ -58,7 +58,7 @@ if True:
 if __name__ == "__main__":
 
     # auto-generated SystemRoutes
-    file = open(CURRENT_DIRECTORY+"/.Server/boilerplate/SystemRoutes.py", "r"); exec(file.read()); file.close()
+    file = open(CURRENT_DIRECTORY+"/.Advanced/boilerplate/SystemRoutes.py", "r"); exec(file.read()); file.close()
     SystemRoutes()
     # custom routes
     file = open(CURRENT_DIRECTORY+"/Website/Global/GlobalPython.py", "r"); exec(file.read()); file.close()

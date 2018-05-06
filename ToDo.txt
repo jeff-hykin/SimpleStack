@@ -9,12 +9,14 @@ NoStack
         - DONE REMOVAL Manually do database stuff
     - DONE change .py parsing to look for a def and allow dectorators
         - set/overwrite the filename to match the function name
-    - DONE allow installing npm packages somehow
-        - DONE Browserify
-    - DONE add install command
-        - DONE have it check npm and pip for package
-        - DONE save on npm install
-        - DONE add to requirements.txt on pip install
+    - Restructure code to have one entrypoint
+        - allow installing npm packages somehow
+            - Browserify
+        - DONE add install command
+            - DONE have it check npm and pip for package
+            - DONE save on npm install
+            - DONE add to requirements.txt on pip install
+    - Get rid of localForage for Global
     - DONE add Python() function/object for javascript
     - DONE add Module() function for javascript
         - add the ".." syntax for relative pathing

@@ -160,7 +160,7 @@
 
             @Route('/page/#{name_}')
             def page_route#{$routeNumber}():
-                file = open('#{Dir.pwd}/.Server/boilerplate/static/#{file_name_escape("#{name_}")}.page.js', "r")
+                file = open('#{Dir.pwd}/.Advanced/boilerplate/static/#{file_name_escape("#{name_}")}.page.js', "r")
                 output = file.read()
                 file.close()
                 return output
@@ -182,7 +182,7 @@
         python_code = <<-HEREDOC
             @Route('/module/#{name_}')
             def module_route#{$routeNumber}():
-                file = open('#{Dir.pwd}/.Server/boilerplate/static/#{file_name_escape("#{name_}")}.module.js', "r")
+                file = open('#{Dir.pwd}/.Advanced/boilerplate/static/#{file_name_escape("#{name_}")}.module.js', "r")
                 output = file.read()
                 file.close()
                 return output
@@ -204,12 +204,12 @@ Dir.chdir "../.."
 
 
 # establish locations
-simple_stack_base_html_dir  = Dir.pwd+"/.Server/boilerplate/SimpleStackBase.html"
-static_dir                  = Dir.pwd+"/.Server/boilerplate/static/"
-template_dir                = Dir.pwd+"/.Server/boilerplate/templates/"
-routes_file_location        = Dir.pwd+"/.Server/boilerplate/SystemRoutes.py"
-bundle_routes_file_location = Dir.pwd+"/.Server/boilerplate/BundleRoutes.py"
-location_of_package_json    = Dir.pwd+"/.Server/package.json"
+simple_stack_base_html_dir  = Dir.pwd+"/.Advanced/boilerplate/SimpleStackBase.html"
+static_dir                  = Dir.pwd+"/.Advanced/boilerplate/static/"
+template_dir                = Dir.pwd+"/.Advanced/boilerplate/templates/"
+routes_file_location        = Dir.pwd+"/.Advanced/boilerplate/SystemRoutes.py"
+bundle_routes_file_location = Dir.pwd+"/.Advanced/boilerplate/BundleRoutes.py"
+location_of_package_json    = Dir.pwd+"/.Advanced/package.json"
 location_of_global_python   = Dir.pwd+"/Website/Global/GlobalPython.py"
 location_of_base_html       = Dir.pwd+"/Website/Global/GlobalIndex.html"
 location_of_general_tools   = Dir.pwd+"/Website/Global/GlobalJavascript.js"
