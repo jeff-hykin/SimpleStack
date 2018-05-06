@@ -4,7 +4,7 @@
 # source /Users/jeffhykin/Documents/_Programming/SimpleStack/.Advanced/boilerplate/venv/bin/activate
 
 # first compile the files
-ruby .Advanced/boilerplate/compile_files.rb
+ruby .Advanced/sys/compile_files.rb
 # then run the file watcher (which will start the server and watch for changes)
 ruby .Advanced/boilerplate/watch_for_file_changes.rb
 

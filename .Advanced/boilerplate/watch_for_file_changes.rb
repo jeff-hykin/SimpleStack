@@ -106,9 +106,10 @@ begin # for catching ctrl+c
     $static_dir                 = $hidden_backend_dir+"static/"
     $template_dir               = $hidden_backend_dir+"templates/"
     $routes_file_location       = $hidden_backend_dir+"routes.py"
-    $server_output_name         = ".Advanced/server_output.txt"
+    $server_output_name         = ".Advanced/sys/server_output.txt"
     $full_path_to_server_ouput  = Dir.pwd+"/"+$server_output_name
-    $server_pid_file_locaion    = ".Advanced/.server_pid.txt"
+    $server_pid_file_locaion    = ".Advanced/sys/.server_pid.txt"
+    $compiler_location          = ".Advanced/sys/compile_files.rb"
 
     def startServer()
         if exists($server_pid_file_locaion)
@@ -122,7 +123,7 @@ begin # for catching ctrl+c
 
         end
         $server_std_in, $server_std_out_and_error, $server_thread = Open3.popen2e("bash\n")
-        $server_std_in.puts("source \"#{$hidden_backend_dir}PythonVirtualEnv/bin/activate\"")
+        $server_std_in.puts("source \"#{$hidden_backend_dir}venv/bin/activate\"")
         $server_std_in.puts("python3 \"#{$hidden_backend_dir}flask_template.py\" &>'#{$server_output_name}' &")
         $server_std_in.puts("echo $! &>#{$server_pid_file_locaion}")
     end
@@ -132,7 +133,7 @@ begin # for catching ctrl+c
 
 
     # update the files as theyre being changed
-    Filewatcher.new(['Website/','.Advanced/server_output.txt']).watch do |filename, event|
+    Filewatcher.new(['Website/',$server_output_name]).watch do |filename, event|
         #DUMB FILE WATCHER (just recompiles everything everytime)
             event = "#{event}"
             
@@ -169,7 +170,7 @@ begin # for catching ctrl+c
                 # re-compile everything
                 puts "\n\n#{relative_path} was changed"
                 puts "...recompiling"
-                compilation_output = indent(`ruby .Advanced/boilerplate/compile_files.rb`)
+                compilation_output = indent(`ruby '#{$compiler_location}'`)
                 if compilation_output.strip.length > 0
                     puts compilation_output
                 end 
