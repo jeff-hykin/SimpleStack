@@ -10,8 +10,9 @@ NoStack
     - DONE change .py parsing to look for a def and allow dectorators
         - set/overwrite the filename to match the function name
     - Restructure code to have one entrypoint
-        - allow installing npm packages somehow
-            - Browserify
+        - webpack
+            - have the compile.rb make an index.js that requires everything in Website
+        - get rid of current bundling junk
         - DONE add install command
             - DONE have it check npm and pip for package
             - DONE save on npm install

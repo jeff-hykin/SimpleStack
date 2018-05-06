@@ -82,7 +82,7 @@
 
     def code_generate(module_name,each)
         return <<-HEREDOC
-            LoadModule = async function(Parent) 
+            export default async function(Parent) 
                 {
                     // so attached listeners know who attached them
                     Global.SystemVars.CurrentOrigin = "#{module_name}"
@@ -116,14 +116,20 @@
                     Global.SystemVars.CurrentOrigin = undefined
                 }
             HEREDOC
-    end 
+    end
 
     def file_name_escape(input_)
         name_ = "#{input_}"
-        # :'s are not allowed in file names, they're replaced with →
-        name_.sub!(":","•")  
-        # /'s are not allowed in file names, they're replaced with →
-        name_.sub!("\/","→") 
+        # useful symbols ᒥᒣ ᐅ  ᐟ ᐠ ᐤ ᐸ ᑉ ᐝ ᚋ ᚌ ᚐ ᚚ ⴻ ⴹ ⴸ  
+        name_.sub!(" ","ᚚ")
+        name_.sub!("(","ᑕ")
+        name_.sub!("(","ᑕ")
+        name_.sub!(")","ᑐ")
+        name_.sub!("+","ᐩ")
+        name_.sub!("-","ᐨ")
+        name_.sub!(":","ᐝ")
+        name_.sub!("\/","ᐟ")
+        name_.sub!("\\","ᐠ")
         return name_
     end
 
@@ -204,15 +210,22 @@ Dir.chdir "../.."
 
 
 # establish locations
+location_of_corejs          = Dir.pwd+"/.Advanced/sys/Core.js"
+location_of_mainjs          = Dir.pwd+"/.Advanced/sys/Main.js"
 simple_stack_base_html_dir  = Dir.pwd+"/.Advanced/flask/SimpleStackBase.html"
 static_dir                  = Dir.pwd+"/.Advanced/flask/static/"
+location_of_super_bundle    = Dir.pwd+"/.Advanced/flask/static/Core.js"
 template_dir                = Dir.pwd+"/.Advanced/flask/templates/"
 routes_file_location        = Dir.pwd+"/.Advanced/flask/SystemRoutes.py"
 bundle_routes_file_location = Dir.pwd+"/.Advanced/flask/BundleRoutes.py"
-location_of_package_json    = Dir.pwd+"/.Advanced/package.json"
+location_of_webpack         = Dir.pwd+"/.Advanced/webpack/"
+location_of_indexjs         = Dir.pwd+"/.Advanced/webpack/src/index.js"
+location_of_bundlejs        = Dir.pwd+"/.Advanced/webpack/dist/bundle.js"
+location_of_package_json    = Dir.pwd+"/.Advanced/webpack/package.json"
 location_of_global_python   = Dir.pwd+"/Website/Global/GlobalPython.py"
 location_of_base_html       = Dir.pwd+"/Website/Global/GlobalIndex.html"
 location_of_general_tools   = Dir.pwd+"/Website/Global/GlobalJavascript.js"
+global_stylesheets_relative = "GlobalᐟGlobalStyles.css"
 location_of_global_css      = Dir.pwd+"/Website/Global/GlobalStyles.css"
 dirs_of_pages               = Dir.glob("Website/**/*.page.js")
 dirs_of_modules             = Dir.glob("Website/**/*.module.js")
@@ -226,7 +239,7 @@ favicon                     = Dir.glob("Website/**/favicon.ico")
 # initilize stuff
 everything_that_should_be_in_static = 
     [
-        static_dir+'Global→GlobalStyles.css',
+        static_dir+global_stylesheets_relative,
         static_dir+'Home.page.js',
         static_dir+'Core.js',
         static_dir+'favicon.ico',
@@ -243,7 +256,8 @@ everything_that_should_be_in_static =
     end
 everything_that_should_be_templates = 
     [
-        template_dir+'Home.html'
+        template_dir+'Home.html',
+        template_dir+'index.html',
     ]
 
 # move the base file
@@ -287,7 +301,7 @@ if exists(Dir.pwd+"/Website/Global")
     end 
     
     if exists(location_of_global_css)
-        regex_multiple_replacement << [replacement_keys["css"] , '<link type="text/css" rel="stylesheet" href="{{ url_for(\'static\',filename=\'Global→GlobalStyles.css\') }}"/>']
+        regex_multiple_replacement << [replacement_keys["css"] , "<link type=\"text/css\" rel=\"stylesheet\" href=\"{{ url_for(\'static\',filename=\'#{global_stylesheets_relative}\') }}\"/>"]
     else 
         regex_multiple_replacement << [replacement_keys["css"] , '\n']
     end
@@ -298,7 +312,7 @@ end
 
 
 
-
+code_for_indexjs = ""
 routes_ = {}
 #
 # add all of the css 
@@ -326,8 +340,6 @@ for each in dirs_of_pages
     file_name = each.sub(/^Website\//,"")
     file_name.sub!(".page.js","")
 
-
-
     name_ = basename(file_name)
     # create a route for the page (actually 2 routes per page, one for html one for js)
     the_route_pair = route_for_page(file_name)
@@ -351,6 +363,7 @@ for each in dirs_of_pages
     # code_ = <<-HEREDOC
     javascript_version = code_generate(name_,each)
     save javascript_version, to:static_location
+    code_for_indexjs += "import #{new_file_name} from '../../flask/static/#{new_file_name+".page.js"}';Global.SystemVars.Modules.#{new_file_name} = #{new_file_name}\n"
     
     # create html for the page
     # FIXME, use a base.html to allow things to be injected into the head and body
@@ -366,7 +379,7 @@ end
 for each in dirs_of_modules
     # get rid of the "Website/" part and the ".module.js" part 
     file_name = each.sub(/^Website\//,"")
-    file_name.sub!(".module.js","")
+    file_name.sub!(/.module.js\z/,"")
 
     # create a route for the module
     the_route_pair = route_for_module(file_name)
@@ -376,13 +389,16 @@ for each in dirs_of_modules
     name_ = basename(file_name)
 
     # escape the name to be an acceptable file name 
-    new_file_name = file_name_escape(file_name)+".module.js"
-    everything_that_should_be_in_static << static_dir+new_file_name
+    new_file_name = file_name_escape(file_name)
+    new_file_name_with_extension = new_file_name+".module.js"
+    absolute_location_of_file = static_dir+new_file_name_with_extension
+    everything_that_should_be_in_static << absolute_location_of_file
     
     # save output
     # FIXME, have a minify function
     code_ =  code_generate(name_,each)
-    save code_,   to:(static_dir+new_file_name) 
+    save code_,   to:(absolute_location_of_file)
+    code_for_indexjs += "import #{new_file_name} from '../../flask/static/#{new_file_name_with_extension}';Global.SystemVars.Modules.#{new_file_name} = #{new_file_name}\n"
 end 
 
 #
@@ -463,7 +479,17 @@ end
 # save all routes into SystemRoutes (including the bundle Routes)
 save(routes_as_string(routes_)+readFile(bundle_routes_file_location), to:routes_file_location)
 
-
+#
+# deal with webpack
+#
+    # save the index
+    save( code_for_indexjs, to:location_of_indexjs )
+    # webpack things
+    `cd '#{location_of_webpack}';webpack`
+    # combine core.js and bundle.js
+    corejs_file = readFile(location_of_corejs)
+    mainjs_file = readFile(location_of_mainjs)
+    save (corejs_file+"\n"+ readFile(location_of_bundlejs)+"\n\n"+mainjs_file) , to:location_of_super_bundle
 
 
 #FIXME, compile the python after to make it more efficient 

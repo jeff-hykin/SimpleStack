@@ -1,0 +1,17 @@
+{
+    "name": "simple_flat_stack",
+    "version": "1.0.0",
+    "description": "_",
+    "private": true,
+    "scripts": {
+        "test": "echo \"there is no test command\""
+    },
+    "author": "",
+    "license": "ISC",
+    "devDependencies": {
+        "webpack-cli": "^2.1.2"
+    },
+    "dependencies": {
+        "webpack": "^4.7.0"
+    }
+}

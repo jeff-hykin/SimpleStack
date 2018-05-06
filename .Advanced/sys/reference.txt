@@ -1,0 +1,5 @@
+nginx
+    to start do:nginx
+    to kill it do:nginx -s stop
+    default configure file location on mac: /usr/local/etc/nginx/nginx.conf
+    default port:8080

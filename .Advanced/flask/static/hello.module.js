@@ -1,4 +1,4 @@
-            LoadModule = async function(Parent) 
+            export default async function(Parent) 
                 {
                     // so attached listeners know who attached them
                     Global.SystemVars.CurrentOrigin = "hello"

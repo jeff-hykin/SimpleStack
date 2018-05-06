@@ -1,3 +1,4 @@
+console.log(`am i even running`)
 //
 //    Main Tools 
 //
@@ -30,7 +31,7 @@ if (1) // setup for Global
                                 the_node.addEventListener(event_name,new_value)
                             // }
                         
-                        return true 
+                        return true
                     },
             }
         var __GlobalInitObj = 
@@ -42,6 +43,7 @@ if (1) // setup for Global
                 Changes: [],
                 SystemVars:
                     {
+                        Modules: {},
                         Module: document.getElementById("GlobalModule"),
                         CurrentPath: undefined,
                         get CurrentDir()
@@ -117,45 +119,21 @@ if (1) // setup for Global
             }
     }
 const Global = new Proxy(__GlobalInitObj, GlobalProxy)
-if (1) // protos
-    {
-        var a = document.createElement('a')
-        node_proto = a.__proto__.__proto__.__proto__
-        // delete 
-        node_proto.delete = function ()
-            {
-                this.parentNode.removeChild(this)
-            }
-        // add 
-        node_proto.add = function (input_)
-            {
-                // console.log(`about to add`,input_)
-                // if input is a string
-                if (typeof input_ == "string")
-                    {
-                        // if inputload input as a module
-                        var parent_elem = this
-                        var loadModule = async function ()
-                            {
-                                return ( await eval(await Request({path:"module"+Global.SystemVars.CurrentDir+input_}))(parent_elem)  )
-                            }
-                        loadModule() // load the module asyncly
-                        // FIXME, check for network errors here 
-                    }
-                else if (input_ instanceof Node)
-                    {
-                        this.appendChild(input_)
-                    }
-                else
-                    {
-                        var type_ = typeof input_
-                        if ( type_ == "object" && "constructor" in input_ ) { var type_ = input_.constructor.name }
-                    }
-                return this
-            }
-    }
+
 if (1) // Core functions
     {
+        var ModuleLocationToVarName = function(module_location)
+            {
+                module_location = module_location.replace(/^\//,"")
+                module_location = module_location.replace("(","ᑕ")
+                module_location = module_location.replace(")","ᑐ")
+                module_location = module_location.replace("+","ᐩ")
+                module_location = module_location.replace("-","ᐨ")
+                module_location = module_location.replace(":","ᐝ")
+                module_location = module_location.replace("\/","ᐟ")
+                module_location = module_location.replace("\\","ᐠ")
+                return module_location;
+            }
         var Say = function  (saying)
             {
                 try 
@@ -346,7 +324,8 @@ if (1) // Core functions
                         Global.SystemVars.HistoryIndex = history.state
                         Global.SystemVars.CurrentPath = Global.SystemVars.History[Global.SystemVars.HistoryIndex]
                     }
-                let js_code = await Request({path:"page"+Global.SystemVars.CurrentPath})
+                
+                // let js_code = await Request({path:"page"+Global.SystemVars.CurrentPath})
                 // history.pushState(Global.SystemVars.CurrentPath,"Home", Global.SystemVars.CurrentPath)
                 // FIXME, check for errors here (encase page doesn't exist)
                 // TODO, utilize state for something useful
@@ -358,9 +337,64 @@ if (1) // Core functions
                 Global.SystemVars.Module = document.createElement('div')
                 Global.SystemVars.Module.id = "GlobalModule"
                 document.body.appendChild(Global.SystemVars.Module)
-                // run the page with the new main_module 
-                return await eval(js_code)(Global.SystemVars.Module)
+                // run the page with the new main_module
+                var page_varname = ModuleLocationToVarName(Global.SystemVars.CurrentPath)
+                console.log(`about to load page ${page_varname}`)
+                return await Global.SystemVars.Modules[page_varname](Global.SystemVars.Module)
+            }
+    }
+if (1) // protos
+    {
+        var a = document.createElement('a')
+        node_proto = a.__proto__.__proto__.__proto__
+        // delete 
+        node_proto.delete = function ()
+            {
+                this.parentNode.removeChild(this)
+            }
+        // add 
+        node_proto.add = async function (input_)
+            {
+                // console.log(`about to add`,input_)
+                // if input is a string
+                if (typeof input_ == "string")
+                    {
+                        var module_absolute_path = Global.SystemVars.CurrentDir+input_
+                        var module_varname = ModuleLocationToVarName(module_absolute_path)
+                        var parent_elem = this
+                        console.log(`about to load module ${module_varname}`)
+                        Global.SystemVars.Modules[module_varname](parent_elem)
+                        // if inputload input as a module
+                        // var parent_elem = this
+                        // var loadModule = async function ()
+                        //     {
+                        //         return ( await eval(await Request({path:"module"+Global.SystemVars.CurrentDir+input_}))(parent_elem)  )
+                        //     }
+                        // loadModule() // load the module asyncly
+                        // FIXME, check for network errors here 
+                    }
+                else if (input_ instanceof Node)
+                    {
+                        this.appendChild(input_)
+                    }
+                else
+                    {
+                        var type_ = typeof input_
+                        if ( type_ == "object" && "constructor" in input_ ) { var type_ = input_.constructor.name }
+                    }
+                return this
             }
     }
 // for history back/forward
 window.onpopstate = function(...inputs) { LoadPage()}
+
+console.log(`am i even running`)
+!function(e){var o={};function a(n){if(o[n])return o[n].exports;var t=o[n]={i:n,l:!1,exports:{}};return e[n].call(t.exports,t,t.exports,a),t.l=!0,t.exports}a.m=e,a.c=o,a.d=function(e,o,n){a.o(e,o)||Object.defineProperty(e,o,{configurable:!1,enumerable:!0,get:n})},a.r=function(e){Object.defineProperty(e,"__esModule",{value:!0})},a.n=function(e){var o=e&&e.__esModule?function(){return e.default}:function(){return e};return a.d(o,"a",o),o},a.o=function(e,o){return Object.prototype.hasOwnProperty.call(e,o)},a.p="",a(a.s=0)}([function(e,o,a){"use strict";a.r(o);Global.SystemVars.Modules.Home=async function(e){Global.SystemVars.CurrentOrigin="Home";const o={Node:document.createElement("module"),Load:async function(){console.log("start of homepage.js"),console.log("Parent is:",e);var o=document.createElement("h1"),a=document.createElement("input");a.onkeydown=(async e=>{"Enter"==e.key&&(o.innerHTML=await Server("Hello",e.target.value))}),o.innerHTML="Hello World",e.add(o),e.add("hello"),e.add(a)}};o.Node.id="Home";Global.Eval.bind(o);Global.SystemVars.Loading.push(o),await o.Load(),e.add(o.Node),Global.SystemVars.Loading.pop(),Global.SystemVars.CurrentOrigin=void 0},Global.SystemVars.Modules.HomeᐟHome=async function(e){Global.SystemVars.CurrentOrigin="Home";const o={Node:document.createElement("module"),Load:async function(){alert("Yo this is a nested home page"),e.add("blah")}};o.Node.id="Home";Global.Eval.bind(o);Global.SystemVars.Loading.push(o),await o.Load(),e.add(o.Node),Global.SystemVars.Loading.pop(),Global.SystemVars.CurrentOrigin=void 0},Global.SystemVars.Modules.Homeᐟblah=async function(e){Global.SystemVars.CurrentOrigin="blah";const o={Node:document.createElement("module"),Load:async function(){var o=document.createElement("div");o.innerHTML="BLAHHHHHHHHHH",e.add(o)}};o.Node.id="blah";Global.Eval.bind(o);Global.SystemVars.Loading.push(o),await o.Load(),e.add(o.Node),Global.SystemVars.Loading.pop(),Global.SystemVars.CurrentOrigin=void 0},Global.SystemVars.Modules.Homeᐟblah2=async function(e){Global.SystemVars.CurrentOrigin="blah2";const o={Node:document.createElement("module"),Load:async function(){var o=document.createElement("div");o.innerHTML="BLAHHHHHHHHHH",e.add(o)}};o.Node.id="blah2";Global.Eval.bind(o);Global.SystemVars.Loading.push(o),await o.Load(),e.add(o.Node),Global.SystemVars.Loading.pop(),Global.SystemVars.CurrentOrigin=void 0},Global.SystemVars.Modules.hello=async function(e){Global.SystemVars.CurrentOrigin="hello";const o={Node:document.createElement("module"),Load:async function(){var o=document.createElement("button");o.innerHTML="click me",o.onclick=(async()=>{LoadPage("Home/Home")}),e.add(o)}};o.Node.id="hello";Global.Eval.bind(o);Global.SystemVars.Loading.push(o),await o.Load(),e.add(o.Node),Global.SystemVars.Loading.pop(),Global.SystemVars.CurrentOrigin=void 0}}]);
+
+window.this_code_is_running = true
+Main = async function () 
+    {
+        console.log(`window.location.href.replace(/^(?:\/\/|[^\/]+)*\//, "") is:`,window.location.href.replace(/^(?:\/\/|[^\/]+)*\//, ""))
+        LoadPage(window.location.href.replace(/^(?:\/\/|[^\/]+)*\//, ""))
+    }
+Main()

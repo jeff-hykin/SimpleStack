@@ -1,4 +1,4 @@
-            LoadModule = async function(Parent) 
+            export default async function(Parent) 
                 {
                     // so attached listeners know who attached them
                     Global.SystemVars.CurrentOrigin = "Home"
@@ -10,6 +10,8 @@
                                 {
                                     "use strict"
                                     
+                                    console.log(`start of homepage.js`)
+                                    console.log(`Parent is:`,Parent)
                                     // create elements
                                     var title_element = document.createElement("h1")
                                     var input_box     = document.createElement("input")

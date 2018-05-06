@@ -80,10 +80,16 @@
 
     def file_name_escape(input_)
         name_ = "#{input_}"
-        # :'s are not allowed in file names, they're replaced with →
-        name_.sub!(":","•")  
-        # /'s are not allowed in file names, they're replaced with →
-        name_.sub!("\/","→") 
+        # useful symbols ᒥᒣ ᐅ  ᐟ ᐠ ᐤ ᐸ ᑉ ᐝ ᚋ ᚌ ᚐ ᚚ ⴻ ⴹ ⴸ  
+        name_.sub!(" ","ᚚ")
+        name_.sub!("(","ᑕ")
+        name_.sub!("(","ᑕ")
+        name_.sub!(")","ᑐ")
+        name_.sub!("+","ᐩ")
+        name_.sub!("-","ᐨ")
+        name_.sub!(":","ᐝ")
+        name_.sub!("\/","ᐟ")
+        name_.sub!("\\","ᐠ")
         return name_
     end
 
@@ -184,6 +190,15 @@ begin # for catching ctrl+c
         #FIXME, add a smart file watcher:
     end# filewatcher
 
-rescue Interrupt, SystemExit 
-
+rescue Interrupt, SystemExit
+    # Try to kill the process on stop
+    if exists($server_pid_file_locaion)
+        server_pid = readFile($server_pid_file_locaion).chomp
+        if server_pid.length > 0 
+            # kill the process 
+            `kill #{server_pid}`
+            # clear the file that was holding the PID
+            `rm #{$server_pid_file_locaion};touch #{$server_pid_file_locaion}`
+        end
+    end
 end

@@ -50,7 +50,7 @@ if package_name
         
     # check npm
         npm_has_the_package = false
-        file = open("package.json")
+        file = open("webpack/package.json")
         parsed_package_file = JSON.parse(file.read)
         dependencies = parsed_package_file['dependencies'].keys
         if dependencies.include? package_name
@@ -84,7 +84,7 @@ if package_name
     end
 
     if should_uninstall_npm_package
-        `npm uninstall #{package_name} --save`
+        `cd webpack;npm uninstall #{package_name} --save`
         puts "Finished uninstalling Javascript #{package_name}"
     end
 end

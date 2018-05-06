@@ -38,7 +38,7 @@ if package_name
         end
     # check npm
         npm_has_the_package = false
-        packages_as_a_string = `npm search #{package_name}`
+        packages_as_a_string = `cd webpack;npm search #{package_name}`
         packages_as_a_string.gsub! /(.*?)\|.+/ , '\1'
         packages_as_list = packages_as_a_string.split "\n"
         packages_as_list.shift
@@ -75,7 +75,7 @@ if package_name
     end
 
     if should_install_npm_package
-        `npm install #{package_name} --save`
+        `cd webpack;npm install #{package_name} --save`
         `ruby create_bundles.rb`
         puts "Finished installing Javascript #{package_name}"
     end
