@@ -1,12 +1,12 @@
 #!/bin/sh
 
 # FIXME, add auto install here
-# source /Users/jeffhykin/Documents/_Programming/SimpleStack/.Advanced/boilerplate/venv/bin/activate
+# source /Users/jeffhykin/Documents/_Programming/SimpleStack/.Advanced/flask/venv/bin/activate
 
 # first compile the files
 ruby .Advanced/sys/compile_files.rb
 # then run the file watcher (which will start the server and watch for changes)
-ruby .Advanced/boilerplate/watch_for_file_changes.rb
+ruby .Advanced/sys/watch_for_file_changes.rb
 
 
 

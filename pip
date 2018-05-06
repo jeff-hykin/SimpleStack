@@ -1,1 +1,1 @@
-cd .Advanced/boilerplate; source venv/bin/activate;pip $@
+cd .Advanced/flask; source venv/bin/activate;pip $@

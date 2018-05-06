@@ -19,7 +19,7 @@ end
 
 Dir.chdir ".Advanced"
 
-venv_command = "cd boilerplate;source venv/bin/activate"
+venv_command = "cd flask;source venv/bin/activate"
 
 package_name = ARGV[0]
 if package_name

@@ -12,7 +12,7 @@ def SystemRoutes(): #this is name-specific
 
     @Route('/page/Home')
     def page_route1():
-        file = open('/Users/jeffhykin/Documents/_Programming/SimpleStack/.Advanced/boilerplate/static/Home.page.js', "r")
+        file = open('/Users/jeffhykin/Documents/_Programming/SimpleStack/.Advanced/flask/static/Home.page.js', "r")
         output = file.read()
         file.close()
         return output
@@ -23,28 +23,28 @@ def SystemRoutes(): #this is name-specific
 
     @Route('/page/Home/Home')
     def page_route2():
-        file = open('/Users/jeffhykin/Documents/_Programming/SimpleStack/.Advanced/boilerplate/static/Home→Home.page.js', "r")
+        file = open('/Users/jeffhykin/Documents/_Programming/SimpleStack/.Advanced/flask/static/Home→Home.page.js', "r")
         output = file.read()
         file.close()
         return output
 
     @Route('/module/Home/blah')
     def module_route3():
-        file = open('/Users/jeffhykin/Documents/_Programming/SimpleStack/.Advanced/boilerplate/static/Home→blah.module.js', "r")
+        file = open('/Users/jeffhykin/Documents/_Programming/SimpleStack/.Advanced/flask/static/Home→blah.module.js', "r")
         output = file.read()
         file.close()
         return output
 
     @Route('/module/Home/blah2')
     def module_route4():
-        file = open('/Users/jeffhykin/Documents/_Programming/SimpleStack/.Advanced/boilerplate/static/Home→blah2.module.js', "r")
+        file = open('/Users/jeffhykin/Documents/_Programming/SimpleStack/.Advanced/flask/static/Home→blah2.module.js', "r")
         output = file.read()
         file.close()
         return output
 
     @Route('/module/hello')
     def module_route5():
-        file = open('/Users/jeffhykin/Documents/_Programming/SimpleStack/.Advanced/boilerplate/static/hello.module.js', "r")
+        file = open('/Users/jeffhykin/Documents/_Programming/SimpleStack/.Advanced/flask/static/hello.module.js', "r")
         output = file.read()
         file.close()
         return output

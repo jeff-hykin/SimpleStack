@@ -27,8 +27,8 @@ def askForOneOf question_, options_
     end
 end
 
-location_of_requirements = "boilerplate/requirements.txt"
-venv_command = "cd boilerplate;source venv/bin/activate"
+location_of_requirements = "flask/requirements.txt"
+venv_command = "cd flask;source venv/bin/activate"
 
 
 Dir.chdir ".Advanced"

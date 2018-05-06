@@ -102,7 +102,7 @@ begin # for catching ctrl+c
     Dir.chdir "../.."
 
     # locations 
-    $hidden_backend_dir         = Dir.pwd+"/.Advanced/boilerplate/"
+    $hidden_backend_dir         = Dir.pwd+"/.Advanced/flask/"
     $static_dir                 = $hidden_backend_dir+"static/"
     $template_dir               = $hidden_backend_dir+"templates/"
     $routes_file_location       = $hidden_backend_dir+"routes.py"

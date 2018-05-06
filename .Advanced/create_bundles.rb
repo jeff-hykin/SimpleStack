@@ -14,7 +14,7 @@ def save(string,to:nil)
     new_file.close
 end
 
-routes_file_location       = "boilerplate/BundleRoutes.py"
+routes_file_location       = "flask/BundleRoutes.py"
 
 
 
@@ -42,7 +42,7 @@ for each_package_name in dependencies
     save file_contents, to:"temp_bundle_init.js"
 
     bundle_static_file_name = each_package_name+".bundle.js"
-    relative_path = "boilerplate/static/#{bundle_static_file_name}"
+    relative_path = "flask/static/#{bundle_static_file_name}"
     # create the actual bundle
     identifier = "__#{rand(0..99999999999999)}"
     `browserify temp_bundle_init.js --standalone '#{identifier}'>'#{relative_path}'`
