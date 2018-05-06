@@ -116,6 +116,8 @@ begin # for catching ctrl+c
     $full_path_to_server_ouput  = Dir.pwd+"/"+$server_output_name
     $server_pid_file_locaion    = ".Advanced/sys/.server_pid.txt"
     $compiler_location          = ".Advanced/sys/compile_files.rb"
+    $location_of_corejs          = Dir.pwd+"/.Advanced/sys/Core.js"
+    $location_of_mainjs          = Dir.pwd+"/.Advanced/sys/Main.js"
 
     def startServer()
         if exists($server_pid_file_locaion)
@@ -139,15 +141,15 @@ begin # for catching ctrl+c
 
 
     # update the files as theyre being changed
-    Filewatcher.new(['Website/',$server_output_name]).watch do |filename, event|
+    Filewatcher.new(['Website/',$server_output_name,$location_of_corejs,$location_of_mainjs]).watch do |filename, event|
         #DUMB FILE WATCHER (just recompiles everything everytime)
             event = "#{event}"
             
+            # If they were not deleted then get their info
             if (event != "deleted")
                 path = Pathname.new(filename)
                 relative_path = "#{path.realpath}".sub( /^#{Regexp.escape(Dir.pwd+"/")}/,"" )
                 first_folder = relative_path[/\w+/]
-                
             end
 
             # if the logging file is deleted dont do anything 
@@ -159,9 +161,7 @@ begin # for catching ctrl+c
                         puts indent(server_output)
                         createFile(name:$server_output_name, code:"")
                     end
-                    
                     # erase the existing file
-                    
                 end
 
             # if its any of the always-auto-generated stuff then ignore it

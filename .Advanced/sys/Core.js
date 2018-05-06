@@ -1,4 +1,3 @@
-console.log(`am i even running`)
 //
 //    Main Tools 
 //
@@ -65,7 +64,6 @@ if (1) // setup for Global
                                     {
                                         for (let each of keys)
                                             {
-                                                console.log(`about to call LoadValue for`,each)
                                                 Global.LoadValue(each)
                                             }
                                     }
@@ -339,7 +337,6 @@ if (1) // Core functions
                 document.body.appendChild(Global.SystemVars.Module)
                 // run the page with the new main_module
                 var page_varname = ModuleLocationToVarName(Global.SystemVars.CurrentPath)
-                console.log(`about to load page ${page_varname}`)
                 return await Global.SystemVars.Modules[page_varname](Global.SystemVars.Module)
             }
     }
@@ -362,16 +359,7 @@ if (1) // protos
                         var module_absolute_path = Global.SystemVars.CurrentDir+input_
                         var module_varname = ModuleLocationToVarName(module_absolute_path)
                         var parent_elem = this
-                        console.log(`about to load module ${module_varname}`)
                         Global.SystemVars.Modules[module_varname](parent_elem)
-                        // if inputload input as a module
-                        // var parent_elem = this
-                        // var loadModule = async function ()
-                        //     {
-                        //         return ( await eval(await Request({path:"module"+Global.SystemVars.CurrentDir+input_}))(parent_elem)  )
-                        //     }
-                        // loadModule() // load the module asyncly
-                        // FIXME, check for network errors here 
                     }
                 else if (input_ instanceof Node)
                     {
@@ -387,5 +375,3 @@ if (1) // protos
     }
 // for history back/forward
 window.onpopstate = function(...inputs) { LoadPage()}
-
-console.log(`am i even running`)

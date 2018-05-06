@@ -1,24 +1,22 @@
-                        // import _ from "lodash"
+                        import _ from "lodash"
 
             export default async function(Parent) 
                 {
                     // so attached listeners know who attached them
-                    Global.SystemVars.CurrentOrigin = "Home"
+                    Global.SystemVars.CurrentOrigin = "Home.page.js"
                     // create the module in an object so that DangerousEval can be used 
-                    const Home = 
+                    const Home.page.js = 
                         {
                             Node: document.createElement("module"),
                             Load: async function()
                                 {
                                     "use strict"
                                     
-                                    
-                                    // console.log(`_ is:`,_)
-                                    // console.log(`start of homepage.js`)
-                                    console.log(`Parent is:`,Parent)
                                     // create elements
                                     var title_element = document.createElement("h1")
                                     var input_box     = document.createElement("input")
+                                    
+                                    
                                     
                                     
                                     // set attributes
@@ -39,19 +37,19 @@
                                 }
                         }
                     // set the id
-                    Home.Node.id = "Home"
+                    Home.page.js.Node.id = "Home.page.js"
                     // setup DangerousEval
-                    const DangerousEval = Global.Eval.bind(Home)
+                    const DangerousEval = Global.Eval.bind(Home.page.js)
                     // set Loading
-                    Global.SystemVars.Loading.push(Home)
+                    Global.SystemVars.Loading.push(Home.page.js)
                     
                     //
                     // load module 
                     //
-                    await Home.Load()
+                    await Home.page.js.Load()
                     
                     // attach to parent
-                    Parent.add(Home.Node)
+                    Parent.add(Home.page.js.Node)
                     // turn off loading
                     Global.SystemVars.Loading.pop()
                     // turn off the CurrentOrigin since the module is done loading
