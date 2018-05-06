@@ -1,3 +1,5 @@
+                        // import _ from "lodash"
+
             export default async function(Parent) 
                 {
                     // so attached listeners know who attached them
@@ -10,7 +12,9 @@
                                 {
                                     "use strict"
                                     
-                                    console.log(`start of homepage.js`)
+                                    
+                                    // console.log(`_ is:`,_)
+                                    // console.log(`start of homepage.js`)
                                     console.log(`Parent is:`,Parent)
                                     // create elements
                                     var title_element = document.createElement("h1")

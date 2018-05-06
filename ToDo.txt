@@ -12,6 +12,10 @@ NoStack
     - Restructure code to have one entrypoint
         - webpack
             - have the compile.rb make an index.js that requires everything in Website
+            - re-link the Global.js and index.html
+            - get rid of all the html and js routes
+            - somehow include localForage and the other stuff
+            - get the webpack watcher working
         - get rid of current bundling junk
         - DONE add install command
             - DONE have it check npm and pip for package

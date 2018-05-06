@@ -81,7 +81,24 @@
     end
 
     def code_generate(module_name,each)
+        import_statements = ""
+        code = readFile(each)
+        import_regex_pattern = /\A\s*import [\s\S]+? from .+\n/
+        # FIXME, find a better way to extract import statements
+        loop do
+            the_match = code.match(import_regex_pattern)
+            # if there is an import statement
+            if the_match
+                # extract it
+                import_statements += the_match[0]
+                code.gsub!(import_regex_pattern, "")
+            else
+                break
+            end
+        end
+        
         return <<-HEREDOC
+            #{indent(import_statements,3*4)}
             export default async function(Parent) 
                 {
                     // so attached listeners know who attached them
@@ -93,7 +110,7 @@
                             Load: async function()
                                 {
                                     "use strict"
-                                    \n#{indent(readFile(each),(9*4))}
+                                    \n#{indent(code,(9*4))}
                                 }
                         }
                     // set the id
@@ -219,6 +236,7 @@ template_dir                = Dir.pwd+"/.Advanced/flask/templates/"
 routes_file_location        = Dir.pwd+"/.Advanced/flask/SystemRoutes.py"
 bundle_routes_file_location = Dir.pwd+"/.Advanced/flask/BundleRoutes.py"
 location_of_webpack         = Dir.pwd+"/.Advanced/webpack/"
+location_of_webpack_src     = Dir.pwd+"/.Advanced/webpack/src/"
 location_of_indexjs         = Dir.pwd+"/.Advanced/webpack/src/index.js"
 location_of_bundlejs        = Dir.pwd+"/.Advanced/webpack/dist/bundle.js"
 location_of_package_json    = Dir.pwd+"/.Advanced/webpack/package.json"
@@ -362,8 +380,13 @@ for each in dirs_of_pages
     # FIXME, have a minify function 
     # code_ = <<-HEREDOC
     javascript_version = code_generate(name_,each)
-    save javascript_version, to:static_location
-    code_for_indexjs += "import #{new_file_name} from '../../flask/static/#{new_file_name+".page.js"}';Global.SystemVars.Modules.#{new_file_name} = #{new_file_name}\n"
+    save javascript_version, to:(location_of_webpack_src+new_file_name+".page.js")
+    code_for_indexjs += "import #{new_file_name} from './#{new_file_name+".page.js"}';Global.SystemVars.Modules.#{new_file_name} = #{new_file_name}\n"
+
+    # the old/static way:
+    # save javascript_version, to:static_location
+    # code_for_indexjs += "import #{new_file_name} from '../../flask/static/#{new_file_name+".page.js"}';Global.SystemVars.Modules.#{new_file_name} = #{new_file_name}\n"
+
     
     # create html for the page
     # FIXME, use a base.html to allow things to be injected into the head and body
@@ -395,10 +418,13 @@ for each in dirs_of_modules
     everything_that_should_be_in_static << absolute_location_of_file
     
     # save output
-    # FIXME, have a minify function
     code_ =  code_generate(name_,each)
-    save code_,   to:(absolute_location_of_file)
-    code_for_indexjs += "import #{new_file_name} from '../../flask/static/#{new_file_name_with_extension}';Global.SystemVars.Modules.#{new_file_name} = #{new_file_name}\n"
+    save code_,   to:(location_of_webpack_src+new_file_name_with_extension)
+    code_for_indexjs += "import #{new_file_name} from './#{new_file_name_with_extension}';Global.SystemVars.Modules.#{new_file_name} = #{new_file_name}\n"
+    
+    # Old/static way:
+    # save code_,   to:(absolute_location_of_file)
+    # code_for_indexjs += "import #{new_file_name} from '../../flask/static/#{new_file_name_with_extension}';Global.SystemVars.Modules.#{new_file_name} = #{new_file_name}\n"
 end 
 
 #
@@ -485,7 +511,7 @@ save(routes_as_string(routes_)+readFile(bundle_routes_file_location), to:routes_
     # save the index
     save( code_for_indexjs, to:location_of_indexjs )
     # webpack things
-    `cd '#{location_of_webpack}';webpack`
+    `cd '#{location_of_webpack}';&webpack --watch`
     # combine core.js and bundle.js
     corejs_file = readFile(location_of_corejs)
     mainjs_file = readFile(location_of_mainjs)

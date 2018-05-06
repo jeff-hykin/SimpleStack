@@ -1,4 +1,5 @@
-console.log(`start of homepage.js`)
+import _ from "lodash"
+// console.log(`start of homepage.js`)
 console.log(`Parent is:`,Parent)
 // create elements
 var title_element = document.createElement("h1")
