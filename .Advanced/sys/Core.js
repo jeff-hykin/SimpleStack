@@ -1,19 +1,6 @@
 //
 //    Main Tools 
 //
-if (1) // Front End Database setup 
-    {
-        var database_options = 
-            {
-                driver      : localforage.WEBSQL, // Force WebSQL; same as using setDriver()
-                name        : 'myApp',
-                version     : 1.0,
-                size        : 10000000, // Size of database, in bytes. WebSQL-only for now.
-                storeName   : 'keyvaluepairs', // Should be alphanumeric, with underscores.
-                description : 'Simple Stack Default Store'
-            }
-        localforage.config(database_options)
-    }
 if (1) // setup for Global 
     {
         var OnChangerProxy =
@@ -70,7 +57,7 @@ if (1) // setup for Global
                             },
                         LoadValue: async function(key)
                             {
-                                this.Vars[key] = await localforage.getItem(key)
+                                // this.Vars[key] = await localforage.getItem(key)
                             },
                         Eval: function (input_){return eval(input_)},
                         ClearChanges: function ()
@@ -103,16 +90,16 @@ if (1) // setup for Global
                     {
                         target.Changes.push({[key]:{'previous value':target[key],'new value':new_value }})
                         target.Vars[key] = new_value
-                        localforage.setItem("Global.Vars."+key, new_value)
+                        // localforage.setItem("Global.Vars."+key, new_value)
                         
                         // FIXME, this should be O(1), but right now its O(n)
                         window.dispatchEvent(new CustomEvent('Global.Vars.'+key)) // FIXME // FOR: events
                         // wait till site loads
-                        if (target.SystemVars.CurrentPath)
-                            {
-                                // keep track of which vars to update 
-                                localforage.setItem('Vars.keys', Object.keys(Global.Vars)) 
-                            }
+                        // if (target.SystemVars.CurrentPath)
+                        //     {
+                        //         // keep track of which vars to update 
+                        //         localforage.setItem('Vars.keys', Object.keys(Global.Vars)) 
+                        //     }
                         return true
                     },
             }
@@ -255,6 +242,11 @@ if (1) // Core functions
             }
         var LoadPage = async function(page_name)
             {
+                // FIXME, clean this code up
+                if (page_name===null)
+                    {
+                        page_name = window.location.href.replace(/^(?:\/\/|[^\/]+)*\//,"").replace(/\/$/,"")
+                    }
                 // normal click
                 if (page_name)
                     {

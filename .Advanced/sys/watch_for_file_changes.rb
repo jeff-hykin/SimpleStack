@@ -2,7 +2,7 @@
 #   helper tools 
 #
     require 'pathname'
-    require 'FileUtils'
+    require 'fileutils'
     require 'filewatcher'
 
     # create file

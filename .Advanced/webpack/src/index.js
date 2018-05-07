@@ -10,4 +10,4 @@ var curl = async url=> new Promise(resolve => {
                 })
 
 var LoadDependencies = async ()=>dependencies=JSON.parse(await curl('https://raw.githubusercontent.com/jeff-hykin/SimplePackager/master/dependencies.json'))
-LoadPage(window.location.href.replace(/^(?://|[^/]+)*//, ))
+LoadPage(null)

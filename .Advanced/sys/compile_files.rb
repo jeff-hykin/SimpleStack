@@ -2,7 +2,7 @@
 #   helper tools 
 #
     require 'pathname'
-    require 'FileUtils'
+    require 'fileutils'
     require 'filewatcher'
     require 'json'
 
@@ -152,15 +152,7 @@
     end
 
     def routes_as_string(routes_hash)
-        routes_begining  = <<-HEREDOC
-        def SystemRoutes(): #this is name-specific
-            print("setting system routes")
-
-            # root directory
-            @Route('/')
-            def root():
-                return  render_template("Home.html")
-        HEREDOC
+        routes_begining  = "def SystemRoutes(): #this is name-specific\n"
         routes_begining = unindent(routes_begining,'        ')
         for each_key in routes_hash
             routes_begining += each_key[1]
@@ -277,7 +269,8 @@ code_for_indexjs = ""
 # Bundle Javascript
 #
     # save the index
-    code_for_indexjs = code_for_indexjs+"\n"+readFile(location_of_general_tools)+"\nLoadPage(window.location.href.replace(/^(?:\/\/|[^\/]+)*\//, ""))"
+    # /^(?:\\/\\/|[^\\/]+)*\\//
+    code_for_indexjs = code_for_indexjs+"\n"+readFile(location_of_general_tools)+"\nLoadPage(null)"
     save(code_for_indexjs, to:location_of_indexjs)
     `cd .Advanced/webpack;webpack`
     # combine core.js main.js and bundle.js

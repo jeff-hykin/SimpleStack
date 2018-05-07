@@ -1,19 +1,6 @@
 //
 //    Main Tools 
 //
-if (1) // Front End Database setup 
-    {
-        var database_options = 
-            {
-                driver      : localforage.WEBSQL, // Force WebSQL; same as using setDriver()
-                name        : 'myApp',
-                version     : 1.0,
-                size        : 10000000, // Size of database, in bytes. WebSQL-only for now.
-                storeName   : 'keyvaluepairs', // Should be alphanumeric, with underscores.
-                description : 'Simple Stack Default Store'
-            }
-        localforage.config(database_options)
-    }
 if (1) // setup for Global 
     {
         var OnChangerProxy =
@@ -70,7 +57,7 @@ if (1) // setup for Global
                             },
                         LoadValue: async function(key)
                             {
-                                this.Vars[key] = await localforage.getItem(key)
+                                // this.Vars[key] = await localforage.getItem(key)
                             },
                         Eval: function (input_){return eval(input_)},
                         ClearChanges: function ()
@@ -103,16 +90,16 @@ if (1) // setup for Global
                     {
                         target.Changes.push({[key]:{'previous value':target[key],'new value':new_value }})
                         target.Vars[key] = new_value
-                        localforage.setItem("Global.Vars."+key, new_value)
+                        // localforage.setItem("Global.Vars."+key, new_value)
                         
                         // FIXME, this should be O(1), but right now its O(n)
                         window.dispatchEvent(new CustomEvent('Global.Vars.'+key)) // FIXME // FOR: events
                         // wait till site loads
-                        if (target.SystemVars.CurrentPath)
-                            {
-                                // keep track of which vars to update 
-                                localforage.setItem('Vars.keys', Object.keys(Global.Vars)) 
-                            }
+                        // if (target.SystemVars.CurrentPath)
+                        //     {
+                        //         // keep track of which vars to update 
+                        //         localforage.setItem('Vars.keys', Object.keys(Global.Vars)) 
+                        //     }
                         return true
                     },
             }
@@ -255,6 +242,11 @@ if (1) // Core functions
             }
         var LoadPage = async function(page_name)
             {
+                // FIXME, clean this code up
+                if (page_name===null)
+                    {
+                        page_name = window.location.href.replace(/^(?:\/\/|[^\/]+)*\//,"").replace(/\/$/,"")
+                    }
                 // normal click
                 if (page_name)
                     {
@@ -377,7 +369,7 @@ if (1) // protos
 // for history back/forward
 window.onpopstate = function(...inputs){LoadPage()}
 
-!function(n){var t={};function r(e){if(t[e])return t[e].exports;var u=t[e]={i:e,l:!1,exports:{}};return n[e].call(u.exports,u,u.exports,r),u.l=!0,u.exports}r.m=n,r.c=t,r.d=function(n,t,e){r.o(n,t)||Object.defineProperty(n,t,{configurable:!1,enumerable:!0,get:e})},r.r=function(n){Object.defineProperty(n,"__esModule",{value:!0})},r.n=function(n){var t=n&&n.__esModule?function(){return n.default}:function(){return n};return r.d(t,"a",t),t},r.o=function(n,t){return Object.prototype.hasOwnProperty.call(n,t)},r.p="",r(r.s=0)}([function(n,t,r){"use strict";r.r(t);r(3);Global.SystemVars.Modules.Home=async function(n){var t=window.Global;t.SystemVars.CurrentOrigin="Home";const r={Node:document.createElement("module"),Load:async function(){var t=document.createElement("h1"),r=document.createElement("input");r.onkeydown=(async n=>{"Enter"==n.key&&(t.innerHTML=await Server("Hello",n.target.value))}),t.innerHTML="Hello World",n.add(t),n.add("hello"),n.add(r)}};r.Node.id="Home";t.Eval.bind(r);t.SystemVars.Loading.push(r),await r.Load(),n.add(r.Node),t.SystemVars.Loading.pop(),t.SystemVars.CurrentOrigin=void 0},Global.SystemVars.Modules.hello=async function(n){var t=window.Global;t.SystemVars.CurrentOrigin="hello";const r={Node:document.createElement("module"),Load:async function(){var t=document.createElement("button");t.innerHTML="click me",t.onclick=(async()=>{LoadPage("Home/Home")}),n.add(t)}};r.Node.id="hello";t.Eval.bind(r);t.SystemVars.Loading.push(r),await r.Load(),n.add(r.Node),t.SystemVars.Loading.pop(),t.SystemVars.CurrentOrigin=void 0},Global.Debugging=!0,Global.Website="http://127.0.0.1:5000/",console.log("blah98");LoadPage(window.location.href.replace(/^(?:\/\/|[^\/]+)*\//,""))},function(n,t){n.exports=function(n){return n.webpackPolyfill||(n.deprecate=function(){},n.paths=[],n.children||(n.children=[]),Object.defineProperty(n,"loaded",{enumerable:!0,get:function(){return n.l}}),Object.defineProperty(n,"id",{enumerable:!0,get:function(){return n.i}}),n.webpackPolyfill=1),n}},function(n,t){var r;r=function(){return this}();try{r=r||Function("return this")()||(0,eval)("this")}catch(n){"object"==typeof window&&(r=window)}n.exports=r},function(n,t,r){(function(n,e){var u;
+!function(n){var t={};function r(e){if(t[e])return t[e].exports;var u=t[e]={i:e,l:!1,exports:{}};return n[e].call(u.exports,u,u.exports,r),u.l=!0,u.exports}r.m=n,r.c=t,r.d=function(n,t,e){r.o(n,t)||Object.defineProperty(n,t,{configurable:!1,enumerable:!0,get:e})},r.r=function(n){Object.defineProperty(n,"__esModule",{value:!0})},r.n=function(n){var t=n&&n.__esModule?function(){return n.default}:function(){return n};return r.d(t,"a",t),t},r.o=function(n,t){return Object.prototype.hasOwnProperty.call(n,t)},r.p="",r(r.s=0)}([function(n,t,r){"use strict";r.r(t);r(3);Global.SystemVars.Modules.Home=async function(n){var t=window.Global;t.SystemVars.CurrentOrigin="Home";const r={Node:document.createElement("module"),Load:async function(){var t=document.createElement("h1"),r=document.createElement("input");r.onkeydown=(async n=>{"Enter"==n.key&&(t.innerHTML=await Server("Hello",n.target.value))}),t.innerHTML="Hello World",n.add(t),n.add("hello"),n.add(r)}};r.Node.id="Home";t.Eval.bind(r);t.SystemVars.Loading.push(r),await r.Load(),n.add(r.Node),t.SystemVars.Loading.pop(),t.SystemVars.CurrentOrigin=void 0},Global.SystemVars.Modules.hello=async function(n){var t=window.Global;t.SystemVars.CurrentOrigin="hello";const r={Node:document.createElement("module"),Load:async function(){var t=document.createElement("button");t.innerHTML="click me",t.onclick=(async()=>{LoadPage("Home/Home")}),n.add(t)}};r.Node.id="hello";t.Eval.bind(r);t.SystemVars.Loading.push(r),await r.Load(),n.add(r.Node),t.SystemVars.Loading.pop(),t.SystemVars.CurrentOrigin=void 0},Global.Debugging=!0,Global.Website="http://127.0.0.1:5000/";LoadPage(null)},function(n,t){n.exports=function(n){return n.webpackPolyfill||(n.deprecate=function(){},n.paths=[],n.children||(n.children=[]),Object.defineProperty(n,"loaded",{enumerable:!0,get:function(){return n.l}}),Object.defineProperty(n,"id",{enumerable:!0,get:function(){return n.i}}),n.webpackPolyfill=1),n}},function(n,t){var r;r=function(){return this}();try{r=r||Function("return this")()||(0,eval)("this")}catch(n){"object"==typeof window&&(r=window)}n.exports=r},function(n,t,r){(function(n,e){var u;
 /**
  * @license
  * Lodash <https://lodash.com/>

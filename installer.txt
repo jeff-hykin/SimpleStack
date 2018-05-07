@@ -5,10 +5,11 @@ mac
         brew cask install virtualbox
         brew cask install vagrant
             vagrant init ubuntu/trusty32
+            vagrant init bento/ubuntu-18.04
             >>> You are now\nready to `vagrant up` your first virtual environment! 
             open up the vagrantfile 
-                uncomment config.vm.network "private_network", ip: "192.168.33.10"
                 then add
+                    config.vm.network "forwarded_port", guest: 5000, host: 5000, host_ip: "127.0.0.1"
                     config.vm.synced_folder "../../.Advanced", "/home/vagrant/.Advanced"
                     config.vm.synced_folder "../../Website", "/home/vagrant/Website"
             vagrant up
@@ -16,14 +17,15 @@ mac
             vagrant ssh -c 'curl -sL https://deb.nodesource.com/setup_10.x | sudo -E bash -'
             vagrant ssh -c 'sudo apt-get install -y nodejs'
             vagrant ssh -c 'sudo apt-get install -y build-essential'
-            echo -ne '\n' | vagrant ssh -c 'sudo apt-add-repository ppa:brightbox/ruby-ng'
-            echo -ne 'y\n' | vagrant ssh -c 'sudo apt-get install ruby2.2'
-        npm
-            webpack -g
-            webpack-cli -g
-        python
-            pip
-                flask
+            vagrant ssh -c 'sudo apt-get install -y npm'
+            vagrant ssh -c 'sudo apt-get install -y ruby'
+            vagrant ssh -c 'sudo apt-get install -y python3-pip'
+            vagrant ssh -c 'sudo gem install filewatcher'
+            vagrant ssh -c 'sudo npm install -g webpack webpack-cli'
+            vagrant ssh -c 'cd .Advanced/webpack/;sudo npm install'
+            vagrant ssh -c 'cd .Advanced/flask;source venv/bin/activate;pip install -r requirements.txt'
+            # run the server
+            vagrant ssh -c 'ruby .Advanced/sys/compile_files.rb && ruby .Advanced/sys/watch_for_file_changes.rb'
 
 windows
     scoop

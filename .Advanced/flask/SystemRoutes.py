@@ -1,10 +1,4 @@
 def SystemRoutes(): #this is name-specific
-    print("setting system routes")
-
-    # root directory
-    @Route('/')
-    def root():
-        return  render_template("Home.html")
 
     @Route('/func/Hello', methods=['POST'])
     def func_route1():

@@ -1,4 +1,4 @@
-from flask  import Flask, jsonify, request, render_template, send_from_directory
+from flask  import Flask, jsonify, request, render_template, send_from_directory, redirect
 app  = Flask(__name__)
 
 
@@ -22,9 +22,14 @@ if __name__ == "__main__":
     file = open("Website/Global/main.py", "r"); exec(file.read()); file.close()
     Routes()
     
-    # The main website catchall route
+
+    # These two routes end up making a catchall
+    @Route('/')
+    def root():
+        return redirect("Home")
+    
     @Route('/<path:path>')
     def catch_all(path):
         return  render_template('index.html')
         
-    app.run(port=PORT_NUM,debug=DEBUGGING)
+    app.run(port=PORT_NUM,debug=DEBUGGING,host="5.5.5.5")
