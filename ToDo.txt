@@ -48,6 +48,8 @@ NoStack
         - install python/pip/npm/Browserify/flask/ruby/uglify
     - how to add images
     - how to link to databases and run migrations
+    - Fix the Global styles.css on vagrant
+    - relink all the commands to use vagrant
 
 - Webpack
 - Auto installer
