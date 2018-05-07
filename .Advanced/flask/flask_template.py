@@ -18,8 +18,8 @@ if __name__ == "__main__":
     file = open(".Advanced/flask/SystemRoutes.py", "r"); exec(file.read()); file.close()
     SystemRoutes()
     
-    # routes set from GlobalPython
-    file = open("Website/Global/GlobalPython.py", "r"); exec(file.read()); file.close()
+    # routes set from main
+    file = open("Website/Global/main.py", "r"); exec(file.read()); file.close()
     Routes()
     
     # The main website catchall route

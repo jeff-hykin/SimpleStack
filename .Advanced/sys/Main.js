@@ -1,1 +1,0 @@
-LoadPage(window.location.href.replace(/^(?:\/\/|[^\/]+)*\//, ""))

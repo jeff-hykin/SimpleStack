@@ -1,18 +1,39 @@
-ruby
-python
-pip
-    flask
-npm
-nginx
-
-
 mac
     x-code
     homebrew
-        nginx
-    
-    webpack
-        npm install -g webpack-cli
-        npm install -g webpack
-        cd .Advanced/webpack
-            ln -s ../node_modules node_modules
+        cask
+        brew cask install virtualbox
+        brew cask install vagrant
+            vagrant init ubuntu/trusty32
+            >>> You are now\nready to `vagrant up` your first virtual environment! 
+            open up the vagrantfile 
+                uncomment config.vm.network "private_network", ip: "192.168.33.10"
+                then add
+                    config.vm.synced_folder "../../.Advanced", "/home/vagrant/.Advanced"
+                    config.vm.synced_folder "../../Website", "/home/vagrant/Website"
+            vagrant up
+            vagrant ssh -c 'sudo apt-get update'
+            vagrant ssh -c 'curl -sL https://deb.nodesource.com/setup_10.x | sudo -E bash -'
+            vagrant ssh -c 'sudo apt-get install -y nodejs'
+            vagrant ssh -c 'sudo apt-get install -y build-essential'
+            echo -ne '\n' | vagrant ssh -c 'sudo apt-add-repository ppa:brightbox/ruby-ng'
+            echo -ne 'y\n' | vagrant ssh -c 'sudo apt-get install ruby2.2'
+        npm
+            webpack -g
+            webpack-cli -g
+        python
+            pip
+                flask
+
+windows
+    scoop
+        virtual-box 
+        vagrant
+        reboot
+            vagrant init
+            vagrant up
+            get putty
+                hostname=127.0.0.1
+                port=2222
+                username=vagrant
+                password=vagrant

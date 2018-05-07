@@ -76,7 +76,6 @@ if package_name
 
     if should_install_npm_package
         `cd webpack;npm install #{package_name} --save`
-        `ruby create_bundles.rb`
         puts "Finished installing Javascript #{package_name}"
     end
 end

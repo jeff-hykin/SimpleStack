@@ -101,6 +101,7 @@
             #{indent(import_statements,3*4)}
             export default async function(Parent) 
                 {
+                    var Global = window.Global
                     // so attached listeners know who attached them
                     Global.SystemVars.CurrentOrigin = "#{module_name}"
                     // create the module in an object so that DangerousEval can be used 
@@ -180,7 +181,6 @@ Dir.chdir "../.."
 
 # establish locations
 location_of_corejs          = Dir.pwd+"/.Advanced/sys/Core.js"
-location_of_mainjs          = Dir.pwd+"/.Advanced/sys/Main.js"
 server_output_location      = Dir.pwd+".Advanced/sys/server_output.txt"
 simple_stack_base_html_dir  = Dir.pwd+"/.Advanced/flask/SimpleStackBase.html"
 static_dir                  = Dir.pwd+"/.Advanced/flask/static/"
@@ -199,11 +199,12 @@ location_of_global_css      = Dir.pwd+"/Website/Global/styles.css"
 output_css_location         = static_dir +global_stylesheets_relative
 dirs_of_pages               = Dir.glob("Website/**/*.page.js")
 dirs_of_modules             = Dir.glob("Website/**/*.module.js")
+dirs_of_javascript          = Dir.glob("Website/**/*.module.js")
 dirs_of_python_files        = Dir.glob("Website/**/*.py")
 dirs_of_css_files           = Dir.glob("Website/**/*.css")
 dirs_of_global_css_files    = Dir.glob("Website/Global/**/*.css")
 favicon_location            = Dir.glob("Website/**/favicon.ico")
-
+dirs_of_normal_javascript   = (dirs_of_javascript - dirs_of_pages) - dirs_of_modules
 
 #
 # Favicon
@@ -236,53 +237,52 @@ code_for_indexjs = ""
 #
 # Pages
 #
-for each in dirs_of_pages
-    #
-    #   File naming
-    #
-    relative_location = each.sub(/(^Website\/|\.page\.js$)/,"")
-    new_file_name = file_name_escape(relative_location)
-    new_file_name_with_extension = new_file_name+".page.js"
-    module_name = basename(relative_location)
+    for each in dirs_of_pages
+        #
+        #   File naming
+        #
+        relative_location = each.gsub(/(^Website\/|\.page\.js$)/,"")
+        new_file_name = file_name_escape(relative_location)
+        new_file_name_with_extension = new_file_name+".js"
+        module_name = basename(relative_location)
 
-    #
-    # Compile, Save, Import
-    #
-    code = code_generate(module_name,each)
-    save code, to:(location_of_webpack_src+new_file_name_with_extension)
-    code_for_indexjs += "import #{new_file_name} from './#{new_file_name_with_extension}';Global.SystemVars.Modules.#{new_file_name} = #{new_file_name}\n"
-end
+        #
+        # Compile, Save, Import
+        #
+        code = code_generate(module_name,each)
+        save code, to:(location_of_webpack_src+new_file_name_with_extension)
+        code_for_indexjs += "import #{new_file_name} from './#{new_file_name_with_extension}';Global.SystemVars.Modules.#{new_file_name} = #{new_file_name}\n"
+    end
 
 #
 # Modules
 #
-for each in dirs_of_modules
-    #
-    #   File naming
-    #
-    relative_location = each.sub(/^Website\//,"").sub!(/.module.js\z/,"")
-    new_file_name = file_name_escape(relative_location)
-    new_file_name_with_extension = new_file_name+".module.js"
-    module_name = basename(relative_location)
-    
-    #
-    # Compile, Save, Import
-    #
-    code =  code_generate(module_name,each)
-    save code,   to:(location_of_webpack_src+new_file_name_with_extension)
-    code_for_indexjs += "import #{new_file_name} from './#{new_file_name_with_extension}';Global.SystemVars.Modules.#{new_file_name} = #{new_file_name}\n"
-end 
+    for each in dirs_of_modules
+        #
+        #   File naming
+        #
+        relative_location = each.gsub(/(^Website\/|.module.js\z)/,"")
+        new_file_name = file_name_escape(relative_location)
+        new_file_name_with_extension = new_file_name+".module.js"
+        module_name = basename(relative_location)
+        
+        #
+        # Compile, Save, Import
+        #
+        code =  code_generate(module_name,each)
+        save code,   to:(location_of_webpack_src+new_file_name_with_extension)
+        code_for_indexjs += "import #{new_file_name} from './#{new_file_name_with_extension}';Global.SystemVars.Modules.#{new_file_name} = #{new_file_name}\n"
+    end
 #
-# Bundle Javascript 
+# Bundle Javascript
 #
     # save the index
-    save( code_for_indexjs+"\n"+readFile(location_of_general_tools), to:location_of_indexjs )
-    # start the webpack watcher
-    $std_in, $std_out_and_error, $thread_ = Open3.popen2e("cd '#{location_of_webpack}'; webpack --watch &>'#{server_output_location}'")
+    code_for_indexjs = code_for_indexjs+"\n"+readFile(location_of_general_tools)+"\nLoadPage(window.location.href.replace(/^(?:\/\/|[^\/]+)*\//, ""))"
+    save(code_for_indexjs, to:location_of_indexjs)
+    `cd .Advanced/webpack;webpack`
     # combine core.js main.js and bundle.js
     corejs_file = readFile(location_of_corejs)
-    mainjs_file = readFile(location_of_mainjs)
-    save (corejs_file+"\n"+ readFile(location_of_bundlejs)+"\n\n"+mainjs_file) , to:location_of_super_bundle
+    save (corejs_file+"\n"+ readFile(location_of_bundlejs)) , to:location_of_super_bundle
 
 
 
@@ -362,9 +362,8 @@ for each in dirs_of_python_files
 end
 
 
-# save all routes into SystemRoutes (including the bundle Routes)
+# save all routes into SystemRoutes
 save(routes_as_string(routes_), to:routes_file_location)
-
 
 
 #FIXME, compile the python after to make it more efficient 

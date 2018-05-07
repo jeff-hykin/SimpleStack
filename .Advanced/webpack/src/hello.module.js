@@ -1,6 +1,7 @@
                         
             export default async function(Parent) 
                 {
+                    var Global = window.Global
                     // so attached listeners know who attached them
                     Global.SystemVars.CurrentOrigin = "hello"
                     // create the module in an object so that DangerousEval can be used 

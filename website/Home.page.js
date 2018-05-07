@@ -1,8 +1,8 @@
 import _ from "lodash"
+
 // create elements
 var title_element = document.createElement("h1")
 var input_box     = document.createElement("input")
-
 
 
 

@@ -33,7 +33,7 @@ if (1) // setup for Global
                         return true
                     },
             }
-        var __GlobalInitObj = 
+        window.__GlobalInitObj = 
             {
                 Vars: 
                     {
@@ -59,14 +59,14 @@ if (1) // setup for Global
                     {
                         LoadAllVars: async function()
                             {
-                                var keys = await localforage.getItem('Vars.keys')
-                                if (keys)
-                                    {
-                                        for (let each of keys)
-                                            {
-                                                Global.LoadValue(each)
-                                            }
-                                    }
+                                // var keys = await localforage.getItem('Vars.keys')
+                                // if (keys)
+                                //     {
+                                //         for (let each of keys)
+                                //             {
+                                //                 Global.LoadValue(each)
+                                //             }
+                                //     }
                             },
                         LoadValue: async function(key)
                             {
@@ -113,11 +113,12 @@ if (1) // setup for Global
                                 // keep track of which vars to update 
                                 localforage.setItem('Vars.keys', Object.keys(Global.Vars)) 
                             }
+                        return true
                     },
             }
     }
-const Global = new Proxy(__GlobalInitObj, GlobalProxy)
-
+window.Global = new Proxy(window.__GlobalInitObj, GlobalProxy)
+const Global = window.Global
 if (1) // Core functions
     {
         var ModuleLocationToVarName = function(module_location)
@@ -374,4 +375,4 @@ if (1) // protos
             }
     }
 // for history back/forward
-window.onpopstate = function(...inputs) { LoadPage()}
+window.onpopstate = function(...inputs){LoadPage()}
