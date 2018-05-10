@@ -43,6 +43,7 @@ FlatStack
         - pip
         - npm
         - venv
+    - Have a way to change the IP address and port number (and have it effect vagrant)
 - Auto installer
     - vagrant Mac script
     - vagrant windows script
@@ -58,6 +59,7 @@ FlatStack
     - Add an error page to the catchall
     - how to add images
 - Extra
+    - Have a script autorunner folder
     - webpack
         - auto reloads page
         - get faster auto-compile
