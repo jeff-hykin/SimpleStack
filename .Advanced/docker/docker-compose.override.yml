@@ -2,9 +2,9 @@ version: '2'
 services:
   web:
     volumes:
-      - ./app:/app
+      - ./flask_app:/app
     ports:
-      - "80:80"
+      - "8000:80"
     environment:
       - FLASK_APP=main.py
       - FLASK_DEBUG=1

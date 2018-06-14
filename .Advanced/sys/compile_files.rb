@@ -173,7 +173,7 @@ Dir.chdir "../.."
 
 # establish locations
 location_of_corejs          = Dir.pwd+"/.Advanced/sys/Core.js"
-server_output_location      = Dir.pwd+".Advanced/sys/server_output.txt"
+server_output_location      = Dir.pwd+"/.Advanced/sys/server_output.txt"
 simple_stack_base_html_dir  = Dir.pwd+"/.Advanced/flask/SimpleStackBase.html"
 static_dir                  = Dir.pwd+"/.Advanced/flask/static/"
 location_of_super_bundle    = Dir.pwd+"/.Advanced/flask/static/Core.js"
