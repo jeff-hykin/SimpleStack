@@ -1,4 +1,6 @@
 {
     "favorites.sortDirection": "ASC",
-    "favorites.groupsFirst": true
+    "favorites.groupsFirst": true,
+    "python.linting.enabled": false,
+    "python.pythonPath": "/usr/local/bin/python3"
 }

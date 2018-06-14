@@ -1,6 +1,7 @@
 mac
     x-code
     homebrew
+        docker
         cask
         brew cask install virtualbox
         brew cask install vagrant
@@ -29,7 +30,8 @@ mac
 
 windows
     scoop
-        virtual-box 
+        docker
+        virtual-box
         vagrant
         reboot
             vagrant init
